@@ -100,4 +100,4 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
   this.element.style.height = this.position.px(this.height);
 }
 
-export { Board };
+export default Board;
