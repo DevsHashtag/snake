@@ -1,11 +1,18 @@
 # snakeGame
+
 - [x] board.js
 - [x] game.js
 - [ ] snake.js
 - [ ] food.js
 
+# board.js
+
+- [ ] block
+- [ ] position functions
+- [ ] init board
 
 # game.js
+
 - [ ] reset game
 - [ ] render game
 - [ ] handel keys
