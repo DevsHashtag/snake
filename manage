@@ -1,0 +1,11 @@
+# snakeGame
+- [x] board.js
+- [ ] game.js
+- [ ] snake.js
+- [ ] food.js
+
+
+# game.js
+- [ ] reset game
+- [ ] render game
+- [ ] handel keys
