@@ -42,7 +42,4 @@ section.board {
   border: 0.2rem solid var(--bg);
   outline: 1rem solid var(--bg-board-border);
   border-radius: 0.1rem;
-
-  width: 70vw;
-  height: 80vh;
 }

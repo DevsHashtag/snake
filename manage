@@ -7,9 +7,9 @@
 
 # board.js
 
-- [ ] block
-- [ ] position functions
-- [ ] init board
+- [x] block
+- [x] position functions
+- [x] init board
 
 # game.js
 
