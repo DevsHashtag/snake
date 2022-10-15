@@ -7,10 +7,17 @@
 }
 
 :root {
+  /* background */
   --bg: #19242e;
 
+  /* board */
   --bg-board: #0c1219;
   --bg-board-border: #00000055;
+
+  /* snake */
+  --bg-snake: #6e8293;
+
+  --bg-snake-head: #a5d5ff;
 }
 
 html {
@@ -42,4 +49,20 @@ section.board {
   border: 0.2rem solid var(--bg);
   outline: 1rem solid var(--bg-board-border);
   border-radius: 0.1rem;
+}
+
+section.board .snake-body {
+  position: absolute;
+
+  background-color: var(--bg-snake);
+  box-shadow: 0 0 0.2rem var(--bg-snake);
+}
+
+section.board .snake-head {
+  background-color: var(--bg-snake-head);
+  box-shadow: 0 0 0.2rem var(--bg-snake-head);
+
+  border-radius: 0.1rem;
+
+  z-index: 1;
 }
