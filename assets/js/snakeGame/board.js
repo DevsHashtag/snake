@@ -22,6 +22,7 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
     types: {
       // game blocks
       snake: 'snake-body',
+      snakeHead: 'snake-head',
       food: 'snake-food',
     },
 
@@ -39,7 +40,7 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
       block.style.height = this.board.position.px(this.size);
 
       // move block to position
-      console.log(this.move(block, position));
+      this.move(block, position);
 
       // add to board
       this.board.element.appendChild(block);
