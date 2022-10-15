@@ -2,8 +2,8 @@
 
 - [x] board.js
 - [x] game.js
-- [ ] snake.js
-- [ ] food.js
+- [x] snake.js
+- [x] food.js
 
 # board.js
 

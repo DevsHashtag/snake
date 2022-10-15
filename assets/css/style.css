@@ -16,8 +16,11 @@
 
   /* snake */
   --bg-snake: #6e8293;
-
   --bg-snake-head: #a5d5ff;
+
+  /* food */
+  --bg-food: #8bd0ab;
+  --bg-food: #f46161;
 }
 
 html {
@@ -29,6 +32,7 @@ body {
   font-size: 1.6rem;
 }
 
+/* snake game */
 main.snake-game {
   height: 100%;
 
@@ -39,6 +43,7 @@ main.snake-game {
   align-items: center;
 }
 
+/* board */
 section.board {
   box-sizing: content-box;
   background-color: var(--bg-board);
@@ -51,13 +56,16 @@ section.board {
   border-radius: 0.1rem;
 }
 
-section.board .snake-body {
+/* snake body, snake food */
+section.board .snake-body,
+section.board .snake-food {
   position: absolute;
 
   background-color: var(--bg-snake);
   box-shadow: 0 0 0.2rem var(--bg-snake);
 }
 
+/* snake head */
 section.board .snake-head {
   background-color: var(--bg-snake-head);
   box-shadow: 0 0 0.2rem var(--bg-snake-head);
@@ -65,4 +73,14 @@ section.board .snake-head {
   border-radius: 0.1rem;
 
   z-index: 1;
+}
+
+/* snake food */
+section.board .snake-food {
+  background-color: var(--bg-food);
+  box-shadow: 0 0 0.2rem var(--bg-food);
+
+  border-radius: 0.2rem;
+
+  transition: all 0.2s;
 }

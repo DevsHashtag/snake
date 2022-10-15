@@ -1,5 +1,6 @@
 import Board from './board.js';
 import Snake from './snake.js';
+import Food from './food.js';
 
 function SnakeGame(boardElement, FPS = 30) {
   // game options
@@ -19,6 +20,7 @@ function SnakeGame(boardElement, FPS = 30) {
   // game init
   this.board = new Board(this.boardElement, boardColumns, boardRows, blockSize);
   this.snake = new Snake(this.board, startLength, direction);
+  this.food = new Food(this.board);
 
   // functions
   this.gameLoop = function (render) {

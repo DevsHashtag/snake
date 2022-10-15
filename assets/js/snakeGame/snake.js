@@ -140,7 +140,8 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
       this.addStartBlocks();
     }
   };
-  // init
+
+  // snake init
   // add snake head and styles
   this.addBlock(this.board.position.center());
   this.blocks[0].classList.add(this.typeHead);
