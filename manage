@@ -14,5 +14,5 @@
 # game.js
 
 - [ ] reset game
-- [ ] render game
-- [ ] handel keys
+- [x] render game
+- [x] handel keys
