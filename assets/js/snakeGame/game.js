@@ -28,6 +28,7 @@ function SnakeGame(boardElement, FPS = 30) {
     function update(timestamp) {
       window.requestAnimationFrame(update);
 
+      // skip frames
       if (timestamp - oldTimestamp < fps) return;
 
       // render functions
@@ -37,7 +38,7 @@ function SnakeGame(boardElement, FPS = 30) {
     }
 
     // run game loop
-    update();
+    window.requestAnimationFrame(update);
   };
 
   this.start = function () {
@@ -45,7 +46,6 @@ function SnakeGame(boardElement, FPS = 30) {
     window.onkeydown = (e) => this.snake.setDirection(e.key);
 
     // game loop
-
     this.gameLoop(() => {
       this.snake.render();
     });
