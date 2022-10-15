@@ -72,7 +72,6 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     } else {
       // add to tail
       let tailPosition = this.board.position.block(this.blocks.slice(-1)[0]);
-
       block = this.board.block.add(this.type, tailPosition);
     }
 
@@ -82,7 +81,7 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
   // move snake to direction
   this.move = function () {
     // return if snake length is 0
-    if (!this.blocks.length) return;
+    if (!this.blocks.length) return false;
 
     // block size
     const blockSize = this.board.block.size;
@@ -107,6 +106,9 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
       case 'right':
         position.left += blockSize;
         break;
+
+      default:
+        return false; // unknown key
     }
 
     // check if block is inside board
@@ -129,6 +131,15 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     return false;
   };
 
+  // render snake on board
+  this.render = function () {
+    let isMoved = this.move();
+
+    if (isMoved) {
+      // check start length
+      this.addStartBlocks();
+    }
+  };
   // init
   // add snake head and styles
   this.addBlock(this.board.position.center());
