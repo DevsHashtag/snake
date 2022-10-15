@@ -14,8 +14,12 @@
   --bg-board: #0c1219;
   --bg-board-border: #00000055;
 
+  /* border size */
+  --sz-board-border: 0.2rem;
+  --sz-board-outline: 1.5rem;
+
   /* snake */
-  --bg-snake: #6e8293;
+  --bg-snake-body: #6e8293;
   --bg-snake-head: #a5d5ff;
 
   /* food */
@@ -51,8 +55,8 @@ section.board {
   position: relative;
 
   box-shadow: 0 0 1rem var(--bg-board);
-  border: 0.2rem solid var(--bg);
-  outline: 1rem solid var(--bg-board-border);
+  border: var(--sz-board-border) solid var(--bg);
+  outline: var(--sz-board-outline) solid var(--bg-board-border);
   border-radius: 0.1rem;
 }
 
@@ -61,8 +65,8 @@ section.board .snake-body,
 section.board .snake-food {
   position: absolute;
 
-  background-color: var(--bg-snake);
-  box-shadow: 0 0 0.2rem var(--bg-snake);
+  background-color: var(--bg-snake-body);
+  box-shadow: 0 0 0.2rem var(--bg-snake-body);
 }
 
 /* snake head */
