@@ -1,3 +1,10 @@
-import gameInit from './snakeGame/game.js';
+import SnakeGame from './snakeGame/game.js';
 
-gameInit();
+// board element
+const boardElement = document.querySelector('.snake-game .board');
+const FPS = 30;
+
+// game
+const snakeGame = new SnakeGame(boardElement, FPS);
+
+snakeGame.start();
