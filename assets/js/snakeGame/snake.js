@@ -18,6 +18,9 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
   // score
   this.score = startLength;
 
+  // is snake win
+  this.IS_WIN = false;
+
   // keys for control snake
   this.keys = keys ?? {
     up: ['ص', 'w', '8', 'ArrowUp'],
@@ -27,10 +30,10 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
   };
 
   // functions
-  // add start Blocks
-  this.addStartBlocks = function () {
+  // add start tail
+  this.addStartLength = function () {
     if (this.startLength > 0) {
-      this.addBlock();
+      this.addSnakeBody();
       this.startLength--;
     }
   };
@@ -63,7 +66,7 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
   };
 
   // add a block at position or tail
-  this.addBlock = function (position) {
+  this.addSnakeBody = function (position) {
     let block;
 
     if (position) {
@@ -114,6 +117,9 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     // check if block is inside board
     // check if block is not inside snake
     if (this.board.position.isInBoard(position) && !this.selfCollision(position)) {
+      // check start length
+      this.addStartLength();
+
       // remove styles from previous head
       this.blocks[0].classList.remove(this.typeHead);
 
@@ -136,10 +142,11 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     const applePosition = this.board.position.block(apple.block);
     const snakeHeadPos = this.board.position.block(this.blocks[0]);
 
-    if (applePosition.left === snakeHeadPos.left && applePosition.top == snakeHeadPos.top) {
+    if (applePosition.left === snakeHeadPos.left && applePosition.top === snakeHeadPos.top) {
       // add snake length
       this.startLength++;
 
+      // mode apple to random position
       apple.random(this.blocks);
 
       return true;
@@ -148,22 +155,29 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     return false;
   };
 
+  // check if snake wins
+  this.checkWin = function () {
+    if (this.blocks.length >= this.board.columns * this.board.rows) {
+      this.IS_WIN = true;
+    }
+  };
+
   // render snake on board
   this.render = function (apple) {
-    let isMoved = this.move();
+    const isSnakeMoved = this.move();
 
-    if (isMoved) {
+    // check if snake wins
+    this.checkWin();
+
+    if (isSnakeMoved) {
       // check and eat apple
       this.checkApple(apple);
-
-      // check start length
-      this.addStartBlocks();
     }
   };
 
   // snake init
   // add snake head and styles
-  this.addBlock(this.board.position.center());
+  this.addSnakeBody(this.board.position.center());
   this.blocks[0].classList.add(this.typeHead);
 }
 

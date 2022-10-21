@@ -13,11 +13,14 @@ function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
 
   // move apple inside board
   this.move = function (position) {
-    this.board.block.move(this.block, position);
+    return this.board.block.move(this.block, position);
   };
 
   // move apple to random position
   this.random = function (boardBlocks) {
+    // return if no space is free
+    if (boardBlocks.length >= this.board.columns * this.board.rows) return false;
+
     // all blocks positions
     const blockPositions = boardBlocks.map((block) => this.board.position.block(block));
     const blockSize = this.board.block.size;
@@ -36,7 +39,7 @@ function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
     // randomly choose a position
     const position = freePositions[Math.floor(Math.random() * freePositions.length)];
 
-    this.move(position);
+    return this.move(position);
   };
 
   // apple init

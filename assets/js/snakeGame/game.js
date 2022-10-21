@@ -27,8 +27,8 @@ function SnakeGame(boardElement, FPS = 30) {
     let fps = 1000 / this.FPS;
     let oldTimestamp;
 
-    function update(timestamp) {
-      window.requestAnimationFrame(update);
+    const update = (timestamp) => {
+      this.loop = window.requestAnimationFrame(update);
 
       // skip frames
       if (timestamp - oldTimestamp < fps) return;
@@ -37,10 +37,14 @@ function SnakeGame(boardElement, FPS = 30) {
       render();
 
       oldTimestamp = timestamp;
-    }
+    };
 
     // run game loop
     window.requestAnimationFrame(update);
+  };
+
+  this.stop = function () {
+    window.cancelAnimationFrame(this.loop);
   };
 
   this.start = function () {
@@ -50,6 +54,10 @@ function SnakeGame(boardElement, FPS = 30) {
     // game loop
     this.gameLoop(() => {
       this.snake.render(this.apple);
+
+      if (this.snake.IS_WIN) {
+        this.stop();
+      }
     });
   };
 }

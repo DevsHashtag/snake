@@ -76,7 +76,7 @@ section.board .snake-head {
 
   border-radius: 0.1rem;
 
-  z-index: 1;
+  z-index: 2;
 }
 
 /* snake apple */
@@ -87,4 +87,5 @@ section.board .snake-apple {
   border-radius: 0.2rem;
 
   transition: all 0.2s;
+  z-index: 1;
 }
