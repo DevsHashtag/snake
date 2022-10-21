@@ -49,7 +49,7 @@ function SnakeGame(boardElement, FPS = 30) {
 
     // game loop
     this.gameLoop(() => {
-      this.snake.render();
+      this.snake.render(this.apple);
     });
   };
 }

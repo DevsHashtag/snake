@@ -131,11 +131,31 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
     return false;
   };
 
+  // check and eat apple
+  this.checkApple = function (apple) {
+    const applePosition = this.board.position.block(apple.block);
+    const snakeHeadPos = this.board.position.block(this.blocks[0]);
+
+    if (applePosition.left === snakeHeadPos.left && applePosition.top == snakeHeadPos.top) {
+      // add snake length
+      this.startLength++;
+
+      apple.random(this.blocks);
+
+      return true;
+    }
+
+    return false;
+  };
+
   // render snake on board
-  this.render = function () {
+  this.render = function (apple) {
     let isMoved = this.move();
 
     if (isMoved) {
+      // check and eat apple
+      this.checkApple(apple);
+
       // check start length
       this.addStartBlocks();
     }
