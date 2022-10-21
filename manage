@@ -16,3 +16,15 @@
 - [ ] reset game
 - [x] render game
 - [x] handel keys
+- [ ] win
+- [ ] lose
+
+# snake.js
+
+- [ ] eat apple
+
+# apple.js
+
+- [x] random position food
+- [x] add
+- [x] move
