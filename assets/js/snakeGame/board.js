@@ -23,7 +23,7 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
       // game blocks
       snake: 'snake-body',
       snakeHead: 'snake-head',
-      food: 'snake-food',
+      apple: 'snake-apple',
     },
 
     // add block

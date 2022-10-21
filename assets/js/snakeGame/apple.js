@@ -1,22 +1,22 @@
-function Food(board, startPos = { left: 0, top: 0 }, type = 'snake-food') {
+function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
   // board
   this.board = board;
 
-  // food blocks class name
+  // apple blocks class name
   this.type = type;
 
   // functions
-  // add food to board
+  // add apple to board
   this.add = function (position) {
     this.block = this.board.block.add(this.type, position);
   };
 
-  // move food inside board
+  // move apple inside board
   this.move = function (position) {
     this.board.block.move(this.block, position);
   };
 
-  // move food to random position
+  // move apple to random position
   this.random = function (boardBlocks) {
     // all blocks positions
     const blockPositions = boardBlocks.map((block) => this.board.position.block(block));
@@ -41,8 +41,8 @@ function Food(board, startPos = { left: 0, top: 0 }, type = 'snake-food') {
     this.move(position);
   };
 
-  // food init
+  // apple init
   this.add(startPos);
 }
 
-export default Food;
+export default Apple;

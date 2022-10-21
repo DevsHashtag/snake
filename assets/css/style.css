@@ -22,9 +22,9 @@
   --bg-snake-body: #6e8293;
   --bg-snake-head: #a5d5ff;
 
-  /* food */
-  --bg-food: #8bd0ab;
-  --bg-food: #f46161;
+  /* apple */
+  --bg-apple: #8bd0ab;
+  --bg-apple: #f46161;
 }
 
 html {
@@ -60,9 +60,9 @@ section.board {
   border-radius: 0.1rem;
 }
 
-/* snake body, snake food */
+/* snake body, snake apple */
 section.board .snake-body,
-section.board .snake-food {
+section.board .snake-apple {
   position: absolute;
 
   background-color: var(--bg-snake-body);
@@ -79,10 +79,10 @@ section.board .snake-head {
   z-index: 1;
 }
 
-/* snake food */
-section.board .snake-food {
-  background-color: var(--bg-food);
-  box-shadow: 0 0 0.2rem var(--bg-food);
+/* snake apple */
+section.board .snake-apple {
+  background-color: var(--bg-apple);
+  box-shadow: 0 0 0.2rem var(--bg-apple);
 
   border-radius: 0.2rem;
 
