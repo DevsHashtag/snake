@@ -29,8 +29,6 @@ function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
       for (let x = 0; x < this.board.width; x += blockSize) {
         if (!blockPositions.some((position) => position.left == x && position.top == y)) {
           freePositions.push({ left: x, top: y });
-        } else {
-          console.log('removed block: ', { left: x, top: y });
         }
       }
     }
