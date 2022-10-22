@@ -49,9 +49,7 @@ function Apple(board, startPos = { random: true }) {
   this.moveAnimation = function () {
     this.block.style.backgroundColor = 'var(--bg-board)';
 
-    setTimeout(() => {
-      this.block.style.backgroundColor = 'var(--bg-apple)';
-    }, 300);
+    setTimeout(() => this.block.style.removeProperty('background-color'), 300);
   };
 
   // apple init
