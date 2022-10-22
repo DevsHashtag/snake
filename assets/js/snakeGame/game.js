@@ -58,8 +58,13 @@ function SnakeGame(boardElement, FPS = 30) {
       this.snake.render(this.apple);
 
       // win
-      if (this.snake.IS_WIN) {
+      if (this.snake.isWin) {
         this.win();
+      }
+
+      // game over
+      if (this.snake.isDead) {
+        this.gameover();
       }
     });
   };

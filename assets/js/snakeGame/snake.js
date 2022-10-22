@@ -19,7 +19,8 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
   this.score = startLength;
 
   // is snake win
-  this.IS_WIN = false;
+  this.isWin = false;
+  this.isDead = false;
 
   // keys for control snake
   this.keys = keys ?? {
@@ -131,7 +132,10 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
 
       // add styles to new head
       this.blocks[0].classList.add(this.typeHead);
+
       return true;
+    } else {
+      this.isDead = true;
     }
 
     return false;
@@ -155,10 +159,10 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
     return false;
   };
 
-  // check if snake wins
+  // check if snake win
   this.checkWin = function () {
     if (this.blocks.length >= this.board.columns * this.board.rows) {
-      this.IS_WIN = true;
+      this.isWin = true;
     }
   };
 
@@ -166,7 +170,7 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
   this.render = function (apple) {
     const isSnakeMoved = this.move();
 
-    // check if snake wins
+    // check if snake win
     this.checkWin();
 
     if (isSnakeMoved) {
