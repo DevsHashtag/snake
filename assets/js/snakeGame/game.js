@@ -57,10 +57,34 @@ function SnakeGame(boardElement, FPS = 30) {
     this.gameLoop(() => {
       this.snake.render(this.apple);
 
+      // win
       if (this.snake.IS_WIN) {
-        this.stop();
+        this.win();
       }
     });
+  };
+
+  // display a message
+  this.modalMessage = function (msg, type) {
+    let msgElement = this.board.block.add(type);
+
+    msgElement.innerText = msg;
+  };
+
+  // game over
+  this.gameover = function () {
+    this.stop();
+
+    // display game over
+    this.modalMessage('game over!', this.board.block.types.gameover);
+  };
+
+  // win
+  this.win = function () {
+    this.stop();
+
+    // display game over
+    this.modalMessage('you win!', this.board.block.types.win);
   };
 }
 

@@ -1,4 +1,4 @@
-function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-body', typeHead = 'snake-head', keys) {
+function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, keys) {
   // board
   this.board = board;
 
@@ -12,8 +12,8 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type = 'snake-bo
   this.direction = direction;
 
   // snake blocks class name
-  this.type = type;
-  this.typeHead = typeHead;
+  this.type = type ?? board.block.types.snake;
+  this.typeHead = typeHead ?? board.block.types.snakeHead;
 
   // score
   this.score = startLength;

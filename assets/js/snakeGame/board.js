@@ -24,23 +24,32 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
       snake: 'snake-body',
       snakeHead: 'snake-head',
       apple: 'snake-apple',
+
+      win: ['board-message', 'message-win'],
+      gameover: ['board-message', 'message-gameover'],
     },
 
     // add block
-    add: function (className, position) {
+    add: function (classNames, position) {
       // create new block element
       const block = document.createElement('div');
+      const blockSize = this.board.position.px(this.size);
 
-      // properties
-      // class name
-      block.classList.add(className);
+      // convert className to Array
+      classNames = typeof classNames == 'string' ? [classNames] : classNames;
 
-      // width, height of block
-      block.style.width = this.board.position.px(this.size);
-      block.style.height = this.board.position.px(this.size);
+      // add class names
+      block.classList.add(...classNames);
 
-      // move block to position
-      this.move(block, position);
+      // if position undefined skip this part
+      if (position) {
+        // width, height of block
+        block.style.width = blockSize;
+        block.style.height = blockSize;
+
+        // move block to position
+        this.move(block, position);
+      }
 
       // add to board
       this.board.element.appendChild(block);
@@ -99,9 +108,6 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
   // board init
   this.element.style.width = this.position.px(this.width);
   this.element.style.height = this.position.px(this.height);
-
-  // font-size based on blockSize
-  element.style.fontSize = `${blockSize / 20}rem`;
 }
 
 export default Board;

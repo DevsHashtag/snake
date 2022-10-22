@@ -1,9 +1,9 @@
-function Apple(board, startPos = { random: true }, type = 'snake-apple') {
+function Apple(board, startPos = { random: true }, type) {
   // board
   this.board = board;
 
   // apple blocks class name
-  this.type = type;
+  this.type = type ?? board.block.types.apple;
 
   // functions
   // add apple to board

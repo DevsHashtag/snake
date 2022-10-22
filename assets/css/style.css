@@ -17,7 +17,7 @@
 
   /* border size */
   --sz-board-border: 0.2rem;
-  --sz-board-outline: 1.5em;
+  --sz-board-outline: 1.5rem;
 
   /* snake */
   --bg-snake-body: #6e8293;
@@ -27,11 +27,12 @@
   --bg-apple: #f46161;
 
   /* messages */
-  --bg-overlay: #19242e88;
+  --bg-overlay: #19242eaa;
   --bg-overlay-shadow: #0e151bee;
 
   /* message colors */
   --fg-message-win: #67be44;
+  --fg-message-gameover: #be4444;
 }
 
 html {
@@ -115,31 +116,26 @@ section.board .board-message {
   justify-content: center;
   align-items: center;
 
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, sans-serif;
 
   background-color: var(--bg-overlay);
-  box-shadow: 0 0 5em 5em var(--bg-overlay-shadow) inset;
+  box-shadow: 0 0 50rem 1rem var(--bg-overlay-shadow) inset;
 
   border-radius: 0.2rem;
   text-transform: capitalize;
 
-  /* hidden */
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s;
-
   z-index: 10;
-}
-
-/* display message */
-section.board .message-active {
-  visibility: visible;
-  opacity: 1;
 }
 
 /* type of messages */
 section.board .message-win {
   color: var(--fg-message-win);
+  text-shadow: 0 0 1rem var(--fg-message-win);
+}
+
+section.board .message-gameover {
+  color: var(--fg-message-gameover);
+  text-shadow: 0 0 1rem var(--fg-message-gameover);
 }
