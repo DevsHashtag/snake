@@ -9,6 +9,7 @@
 :root {
   /* background */
   --bg: #19242e;
+  --fg: #46d5fc;
 
   /* board */
   --bg-board: #0c1219;
@@ -16,7 +17,7 @@
 
   /* border size */
   --sz-board-border: 0.2rem;
-  --sz-board-outline: 1.5rem;
+  --sz-board-outline: 1.5em;
 
   /* snake */
   --bg-snake-body: #6e8293;
@@ -25,6 +26,13 @@
   /* apple */
   --bg-apple: #8bd0ab;
   --bg-apple: #f46161;
+
+  /* messages */
+  --bg-overlay: #19242e88;
+  --bg-overlay-shadow: #0e151bee;
+
+  /* message colors */
+  --fg-message-win: #67be44;
 }
 
 html {
@@ -34,6 +42,8 @@ html {
 body {
   height: 100vh;
   font-size: 1.6rem;
+
+  color: var(--fg);
 }
 
 /* snake game */
@@ -59,6 +69,8 @@ section.board {
   outline: var(--sz-board-outline) solid var(--bg-board-border);
   border-radius: 0.1rem;
 }
+
+/* blocks */
 
 /* snake body, snake apple */
 section.board .snake-body,
@@ -88,4 +100,47 @@ section.board .snake-apple {
 
   transition: all 0.2s;
   z-index: 1;
+}
+
+/* messages */
+section.board .board-message {
+  cursor: pointer;
+
+  position: absolute;
+  top: -0.1rem;
+  left: -0.1rem;
+  right: -0.1rem;
+  bottom: -0.1rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+  background-color: var(--bg-overlay);
+  box-shadow: 0 0 5em 5em var(--bg-overlay-shadow) inset;
+
+  border-radius: 0.2rem;
+  text-transform: capitalize;
+
+  /* hidden */
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s;
+
+  z-index: 10;
+}
+
+/* display message */
+section.board .message-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* type of messages */
+section.board .message-win {
+  color: var(--fg-message-win);
 }
