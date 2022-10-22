@@ -8,6 +8,12 @@ function SnakeGame(boardElement) {
 
   this.DEBUG = false;
   this.FPS = 10;
+  this.FPS_STEP = 5;
+
+  this.keys = {
+    '+': () => (this.FPS += this.FPS < 60 ? this.FPS_STEP : 0),
+    '-': () => (this.FPS -= this.FPS > 0 ? this.FPS_STEP : 0),
+  };
 
   // board options [optional]
   let boardColumns = 40;
@@ -38,14 +44,13 @@ function SnakeGame(boardElement) {
 
   // functions
   this.gameLoop = function (render) {
-    let fps = 1000 / this.FPS;
     let oldTimestamp;
 
     const update = (timestamp) => {
       this.loop = window.requestAnimationFrame(update);
 
       // skip frames
-      if (timestamp - oldTimestamp < fps) return;
+      if (timestamp - oldTimestamp < 1000 / this.FPS) return;
 
       // render functions
       render();
@@ -67,10 +72,17 @@ function SnakeGame(boardElement) {
     // handel keys
     window.onkeydown = (e) => {
       if (!fired) {
-        fired = true;
-        this.snake.setDirection(e.key);
+        // game keys
+        if (e.key in this.keys) {
+          this.keys[e.key]();
+          return;
+        }
 
+        fired = true;
         setTimeout(() => (fired = false), 10);
+
+        // snake keys
+        this.snake.setDirection(e.key);
       }
     };
 
