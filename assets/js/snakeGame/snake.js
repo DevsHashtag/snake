@@ -1,4 +1,4 @@
-function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, keys) {
+function Snake(board, startLength = 4, direction = 'ArrowLeft', keys) {
   // board
   this.board = board;
 
@@ -12,8 +12,8 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
   this.direction = direction;
 
   // snake blocks class name
-  this.type = type ?? board.block.types.snake;
-  this.typeHead = typeHead ?? board.block.types.snakeHead;
+  this.type = board.block.types.snake;
+  this.typeHead = board.block.types.snakeHead;
 
   // score
   this.score = startLength;
@@ -32,6 +32,12 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
     right: ['ی', 'd', '6', 'ArrowRight'],
   };
 
+  // fix: reverse movement
+  this.directions = {
+    x: ['left', 'right'],
+    y: ['up', 'down'],
+  };
+
   // functions
   // add start tail
   this.addStartLength = function () {
@@ -43,11 +49,26 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
 
   // set direction
   this.setDirection = function (key) {
+    let nextDirection;
+
+    // set direction of key
     for (const direction in this.keys) {
       if (this.keys[direction].includes(key)) {
-        this.direction = direction; // values: up, down, left, right based on key
+        nextDirection = direction; // direction: up, down, left, right
       }
     }
+
+    // fix: reverse movement
+    // if both key is in x or both in y direction ignore it
+    let reverseMovement = [
+      this.directions.x.includes(this.direction) && this.directions.x.includes(nextDirection),
+      this.directions.y.includes(this.direction) && this.directions.y.includes(nextDirection),
+    ];
+
+    if (reverseMovement.includes(true)) return;
+
+    // set direction
+    this.direction = nextDirection;
   };
 
   // check self collision

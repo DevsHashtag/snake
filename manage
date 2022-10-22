@@ -27,7 +27,8 @@
 
 - [x] eat apple
 - [ ] score
-- [ ] fix reverse movement
+- [x] fix reverse movement
+- [ ] fix movement speed
 
 # apple.js
 
