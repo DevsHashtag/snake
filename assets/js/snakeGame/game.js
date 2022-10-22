@@ -2,11 +2,11 @@ import Board from './board.js';
 import Snake from './snake.js';
 import Apple from './apple.js';
 
-function SnakeGame(boardElement, FPS = 30) {
+function SnakeGame(boardElement) {
   // game options
   this.boardElement = boardElement;
 
-  this.FPS = FPS;
+  this.FPS = 30;
 
   // board options [optional]
   const boardColumns = 40;
@@ -88,7 +88,7 @@ function SnakeGame(boardElement, FPS = 30) {
   this.win = function () {
     this.stop();
 
-    // display game over
+    // display win
     this.modalMessage('you win!', this.board.block.types.win);
   };
 }
