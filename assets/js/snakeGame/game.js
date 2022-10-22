@@ -6,16 +6,31 @@ function SnakeGame(boardElement) {
   // game options
   this.boardElement = boardElement;
 
+  this.DEBUG = false;
   this.FPS = 30;
 
   // board options [optional]
-  const boardColumns = 40;
-  const boardRows = 30;
-  const blockSize = 20;
+  let boardColumns = 40;
+  let boardRows = 30;
+  let blockSize = 20;
 
   // snake options [optional]
-  const startLength = 4; // 0 , size of (board width * height)
+  let startLength = 4; // 0 , size of (board width * height)
   const direction = 'pause'; // up, down, left, right, pause
+
+  // debug-mode values
+  if (this.DEBUG) {
+    // game
+    this.FPS = 10;
+
+    // board
+    boardColumns = 4;
+    boardRows = 4;
+    blockSize = 30;
+
+    // snake
+    startLength = 8;
+  }
 
   // game init
   this.board = new Board(this.boardElement, boardColumns, boardRows, blockSize);
@@ -63,7 +78,7 @@ function SnakeGame(boardElement) {
       }
 
       // game over
-      if (this.snake.isDead) {
+      if (this.snake.isDead && !this.DEBUG) {
         this.gameover();
       }
     });
