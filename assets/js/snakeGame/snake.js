@@ -196,12 +196,12 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', keys) {
   this.render = function (apple) {
     const isSnakeMoved = this.move();
 
-    // check if snake win
-    this.checkWin();
-
     if (isSnakeMoved) {
       // check and eat apple
       this.checkApple(apple);
+
+      // check if snake win
+      this.checkWin();
     }
   };
 
