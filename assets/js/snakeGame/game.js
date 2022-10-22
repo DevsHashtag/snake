@@ -7,7 +7,7 @@ function SnakeGame(boardElement) {
   this.boardElement = boardElement;
 
   this.DEBUG = false;
-  this.FPS = 30;
+  this.FPS = 15;
 
   // board options [optional]
   let boardColumns = 40;

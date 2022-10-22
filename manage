@@ -11,7 +11,7 @@
 - [x] position functions
 - [x] init board
 - [ ] responsive board
-- [ ] controlls for mobile
+- [ ] controls for mobile
 - [ ] is it good to style block classes ?
 
 # game.js
