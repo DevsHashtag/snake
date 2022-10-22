@@ -58,6 +58,9 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', keys) {
       }
     }
 
+    // invalid key
+    if (!nextDirection) return;
+
     // fix: reverse movement
     // if both key is in x or both in y direction ignore it
     let reverseMovement = [
@@ -135,7 +138,7 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', keys) {
         break;
 
       default:
-        return false; // unknown key
+        return false; // invalid key
     }
 
     // check if block is inside board
