@@ -19,18 +19,19 @@
 - [ ] reset game
 - [x] render game
 - [x] handel keys
-- [ ] win
-- [ ] lose
+- [x] win
+- [x] gameover
 - [ ] display demo while keys are disabled
 
 # snake.js
 
-- [ ] eat apple
+- [x] eat apple
 - [ ] score
+- [ ] fix reverse movement
 
 # apple.js
 
-- [ ] init random position
+- [x] init random position
 - [x] random position
 - [x] add
 - [x] move

@@ -20,6 +20,8 @@ function Snake(board, startLength = 4, direction = 'ArrowLeft', type, typeHead, 
 
   // is snake win
   this.isWin = false;
+
+  // is snake dead
   this.isDead = false;
 
   // keys for control snake
