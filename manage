@@ -10,6 +10,9 @@
 - [x] block
 - [x] position functions
 - [x] init board
+- [ ] responsive board
+- [ ] controlls for mobile
+- [ ] is it good to style block classes ?
 
 # game.js
 
@@ -18,13 +21,16 @@
 - [x] handel keys
 - [ ] win
 - [ ] lose
+- [ ] display demo while keys are disabled
 
 # snake.js
 
 - [ ] eat apple
+- [ ] score
 
 # apple.js
 
+- [ ] init random position
 - [x] random position
 - [x] add
 - [x] move
