@@ -19,8 +19,10 @@ function SnakeGame(boardElement, FPS = 30) {
 
   // game init
   this.board = new Board(this.boardElement, boardColumns, boardRows, blockSize);
-  this.snake = new Snake(this.board, startLength, direction);
+
   this.apple = new Apple(this.board);
+
+  this.snake = new Snake(this.board, startLength, direction);
 
   // functions
   this.gameLoop = function (render) {
