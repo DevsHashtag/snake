@@ -99,6 +99,9 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
   // board init
   this.element.style.width = this.position.px(this.width);
   this.element.style.height = this.position.px(this.height);
+
+  // font-size based on blockSize
+  element.style.fontSize = `${blockSize / 20}rem`;
 }
 
 export default Board;
