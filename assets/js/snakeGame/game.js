@@ -2,17 +2,31 @@ import Board from './board.js';
 import Snake from './snake.js';
 import Apple from './apple.js';
 
+import Keyboard from './keyboard.js';
+import GameLoop from './gameLoop.js';
+
 function SnakeGame(boardElement) {
   // game options
   this.boardElement = boardElement;
 
   this.DEBUG = false;
+
   this.FPS = 10;
   this.FPS_STEP = 5;
+  this.FPS_MAX = 120;
 
   this.keys = {
-    '+': () => (this.FPS += this.FPS < 60 ? this.FPS_STEP : 0),
-    '-': () => (this.FPS -= this.FPS > 0 ? this.FPS_STEP : 0),
+    '+': () => {
+      if (this.gameloop.FPS < this.FPS_MAX) {
+        this.gameloop.FPS += this.FPS_STEP;
+      }
+    },
+    '-': () => {
+      if (this.gameloop.FPS > this.FPS_STEP) {
+        this.gameloop.FPS -= this.FPS_STEP;
+      }
+    },
+    p: () => this.gameloop.pauseToggle(),
   };
 
   // board options [optional]
@@ -42,64 +56,37 @@ function SnakeGame(boardElement) {
 
   this.snake = new Snake(this.board, startLength, direction);
 
+  this.keyboard = new Keyboard();
+
+  this.gameloop = new GameLoop(() => {
+    this.snake.render(this.apple);
+
+    // win
+    if (this.snake.isWin) {
+      this.win();
+    }
+
+    // game over
+    if (this.snake.isDead && !this.DEBUG) {
+      this.gameover();
+    }
+  }, this.FPS);
+
   // functions
-  this.gameLoop = function (render) {
-    let oldTimestamp;
-
-    const update = (timestamp) => {
-      this.loop = window.requestAnimationFrame(update);
-
-      // skip frames
-      if (timestamp - oldTimestamp < 1000 / this.FPS) return;
-
-      // render functions
-      render();
-
-      oldTimestamp = timestamp;
-    };
-
-    // run game loop
-    window.requestAnimationFrame(update);
-  };
-
-  this.stop = function () {
-    window.cancelAnimationFrame(this.loop);
-  };
-
   this.start = function () {
-    let fired = false;
-
-    // handel keys
-    window.onkeydown = (e) => {
-      if (!fired) {
-        // game keys
-        if (e.key in this.keys) {
-          this.keys[e.key]();
-          return;
-        }
-
-        fired = true;
-        setTimeout(() => (fired = false), 10);
-
-        // snake keys
-        this.snake.setDirection(e.key);
-      }
-    };
-
-    // game loop
-    this.gameLoop(() => {
-      this.snake.render(this.apple);
-
-      // win
-      if (this.snake.isWin) {
-        this.win();
+    this.keyboard.keydown((key) => {
+      // game keys
+      if (key in this.keys) {
+        this.keys[key]();
+        return;
       }
 
-      // game over
-      if (this.snake.isDead && !this.DEBUG) {
-        this.gameover();
-      }
+      // snake keys
+      this.snake.setDirection(key);
     });
+
+    // gameloop
+    this.gameloop.start();
   };
 
   // display a message
@@ -111,7 +98,7 @@ function SnakeGame(boardElement) {
 
   // game over
   this.gameover = function () {
-    this.stop();
+    this.gameloop.stop();
 
     // display game over
     this.modalMessage('game over!', this.board.block.types.gameover);
@@ -119,7 +106,7 @@ function SnakeGame(boardElement) {
 
   // win
   this.win = function () {
-    this.stop();
+    this.gameloop.stop();
 
     // display win
     this.modalMessage('you win!', this.board.block.types.win);
