@@ -7,7 +7,7 @@ function SnakeGame(boardElement) {
   this.boardElement = boardElement;
 
   this.DEBUG = false;
-  this.FPS = 15;
+  this.FPS = 10;
 
   // board options [optional]
   let boardColumns = 40;
@@ -20,9 +20,6 @@ function SnakeGame(boardElement) {
 
   // debug-mode values
   if (this.DEBUG) {
-    // game
-    this.FPS = 10;
-
     // board
     boardColumns = 4;
     boardRows = 4;
@@ -65,8 +62,17 @@ function SnakeGame(boardElement) {
   };
 
   this.start = function () {
+    let fired = false;
+
     // handel keys
-    window.onkeydown = (e) => this.snake.setDirection(e.key);
+    window.onkeydown = (e) => {
+      if (!fired) {
+        fired = true;
+        this.snake.setDirection(e.key);
+
+        setTimeout(() => (fired = false), 10);
+      }
+    };
 
     // game loop
     this.gameLoop(() => {
