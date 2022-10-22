@@ -24,7 +24,6 @@
   --bg-snake-head: #a5d5ff;
 
   /* apple */
-  --bg-apple: #8bd0ab;
   --bg-apple: #f46161;
 
   /* messages */
@@ -98,7 +97,7 @@ section.board .snake-apple {
 
   border-radius: 0.2rem;
 
-  transition: all 0.2s;
+  transition: all 0.3s;
   z-index: 1;
 }
 

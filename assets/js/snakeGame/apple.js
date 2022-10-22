@@ -1,4 +1,4 @@
-function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
+function Apple(board, startPos = { random: true }, type = 'snake-apple') {
   // board
   this.board = board;
 
@@ -21,6 +21,9 @@ function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
     // return if no space is free
     if (boardBlocks.length >= this.board.columns * this.board.rows) return false;
 
+    // move animation
+    this.moveAnimation();
+
     // all blocks positions
     const blockPositions = boardBlocks.map((block) => this.board.position.block(block));
     const blockSize = this.board.block.size;
@@ -42,8 +45,21 @@ function Apple(board, startPos = { left: 0, top: 0 }, type = 'snake-apple') {
     return this.move(position);
   };
 
+  // change background while moving
+  this.moveAnimation = function () {
+    this.block.style.backgroundColor = 'var(--bg-board)';
+
+    setTimeout(() => {
+      this.block.style.backgroundColor = 'var(--bg-apple)';
+    }, 300);
+  };
+
   // apple init
   this.add(startPos);
+
+  if (startPos.random) {
+    this.random([]);
+  }
 }
 
 export default Apple;
