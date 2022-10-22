@@ -71,7 +71,7 @@ function SnakeGame(boardElement) {
 
   // display a message
   this.modalMessage = function (msg, type) {
-    let msgElement = this.board.block.add(type);
+    let msgElement = this.board.block.add(type, null, false);
 
     msgElement.innerText = msg;
   };

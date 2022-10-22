@@ -30,7 +30,7 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
     },
 
     // add block
-    add: function (classNames, position) {
+    add: function (classNames, position, isBlock = true) {
       // create new block element
       const block = document.createElement('div');
       const blockSize = this.board.position.px(this.size);
@@ -41,14 +41,15 @@ function Board(element, columns = 40, rows = 30, blockSize = 20) {
       // add class names
       block.classList.add(...classNames);
 
-      // if position undefined skip this part
+      // move block to position
       if (position) {
-        // width, height of block
+        this.move(block, position);
+      }
+
+      // width, height of block
+      if (isBlock) {
         block.style.width = blockSize;
         block.style.height = blockSize;
-
-        // move block to position
-        this.move(block, position);
       }
 
       // add to board
