@@ -1,13 +1,22 @@
 // Settings
-export const boardElement = document.querySelector('.snake-game .board');
+
+// game
+export const FPS = 10;
+export const FPS_STEP = 10;
+export const FPS_MIN = 10;
+export const FPS_MAX = 60;
+
+export const GAME_PAUSE = true;
 
 // grid
+export const boardElement = document.querySelector('.snake-game .board');
+
 export const GRID_BLOCK = 20;
 export const GRID_COLUMNS = 40;
 export const GRID_ROWS = 30;
 
-export const GRID_WIDTH = GRID_COLUMNS * GRID_BLOCK;
-export const GRID_HEIGHT = GRID_ROWS * GRID_BLOCK;
+export const BOARD_WIDTH = GRID_COLUMNS * GRID_BLOCK;
+export const BOARD_HEIGHT = GRID_ROWS * GRID_BLOCK;
 
 export const BLOCK_CLASS = {
   apple: 'snake-apple',
@@ -24,11 +33,12 @@ export const BLOCK_CLASS = {
 // export const CROSS_WALLS = false;
 
 // Score
+export const SCORE = 1;
 export const SCORE_INCREMENT = 1;
 
 // Food
-export const INITIAL_FOOD_POSITION = { random: true };
+export const FOOD_POSITION = { random: true };
 
 // Snake
-export const INITIAL_SNAKE_LENGTH = 4;
-export const INITIAL_SNAKE_POSITION = { x: 0, y: 0 };
+export const SNAKE_LENGTH = 4;
+export const SNAKE_POSITION = { x: 0, y: 0 };
