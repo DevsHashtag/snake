@@ -15,9 +15,6 @@ export const GRID_BLOCK = 20;
 export const GRID_COLUMNS = 40;
 export const GRID_ROWS = 30;
 
-export const BOARD_WIDTH = GRID_COLUMNS * GRID_BLOCK;
-export const BOARD_HEIGHT = GRID_ROWS * GRID_BLOCK;
-
 export const BLOCK_CLASS = {
   apple: 'snake-apple',
 
@@ -29,8 +26,6 @@ export const BLOCK_CLASS = {
   win: ['board-message', 'message-win'],
   gameover: ['board-message', 'message-gameover'],
 };
-
-// export const CROSS_WALLS = false;
 
 // Score
 export const SCORE = 1;
