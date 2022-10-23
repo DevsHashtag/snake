@@ -1,5 +1,6 @@
 import { BLOCK_CLASS, FOOD_POSITION } from './settings.js';
 
+import { unit } from './utils/unit.js';
 import { board } from './app.js';
 
 function Apple() {
@@ -10,33 +11,25 @@ function Apple() {
     this.block = board.block.add(this.class, position);
   };
 
-  this.move = function (position) {
-    board.block.move(this.block, position);
-  };
-
-  // move apple to random position
   this.random = function () {
-    const freePositions = board.freePositions();
-    const randomPosition = freePositions[Math.floor(Math.random() * freePositions.length)];
-
-    if (!randomPosition) return;
-
-    this.moveAnimation();
-    this.move(randomPosition);
+    this.animation();
+    board.block.move(this.block, { random: true });
   };
 
-  this.moveAnimation = function () {
+  this.onApple = function (position) {
+    let applePosition = unit.block(this.block);
+
+    return unit.isEqual(applePosition, position);
+  };
+
+  this.animation = function () {
     this.block.style.backgroundColor = 'var(--bg-board)';
 
     setTimeout(() => this.block.style.removeProperty('background-color'), 300);
   };
 
   this.init = function () {
-    this.add();
-
-    if (this.initPosition.random) {
-      this.random();
-    }
+    this.add(this.initPosition);
   };
 }
 
