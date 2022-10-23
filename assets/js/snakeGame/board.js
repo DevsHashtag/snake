@@ -1,4 +1,5 @@
 import { boardElement, GRID_COLUMNS, GRID_ROWS, GRID_BLOCK } from './settings.js';
+
 import { unit } from './utils/unit.js';
 
 function Board() {
@@ -42,7 +43,10 @@ function Board() {
     },
 
     move: function (block, position) {
-      if (!this.board.isInBoard(position)) return false;
+      if (position.center) position = this.board.centerPosition();
+      if (position.random) position = this.board.randomPosition();
+
+      if (!this.board.onBoard(position)) return false;
 
       block.style.left = unit.px(position.x);
       block.style.top = unit.px(position.y);
@@ -56,7 +60,7 @@ function Board() {
     this.element.style.height = unit.px(this.height);
   };
 
-  this.isInBoard = function (pos) {
+  this.onBoard = function (pos) {
     let isOutBoard = [
       pos.y < 0, // out from up
       pos.y >= this.height, // out from down
@@ -65,6 +69,12 @@ function Board() {
     ];
 
     return !isOutBoard.includes(true);
+  };
+
+  this.randomPosition = function () {
+    const freePositions = this.freePositions();
+
+    return freePositions[Math.floor(Math.random() * freePositions.length)];
   };
 
   this.centerPosition = function () {
