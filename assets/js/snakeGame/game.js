@@ -1,6 +1,6 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE } from './settings.js';
 
-import { board } from './app.js';
+import { board, apple } from './app.js';
 
 function Game() {
   this.fps = FPS;
@@ -40,7 +40,7 @@ function Game() {
     this.loop();
 
     // TODO: move lastRenderTime after update and check performance
-    if (timestamp - this.lastRenderTime < 1000 / this.FPS) return;
+    if (timestamp - this.lastRenderTime < 1000 / this.fps) return;
     this.lastRenderTime = timestamp;
 
     this.update();
@@ -50,8 +50,7 @@ function Game() {
 
   this.init = function () {
     board.init();
-
-    this.loop();
+    apple.init();
   };
 
   this.stop = function () {
