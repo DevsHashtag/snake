@@ -1,5 +1,3 @@
-import Keyboard from './keyboard.js';
-
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE } from './settings.js';
 
 function Game() {
@@ -10,20 +8,33 @@ function Game() {
   this.requestLoopId = null;
   this.lastRenderTime = 0;
 
-  this.keyboard = new Keyboard();
+  this.fired = false;
 
   this.keys = {
     '+': () => (this.fps += this.fps < FPS_MAX ? FPS_STEP : 0),
     '-': () => (this.fps -= this.fps > FPS_MIN ? FPS_STEP : 0),
-    0: () => (this.fps -= FPS),
+    0: () => (this.fps = FPS),
     p: () => this.pauseToggle(),
   };
 
-  this.loop = function () {
+  this.keydown = function (handelKeys) {
+    window.onkeydown = (e) => {
+      // skip repeated keys
+      if (this.fired || e.repeat) return;
+
+      // delay between keys
+      this.fired = true;
+      setTimeout(() => (this.fired = false), 10);
+
+      handelKeys(e.key);
+    };
+  };
+
+  this.loop = () => {
     this.requestLoopId = window.requestAnimationFrame(this.main);
   };
 
-  this.main = function (timestamp) {
+  this.main = (timestamp) => {
     this.loop();
 
     // TODO: move lastRenderTime after update and check performance
@@ -34,6 +45,10 @@ function Game() {
   };
 
   this.update = function () {};
+
+  this.init = function () {
+    this.loop();
+  };
 
   this.stop = function () {
     if (this.requestLoopId === null) return;
