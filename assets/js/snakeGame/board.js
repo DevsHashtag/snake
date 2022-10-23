@@ -10,6 +10,8 @@ function Board() {
   this.width = GRID_COLUMNS * GRID_BLOCK;
   this.height = GRID_ROWS * GRID_BLOCK;
 
+  this.blocks = [];
+
   this.block = {
     board: this,
 
@@ -34,6 +36,7 @@ function Board() {
       }
 
       this.board.element.appendChild(block);
+      this.board.blocks.push(block);
 
       return block;
     },
@@ -53,13 +56,6 @@ function Board() {
     this.element.style.height = unit.px(this.height);
   };
 
-  this.centerPosition = function () {
-    return {
-      x: this.width / 2 - (this.columns % 2 == 0 ? 0 : this.block.size / 2),
-      y: this.height / 2 - (this.rows % 2 == 0 ? 0 : this.block.size / 2),
-    };
-  };
-
   this.isInBoard = function (pos) {
     let isOutBoard = [
       pos.y < 0, // out from up
@@ -69,6 +65,35 @@ function Board() {
     ];
 
     return !isOutBoard.includes(true);
+  };
+
+  this.centerPosition = function () {
+    return {
+      x: this.width / 2 - (this.columns % 2 == 0 ? 0 : this.block.size / 2),
+      y: this.height / 2 - (this.rows % 2 == 0 ? 0 : this.block.size / 2),
+    };
+  };
+
+  this.freePositions = function () {
+    // return if no space is free
+    if (this.blocks.length >= this.columns * this.rows) return;
+
+    // blocks position
+    const blocksPosition = this.blocks.map((block) => unit.block(block));
+    const blockSize = this.block.size;
+
+    let freePositions = [];
+
+    // find board free positions
+    for (let y = 0; y < this.height; y += blockSize) {
+      for (let x = 0; x < this.width; x += blockSize) {
+        if (!blocksPosition.some((pos) => pos.x == x && pos.y == y)) {
+          freePositions.push({ x, y });
+        }
+      }
+    }
+
+    return freePositions;
   };
 }
 
