@@ -1,9 +1,5 @@
-import SnakeGame from './snakeGame/game.js';
+import { App } from './snakeGame/app.js';
 
-// board element
-const boardElement = document.querySelector('.snake-game .board');
+const app = new App();
 
-// game
-const snakeGame = new SnakeGame(boardElement);
-
-snakeGame.start();
+app.run();
