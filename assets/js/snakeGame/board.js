@@ -113,7 +113,7 @@ function Board() {
   };
 
   this.freePositions = function () {
-    const blocks = this.blocks[BLOCK_CLASS.snake.body];
+    const blocks = this.blocks[BLOCK_CLASS.snake.body] ?? [];
 
     // return if no space is free
     if (blocks.length >= this.columns * this.rows) return false;

@@ -13,7 +13,10 @@ function Apple() {
 
   this.random = function () {
     this.animation();
-    board.block.move(this.block, { random: true });
+
+    let isMoved = board.block.move(this.block, { random: true });
+
+    if (!isMoved) board.block.remove(this.block);
   };
 
   this.onApple = function (position) {

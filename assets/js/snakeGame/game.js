@@ -1,4 +1,4 @@
-import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE } from './settings.js';
+import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, BLOCK_CLASS } from './settings.js';
 
 import { board, apple, snake } from './app.js';
 
@@ -6,7 +6,6 @@ function Game() {
   this.fps = FPS;
   this.pause = GAME_PAUSE;
 
-  this.gameOver = false;
   this.requestLoopId = null;
   this.lastRenderTime = 0;
 
@@ -48,9 +47,8 @@ function Game() {
   this.update = function () {
     snake.render();
 
-    if (snake.isWin || snake.isDead) {
-      this.stop();
-    }
+    if (snake.isWin()) this.win();
+    if (snake.isDead) this.gameover();
   };
 
   this.init = function () {
@@ -85,6 +83,18 @@ function Game() {
     else this.stop();
 
     this.pause = !this.pause;
+  };
+
+  this.gameover = function () {
+    this.stop();
+
+    board.block.modalMessage('game over!', BLOCK_CLASS.gameover);
+  };
+
+  this.win = function () {
+    this.stop();
+
+    board.block.modalMessage('you win!', BLOCK_CLASS.win);
   };
 }
 

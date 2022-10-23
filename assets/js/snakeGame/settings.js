@@ -1,5 +1,5 @@
 // game
-export const FPS = 10;
+export const FPS = 15;
 export const FPS_MIN = 10;
 export const FPS_MAX = 60;
 export const FPS_STEP = FPS_MAX / 10;
@@ -33,7 +33,7 @@ export const FOOD_POSITION = { random: true };
 // Snake
 export const SNAKE_LENGTH = 4;
 export const SNAKE_POSITION = { center: true };
-export const SNAKE_DIRECTION = 'right';
+export const SNAKE_DIRECTION = 'pause';
 export const SNAKE_KEYS = {
   up: ['w', '8', 'ArrowUp'],
   down: ['s', '2', 'ArrowDown'],

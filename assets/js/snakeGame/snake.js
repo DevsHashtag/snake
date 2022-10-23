@@ -11,7 +11,6 @@ function Snake() {
   this.classHead = BLOCK_CLASS.snake.head;
   this.keys = SNAKE_KEYS;
 
-  this.isWin = false;
   this.isDead = false;
 
   this.init = function () {
@@ -19,15 +18,11 @@ function Snake() {
   };
 
   this.render = function () {
-    const isMoved = this.move();
-
-    if (!isMoved) return;
-
+    this.move();
     this.checkApple();
-    this.checkWin();
   };
 
-  this.headPosition = function () {
+  this.getHeadPosition = function () {
     return unit.block(this.blocks[0]);
   };
 
@@ -57,7 +52,7 @@ function Snake() {
 
     const blockSize = board.block.size;
 
-    let position = this.headPosition();
+    let position = this.getHeadPosition();
 
     switch (this.direction) {
       case 'up':
@@ -100,14 +95,12 @@ function Snake() {
     return false;
   };
 
-  this.checkWin = function () {
-    if (this.blocks.length >= board.columns * board.rows) this.isWin = true;
+  this.isWin = function () {
+    return this.blocks.length >= board.columns * board.rows;
   };
 
   this.checkApple = function () {
-    const snakeHeadPos = unit.block(this.blocks[0]);
-
-    if (apple.onApple(snakeHeadPos)) {
+    if (apple.onApple(this.getHeadPosition())) {
       this.newSegments++;
       apple.random();
     }
