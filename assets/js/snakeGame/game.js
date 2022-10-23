@@ -1,6 +1,6 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE } from './settings.js';
 
-import { board, apple } from './app.js';
+import { board, apple, snake } from './app.js';
 
 function Game() {
   this.fps = FPS;
@@ -10,7 +10,7 @@ function Game() {
   this.requestLoopId = null;
   this.lastRenderTime = 0;
 
-  this.fired = false;
+  this.keyFired = false;
 
   this.keys = {
     '+': () => (this.fps += this.fps < FPS_MAX ? FPS_STEP : 0),
@@ -21,12 +21,11 @@ function Game() {
 
   this.keydown = function (handelKeys) {
     window.onkeydown = (e) => {
-      // skip repeated keys
-      if (this.fired || e.repeat) return;
+      if (this.keyFired || e.repeat) return;
 
       // delay between keys
-      this.fired = true;
-      setTimeout(() => (this.fired = false), 10);
+      this.keyFired = true;
+      setTimeout(() => (this.keyFired = false), 10);
 
       handelKeys(e.key);
     };
@@ -46,15 +45,37 @@ function Game() {
     this.update();
   };
 
-  this.update = function () {};
+  this.update = function () {
+    snake.render();
+
+    if (snake.isWin || snake.isDead) {
+      this.stop();
+    }
+  };
 
   this.init = function () {
     board.init();
+    snake.init();
     apple.init();
+
+    this.keydown((key) => {
+      // game keys
+      if (key in this.keys) {
+        this.keys[key]();
+        return;
+      }
+
+      if (this.pause) return;
+
+      // snake keys
+      snake.setDirection(key);
+    });
+
+    if (!this.pause) this.loop();
   };
 
   this.stop = function () {
-    if (this.requestLoopId === null) return;
+    if (!this.requestLoopId) return;
 
     window.cancelAnimationFrame(this.requestLoopId);
   };
