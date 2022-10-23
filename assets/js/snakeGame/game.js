@@ -1,5 +1,7 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE } from './settings.js';
 
+import { board } from './app.js';
+
 function Game() {
   this.fps = FPS;
   this.pause = GAME_PAUSE;
@@ -47,6 +49,8 @@ function Game() {
   this.update = function () {};
 
   this.init = function () {
+    board.init();
+
     this.loop();
   };
 
