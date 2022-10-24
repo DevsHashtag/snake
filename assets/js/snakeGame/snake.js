@@ -65,6 +65,8 @@ function Snake() {
         return false; // invalid key
     }
 
+    // if (!board.onBoard(position) || this.onSnake(position)) return false;
+
     if (this.newSegments) {
       this.newSegments--;
       this.addSegment();
@@ -82,7 +84,7 @@ function Snake() {
     return true;
   };
 
-  this.onSnake = function (position, { ignoreHead = false }) {
+  this.onSnake = function (position, { ignoreHead = false } = {}) {
     return this.blocks.some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
