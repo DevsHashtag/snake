@@ -1,6 +1,7 @@
 import { boardElement, GRID_COLUMNS, GRID_ROWS, GRID_BLOCK, BLOCK_CLASS } from './settings.js';
 
 import { unit } from './utils/unit.js';
+import { game } from './app.js';
 
 function Board() {
   this.element = boardElement;
@@ -11,7 +12,9 @@ function Board() {
   this.width = GRID_COLUMNS * GRID_BLOCK;
   this.height = GRID_ROWS * GRID_BLOCK;
 
-  this.blocks = {};
+  this.isModalOpen = false;
+
+  this.blocks = new Object();
 
   this.block = {
     board: this,
@@ -51,6 +54,7 @@ function Board() {
       const blockClass = rmBlock.classList[0];
       const boardBlocks = this.board.blocks[blockClass];
 
+      // remove block from its class
       this.board.blocks[blockClass] = boardBlocks.filter((block) => !block.isSameNode(rmBlock));
 
       if (!this.board.blocks[blockClass].length) delete this.board.blocks[blockClass];
@@ -64,7 +68,7 @@ function Board() {
       if (position.center) position = this.board.centerPosition();
       if (position.random) position = this.board.randomPosition();
 
-      if (!position || !this.board.onBoard(position)) return false;
+      if (!position) return false;
 
       block.style.left = unit.px(position.x);
       block.style.top = unit.px(position.y);
@@ -73,8 +77,11 @@ function Board() {
     },
 
     modalMessage: function (msg, type) {
-      let msgElement = this.add(type, null, false);
+      if (this.isModalOpen) return;
 
+      this.isModalOpen = true;
+
+      let msgElement = this.add(type, null, false);
       msgElement.innerText = msg;
     },
   };
