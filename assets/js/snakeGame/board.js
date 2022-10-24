@@ -1,7 +1,6 @@
 import { boardElement, GRID_COLUMNS, GRID_ROWS, GRID_BLOCK, BLOCK_CLASS } from './settings.js';
 
 import { unit } from './utils/unit.js';
-import { game } from './app.js';
 
 function Board() {
   this.element = boardElement;
@@ -70,8 +69,8 @@ function Board() {
 
       if (!position) return false;
 
-      block.style.left = unit.px(position.x);
-      block.style.top = unit.px(position.y);
+      block.style.left = unit.px(position.x * this.size);
+      block.style.top = unit.px(position.y * this.size);
 
       return true;
     },
@@ -96,9 +95,9 @@ function Board() {
 
     let isOutBoard = [
       pos.y < 0, // out from up
-      pos.y >= this.height, // out from down
+      pos.y >= this.rows, // out from down
       pos.x < 0, // out from left
-      pos.x >= this.width, // out from right
+      pos.x >= this.columns, // out from right
     ];
 
     return !isOutBoard.includes(true);
@@ -114,8 +113,8 @@ function Board() {
 
   this.centerPosition = function () {
     return {
-      x: this.width / 2 - (this.columns % 2 == 0 ? 0 : this.block.size / 2),
-      y: this.height / 2 - (this.rows % 2 == 0 ? 0 : this.block.size / 2),
+      x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
+      y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
     };
   };
 
@@ -127,13 +126,12 @@ function Board() {
 
     // blocks position
     const blocksPosition = blocks.map((block) => unit.block(block));
-    const blockSize = this.block.size;
 
     let freePositions = [];
 
     // find board free positions
-    for (let y = 0; y < this.height; y += blockSize) {
-      for (let x = 0; x < this.width; x += blockSize) {
+    for (let y = 0; y < this.rows; y++) {
+      for (let x = 0; x < this.columns; x++) {
         if (!blocksPosition.some((pos) => pos.x == x && pos.y == y)) {
           freePositions.push({ x, y });
         }

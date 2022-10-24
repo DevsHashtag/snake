@@ -1,3 +1,5 @@
+import { board } from '../app.js';
+
 export const unit = {
   px: (pos) => `${pos}px`,
   rem: (pos) => `${pos}rem`,
@@ -5,8 +7,8 @@ export const unit = {
 
   block: (block) => {
     return {
-      x: parseInt(block.style.left),
-      y: parseInt(block.style.top),
+      x: parseInt(block.style.left) / board.block.size,
+      y: parseInt(block.style.top) / board.block.size,
     };
   },
   isEqual: (pos1, pos2) => pos1.x == pos2.x && pos1.y == pos2.y,

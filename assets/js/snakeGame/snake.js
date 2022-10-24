@@ -42,25 +42,23 @@ function Snake() {
   this.move = function () {
     if (!this.blocks.length) return false;
 
-    const blockSize = board.block.size;
-
     let position = this.getHeadPosition();
 
     switch (this.direction) {
       case 'up':
-        position.y -= blockSize;
+        position.y--;
         break;
 
       case 'down':
-        position.y += blockSize;
+        position.y++;
         break;
 
       case 'left':
-        position.x -= blockSize;
+        position.x--;
         break;
 
       case 'right':
-        position.x += blockSize;
+        position.x++;
         break;
 
       default:
