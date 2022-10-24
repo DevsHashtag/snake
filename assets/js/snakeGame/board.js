@@ -1,4 +1,4 @@
-import { boardElement, GRID_COLUMNS, GRID_ROWS, GRID_BLOCK, BLOCK_CLASS } from './settings.js';
+import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, BLOCK_CLASS } from './settings.js';
 
 import { unit } from './utils/unit.js';
 
@@ -8,8 +8,8 @@ function Board() {
   this.columns = GRID_COLUMNS;
   this.rows = GRID_ROWS;
 
-  this.width = GRID_COLUMNS * GRID_BLOCK;
-  this.height = GRID_ROWS * GRID_BLOCK;
+  this.width = GRID_COLUMNS * BLOCK_SIZE;
+  this.height = GRID_ROWS * BLOCK_SIZE;
 
   this.isModalOpen = false;
 
@@ -18,11 +18,12 @@ function Board() {
   this.block = {
     board: this,
 
-    size: GRID_BLOCK,
+    size: BLOCK_SIZE,
+    margin: BLOCK_MARGIN,
 
     add: function (className, position, isBlock = true) {
       const block = document.createElement('div');
-      const blockSize = unit.px(this.size);
+      const blockSize = unit.px(this.size - this.margin);
 
       // convert className to Array
       className = typeof className == 'string' ? [className] : className;
@@ -118,8 +119,8 @@ function Board() {
     };
   };
 
-  this.freePositions = function () {
-    const blocks = this.blocks[BLOCK_CLASS.snake.body] ?? [];
+  this.freePositions = function (type = BLOCK_CLASS.snake.body) {
+    const blocks = this.blocks[type] ?? [];
 
     // return if no space is free
     if (blocks.length >= this.columns * this.rows) return false;
