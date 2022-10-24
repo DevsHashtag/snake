@@ -9,7 +9,7 @@ function Game() {
   this.requestLoopId = null;
   this.lastRenderTime = 0;
 
-  this.keyFired = false;
+  this.gameOver = false;
 
   this.keys = {
     '+': () => (this.fps += this.fps < FPS_MAX ? FPS_STEP : 0),
@@ -19,15 +19,7 @@ function Game() {
   };
 
   this.keydown = function (handelKeys) {
-    window.onkeydown = (e) => {
-      if (this.keyFired || e.repeat) return;
-
-      // delay between keys
-      this.keyFired = true;
-      setTimeout(() => (this.keyFired = false), 10);
-
-      handelKeys(e.key);
-    };
+    window.onkeydown = (e) => handelKeys(e.key);
   };
 
   this.loop = () => {
@@ -47,8 +39,8 @@ function Game() {
   this.update = function () {
     snake.render();
 
-    if (snake.isWin()) this.win();
-    if (snake.isDead) this.gameover();
+    this.checkGameOver();
+    this.checkWin();
   };
 
   this.init = function () {
@@ -85,16 +77,27 @@ function Game() {
     this.pause = !this.pause;
   };
 
-  this.gameover = function () {
-    this.stop();
+  this.checkGameOver = function () {
+    this.gameOver = snake.isDead();
 
+    if (!this.gameOver) return false;
+
+    this.stop();
     board.block.modalMessage('game over!', BLOCK_CLASS.gameover);
+
+    return true;
   };
 
-  this.win = function () {
-    this.stop();
+  this.checkWin = function (type = BLOCK_CLASS.snake.body) {
+    const blocks = board.blocks[type] ?? [];
 
+    // if there is a free space its not win
+    if (blocks.length < board.columns * board.rows) return false;
+
+    this.stop();
     board.block.modalMessage('you win!', BLOCK_CLASS.win);
+
+    return true;
   };
 }
 
