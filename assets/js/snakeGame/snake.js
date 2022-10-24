@@ -7,11 +7,11 @@ function Snake() {
   this.blocks = [];
   this.newSegments = SNAKE_LENGTH;
   this.direction = SNAKE_DIRECTION;
+  this.lastDirection = SNAKE_DIRECTION;
   this.classBody = BLOCK_CLASS.snake.body;
   this.classHead = BLOCK_CLASS.snake.head;
   this.keys = SNAKE_KEYS;
-
-  this.isDead = false;
+  this.dead = false;
 
   this.init = function () {
     this.addSegment(SNAKE_POSITION);
@@ -37,14 +37,6 @@ function Snake() {
     }
 
     this.blocks.push(block);
-  };
-
-  this.onSnake = function (position) {
-    return this.blocks.some((block) => {
-      let blockPosition = unit.block(block);
-
-      return unit.isEqual(blockPosition, position);
-    });
   };
 
   this.move = function () {
@@ -75,28 +67,37 @@ function Snake() {
         return false; // invalid key
     }
 
-    if (board.onBoard(position) && !this.onSnake(position)) {
-      if (this.newSegments) {
-        this.newSegments--;
-        this.addSegment();
-      }
-
-      // replace last tail as new head
-      this.blocks[0].classList.remove(this.classHead);
-      this.blocks.unshift(this.blocks.pop());
-      board.block.move(this.blocks[0], position);
-      this.blocks[0].classList.add(this.classHead);
-
-      return true;
+    if (this.newSegments) {
+      this.newSegments--;
+      this.addSegment();
     }
 
-    this.isDead = true;
+    // replace last tail as new head
+    this.blocks[0].classList.remove(this.classHead);
+    this.blocks.unshift(this.blocks.pop());
+    board.block.move(this.blocks[0], position);
+    this.blocks[0].classList.add(this.classHead);
 
-    return false;
+    // save last direction
+    this.lastDirection = this.direction;
+
+    return true;
   };
 
-  this.isWin = function () {
-    return this.blocks.length >= board.columns * board.rows;
+  this.onSnake = function (position, { ignoreHead = false }) {
+    return this.blocks.some((block, index) => {
+      if (ignoreHead && index === 0) return false;
+
+      let blockPosition = unit.block(block);
+
+      return unit.isEqual(blockPosition, position);
+    });
+  };
+
+  this.isDead = function (position = this.getHeadPosition()) {
+    this.dead = !board.onBoard(position) || this.onSnake(position, { ignoreHead: true });
+
+    return this.dead;
   };
 
   this.checkApple = function () {
@@ -107,26 +108,25 @@ function Snake() {
   };
 
   this.setDirection = function (key) {
-    let nextDirection;
-
     for (const direction in this.keys) {
       if (this.keys[direction].includes(key)) {
-        nextDirection = direction; // direction: up, down, left, right
+        this.direction = direction; // direction: up, down, left, right
       }
     }
-
-    // invalid key
-    if (!nextDirection) return;
 
     // fix reverse movement
     // if both key is in x or y direction ignore it
     const lor = ['left', 'right'];
     const uod = ['up', 'down'];
 
-    if (lor.includes(this.direction) && lor.includes(nextDirection)) return;
-    if (uod.includes(this.direction) && uod.includes(nextDirection)) return;
+    const isReverseMovement = [
+      lor.includes(this.direction) && lor.includes(this.lastDirection), // both dir left, right
+      uod.includes(this.direction) && uod.includes(this.lastDirection), // both dir up, down
+    ];
 
-    this.direction = nextDirection;
+    if (!isReverseMovement.includes(true)) return;
+
+    this.direction = this.lastDirection;
   };
 }
 
