@@ -1,5 +1,5 @@
 // game
-export const FPS = 15;
+export const FPS = 14;
 export const FPS_MIN = 10;
 export const FPS_MAX = 60;
 export const FPS_STEP = FPS_MAX / 10;
