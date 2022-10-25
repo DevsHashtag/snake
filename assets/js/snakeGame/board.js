@@ -1,7 +1,6 @@
 import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
 
 import { unit } from './utils/unit.js';
-import { dom } from './app.js';
 
 function Board() {
   this.element = boardElement;
@@ -19,15 +18,37 @@ function Board() {
   this.isModalOpen = false;
 
   this.init = function () {
-    dom.setSize(this.element, { width: this.width, height: this.height });
+    this.element.style.width = unit.px(this.width);
+    this.element.style.height = unit.px(this.height);
+  };
+
+  this.setClassName = function (element, className) {
+    if (typeof className == 'string') element.classList.add(className);
+    else element.classList.add(...className);
+  };
+
+  this.addElement = function (className) {
+    const element = document.createElement('div');
+
+    this.setClassName(element, className);
+
+    this.element.appendChild(element);
+
+    return element;
   };
 
   this.addBlock = function (className, position) {
-    const size = this.blockSize - this.blockMargin;
-    const blockElement = dom.addElement(className, { width: size, height: size });
+    const blockElement = document.createElement('div');
+    const blockSize = unit.px(this.blockSize - this.blockMargin);
 
     this.moveBlock(blockElement, position);
+    this.setClassName(blockElement, className);
+
+    blockElement.style.width = blockSize;
+    blockElement.style.height = blockSize;
+
     this.saveBlock(blockElement);
+    this.element.appendChild(blockElement);
 
     return blockElement;
   };
@@ -38,10 +59,8 @@ function Board() {
 
     if (!position) return false;
 
-    dom.setStyles(blockElement, {
-      left: position.x * this.blockSize,
-      top: position.y * this.blockSize,
-    });
+    blockElement.style.left = unit.px(position.x * this.blockSize);
+    blockElement.style.top = unit.px(position.y * this.blockSize);
 
     return true;
   };
@@ -61,10 +80,10 @@ function Board() {
     this.blocks[className] = blocks.filter((block) => !block.isSameNode(rmBlock));
 
     if (!this.blocks[className].length) {
-      delete this.board.blocks[className];
+      delete this.blocks[className];
     }
 
-    dom.removeElement(rmBlock);
+    this.element.removeChild(rmBlock);
   };
 
   this.message = function (msg, className = CLASS_NAMES.message) {
@@ -72,14 +91,15 @@ function Board() {
 
     this.isModalOpen = true;
 
-    let msgElement = dom.addElement(className);
+    const msgElement = this.addElement(className);
+
     msgElement.innerText = msg;
   };
 
   this.onBoard = function (pos) {
     if (!pos) return false;
 
-    let isOutBoard = [
+    const isOutBoard = [
       pos.y < 0, // out from up
       pos.y >= this.rows, // out from down
       pos.x < 0, // out from left

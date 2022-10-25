@@ -22,10 +22,10 @@
 
   /* snake */
   --bg-snake-body: #456264;
-  --bg-snake-head: #189c48;
+  --bg-snake-head: #21a970;
 
   /* apple */
-  --bg-apple: #c34849;
+  --bg-apple: #ac283b;
 
   /* messages */
   --bg-overlay: #101a23aa;
@@ -88,6 +88,7 @@ section.board .snake-apple {
 /* snake head */
 section.board .snake-head {
   background-color: var(--bg-snake-head);
+  box-shadow: 0 0 0.3rem var(--bg-snake-head);
 
   z-index: 2;
 }

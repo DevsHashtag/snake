@@ -47,8 +47,8 @@ function Game() {
 
   this.init = function () {
     board.init();
-    snake.init();
     apple.init();
+    snake.init();
 
     this.keydown((key) => {
       // game keys
