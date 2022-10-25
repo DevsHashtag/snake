@@ -1,6 +1,7 @@
 import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, BLOCK_CLASS } from './settings.js';
 
 import { unit } from './utils/unit.js';
+import { dom } from './app.js';
 
 function Board() {
   this.element = boardElement;
@@ -11,84 +12,59 @@ function Board() {
   this.width = GRID_COLUMNS * BLOCK_SIZE;
   this.height = GRID_ROWS * BLOCK_SIZE;
 
-  this.isModalOpen = false;
+  this.blockSize = BLOCK_SIZE;
+  this.blockMargin = BLOCK_MARGIN;
 
   this.blocks = new Object();
-
-  this.block = {
-    board: this,
-
-    size: BLOCK_SIZE,
-    margin: BLOCK_MARGIN,
-
-    add: function (className, position, isBlock = true) {
-      const block = document.createElement('div');
-      const blockSize = unit.px(this.size - this.margin);
-
-      // convert className to Array
-      className = typeof className == 'string' ? [className] : className;
-
-      block.classList.add(...className);
-
-      if (position) {
-        this.move(block, position);
-      }
-
-      if (isBlock) {
-        block.style.width = blockSize;
-        block.style.height = blockSize;
-      }
-
-      this.board.element.appendChild(block);
-
-      if (!this.board.blocks[className[0]]) {
-        this.board.blocks[className[0]] = [block];
-      } else {
-        this.board.blocks[className[0]].push(block);
-      }
-
-      return block;
-    },
-
-    remove: function (rmBlock) {
-      const blockClass = rmBlock.classList[0];
-      const boardBlocks = this.board.blocks[blockClass];
-
-      // remove block from its class
-      this.board.blocks[blockClass] = boardBlocks.filter((block) => !block.isSameNode(rmBlock));
-
-      if (!this.board.blocks[blockClass].length) delete this.board.blocks[blockClass];
-
-      this.board.element.removeChild(rmBlock);
-
-      return true;
-    },
-
-    move: function (block, position) {
-      if (position.center) position = this.board.centerPosition();
-      if (position.random) position = this.board.randomPosition();
-
-      if (!position) return false;
-
-      block.style.left = unit.px(position.x * this.size);
-      block.style.top = unit.px(position.y * this.size);
-
-      return true;
-    },
-
-    modalMessage: function (msg, type) {
-      if (this.isModalOpen) return;
-
-      this.isModalOpen = true;
-
-      let msgElement = this.add(type, null, false);
-      msgElement.innerText = msg;
-    },
-  };
+  this.isModalOpen = false;
 
   this.init = function () {
-    this.element.style.width = unit.px(this.width);
-    this.element.style.height = unit.px(this.height);
+    dom.setSize(this.element, { width: this.width, height: this.height });
+  };
+
+  this.addBlock = function (className, position) {
+    const size = this.blockSize - this.blockMargin;
+    const blockElement = dom.addElement(className, { width: size, height: size });
+
+    this.moveBlock(blockElement, position);
+    this.saveBlock(blockElement);
+
+    return blockElement;
+  };
+
+  this.moveBlock = function (blockElement, position) {
+    if (position.center) position = this.centerPosition();
+    if (position.random) position = this.randomPosition();
+
+    if (!position) return false;
+
+    dom.setStyles(blockElement, {
+      left: position.x * this.blockSize,
+      top: position.y * this.blockSize,
+    });
+
+    return true;
+  };
+
+  this.saveBlock = function (blockElement) {
+    const className = blockElement.classList[0];
+
+    this.blocks[className] = this.blocks[className] ?? [];
+    this.blocks[className].push(blockElement);
+  };
+
+  this.removeBlock = function (rmBlock) {
+    const className = rmBlock.classList[0];
+    const blocks = this.blocks[className];
+
+    // remove block from its class
+    this.blocks[className] = blocks.filter((block) => !block.isSameNode(rmBlock));
+
+    if (!this.blocks[className].length) {
+      delete this.board.blocks[className];
+    }
+
+    dom.removeElement(rmBlock);
   };
 
   this.onBoard = function (pos) {
@@ -104,19 +80,19 @@ function Board() {
     return !isOutBoard.includes(true);
   };
 
+  this.centerPosition = function () {
+    return {
+      x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
+      y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
+    };
+  };
+
   this.randomPosition = function () {
     const freePositions = this.freePositions();
 
     if (!freePositions) return false;
 
     return freePositions[Math.floor(Math.random() * freePositions.length)];
-  };
-
-  this.centerPosition = function () {
-    return {
-      x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
-      y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
-    };
   };
 
   this.freePositions = function (type = BLOCK_CLASS.snake.body) {
@@ -141,6 +117,15 @@ function Board() {
 
     return freePositions;
   };
+
+  // this.modalMessage = function (msg, type) {
+  //   if (this.isModalOpen) return;
+
+  //   this.isModalOpen = true;
+
+  //   let msgElement = this.add(type, undefined, false);
+  //   msgElement.innerText = msg;
+  // };
 }
 
 export default Board;
