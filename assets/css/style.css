@@ -26,9 +26,10 @@
 
   /* apple */
   --bg-apple: #ac283b;
+  --bg-apple-moving: #0c1219;
 
   /* messages */
-  --bg-overlay: #101a23aa;
+  --bg-overlay: #19242eaa;
   --bg-overlay-shadow: #0e151bee;
 
   /* message colors */
@@ -122,6 +123,7 @@ section.board .board-message {
   font-family: Impact, sans-serif;
 
   background-color: var(--bg-overlay);
+  box-shadow: 0 0 50rem 10rem var(--bg-overlay-shadow) inset;
 
   border-radius: 0.2rem;
   text-transform: capitalize;

@@ -24,7 +24,7 @@ function Apple() {
   };
 
   this.animation = function () {
-    this.element.style.backgroundColor = 'var(--bg-board)';
+    this.element.style.backgroundColor = 'var(--bg-apple-moving)';
 
     setTimeout(() => this.element.style.removeProperty('background-color'), 300);
   };
