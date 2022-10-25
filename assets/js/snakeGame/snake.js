@@ -30,10 +30,10 @@ function Snake() {
     let block;
 
     if (position) {
-      block = board.block.add([this.classBody, this.classHead], position);
+      block = board.addBlock([this.classBody, this.classHead], position);
     } else {
       const tailPosition = unit.block(this.blocks.slice(-1)[0]);
-      block = board.block.add(this.classBody, tailPosition);
+      block = board.addBlock(this.classBody, tailPosition);
     }
 
     this.blocks.push(block);
@@ -75,10 +75,9 @@ function Snake() {
     // replace last tail as new head
     this.blocks[0].classList.remove(this.classHead);
     this.blocks.unshift(this.blocks.pop());
-    board.block.move(this.blocks[0], position);
+    board.moveBlock(this.blocks[0], position);
     this.blocks[0].classList.add(this.classHead);
 
-    // save last direction
     this.lastDirection = this.direction;
 
     return true;
