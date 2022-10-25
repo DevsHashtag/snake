@@ -5,7 +5,10 @@ function Dom() {
   this.addElement = function (className, styles) {
     const element = document.createElement('div');
 
-    this.setStyles(element, styles);
+    if (styles) {
+      this.setStyles(element, styles);
+    }
+
     this.setClassName(element, className);
 
     board.element.appendChild(element);
