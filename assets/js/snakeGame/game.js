@@ -87,19 +87,19 @@ function Game() {
     if (!this.gameOver) return false;
 
     this.stop();
-    board.block.modalMessage('game over!', BLOCK_CLASS.gameover);
+    board.message('game over!', BLOCK_CLASS.gameover);
 
     return true;
   };
 
-  this.checkWin = function (type = BLOCK_CLASS.snake.body) {
-    const blocks = board.blocks[type] ?? [];
+  this.checkWin = function (className = BLOCK_CLASS.snake.body) {
+    const blocks = board.blocks[className] ?? [];
 
     // if there is a free space its not win
     if (blocks.length < board.columns * board.rows) return false;
 
     this.stop();
-    board.block.modalMessage('you win!', BLOCK_CLASS.win);
+    board.message('you win!', BLOCK_CLASS.win);
 
     return true;
   };

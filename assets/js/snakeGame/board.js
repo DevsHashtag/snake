@@ -67,6 +67,15 @@ function Board() {
     dom.removeElement(rmBlock);
   };
 
+  this.message = function (msg, className = BLOCK_CLASS.message) {
+    if (this.isModalOpen) return;
+
+    this.isModalOpen = true;
+
+    let msgElement = dom.addElement(className);
+    msgElement.innerText = msg;
+  };
+
   this.onBoard = function (pos) {
     if (!pos) return false;
 
@@ -95,8 +104,8 @@ function Board() {
     return freePositions[Math.floor(Math.random() * freePositions.length)];
   };
 
-  this.freePositions = function (type = BLOCK_CLASS.snake.body) {
-    const blocks = this.blocks[type] ?? [];
+  this.freePositions = function (className = BLOCK_CLASS.snake.body) {
+    const blocks = this.blocks[className] ?? [];
 
     // return if no space is free
     if (blocks.length >= this.columns * this.rows) return false;
@@ -117,15 +126,6 @@ function Board() {
 
     return freePositions;
   };
-
-  // this.modalMessage = function (msg, type) {
-  //   if (this.isModalOpen) return;
-
-  //   this.isModalOpen = true;
-
-  //   let msgElement = this.add(type, undefined, false);
-  //   msgElement.innerText = msg;
-  // };
 }
 
 export default Board;

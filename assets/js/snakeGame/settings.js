@@ -21,6 +21,7 @@ export const BLOCK_CLASS = {
     body: 'snake-body',
     head: 'snake-head',
   },
+  message: 'board-message',
   win: ['board-message', 'message-win'],
   gameover: ['board-message', 'message-gameover'],
 };

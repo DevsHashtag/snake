@@ -65,7 +65,7 @@ function Snake() {
         return false; // invalid key
     }
 
-    // if (!board.onBoard(position) || this.onSnake(position)) return false;
+    if (!board.onBoard(position) || this.onSnake(position)) return false;
 
     if (this.newSegments) {
       this.newSegments--;
