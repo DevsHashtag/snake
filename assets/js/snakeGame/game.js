@@ -1,6 +1,6 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, BLOCK_CLASS } from './settings.js';
 
-import { board, apple, snake } from './app.js';
+import { board, snake, apple } from './app.js';
 
 function Game() {
   this.fps = FPS;
