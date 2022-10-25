@@ -13,21 +13,22 @@
 
   /* board */
   --bg-board: #0c1219;
-  --bg-board-border: #00000055;
+  --bg-board-border: var(--bg);
+  --bg-board-outline: #11171e;
 
   /* border size */
-  --sz-board-border: 0.2rem;
-  --sz-board-outline: 1.5rem;
+  --sz-board-border: 0.1rem;
+  --sz-board-outline: 2rem;
 
   /* snake */
-  --bg-snake-body: #6e8293;
-  --bg-snake-head: #a5d5ff;
+  --bg-snake-body: #456264;
+  --bg-snake-head: #189c48;
 
   /* apple */
-  --bg-apple: #f46161;
+  --bg-apple: #c34849;
 
   /* messages */
-  --bg-overlay: #19242eaa;
+  --bg-overlay: #101a23aa;
   --bg-overlay-shadow: #0e151bee;
 
   /* message colors */
@@ -40,33 +41,34 @@ html {
 }
 
 body {
-  height: 100vh;
-  font-size: 1.6rem;
-
   color: var(--fg);
+
+  font-size: 1.6rem;
+  height: 100vh;
 }
 
 /* snake game */
 main.snake-game {
-  height: 100%;
-
-  background-color: var(--bg);
-
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background-color: var(--bg);
+
+  height: 100%;
 }
 
 /* board */
 section.board {
   box-sizing: content-box;
-  background-color: var(--bg-board);
-
   position: relative;
 
+  background-color: var(--bg-board);
   box-shadow: 0 0 1rem var(--bg-board);
-  border: var(--sz-board-border) solid var(--bg);
-  outline: var(--sz-board-outline) solid var(--bg-board-border);
+
+  border: var(--sz-board-border) solid var(--bg-board-border);
+  outline: var(--sz-board-outline) solid var(--bg-board-outline);
+
   border-radius: 0.1rem;
 }
 
@@ -78,15 +80,14 @@ section.board .snake-apple {
   position: absolute;
 
   background-color: var(--bg-snake-body);
-  box-shadow: 0 0 0.2rem var(--bg-snake-body);
+  box-shadow: 0 0 0.3rem var(--bg-snake-body);
+
+  border-radius: 0.2rem;
 }
 
 /* snake head */
 section.board .snake-head {
   background-color: var(--bg-snake-head);
-  box-shadow: 0 0 0.2rem var(--bg-snake-head);
-
-  border-radius: 0.1rem;
 
   z-index: 2;
 }
@@ -94,11 +95,10 @@ section.board .snake-head {
 /* snake apple */
 section.board .snake-apple {
   background-color: var(--bg-apple);
-  box-shadow: 0 0 0.2rem var(--bg-apple);
-
-  border-radius: 0.2rem;
+  box-shadow: 0 0 0.3rem var(--bg-apple);
 
   transition: all 0.3s;
+
   z-index: 1;
 }
 
@@ -107,21 +107,20 @@ section.board .board-message {
   cursor: pointer;
 
   position: absolute;
-  top: -0.1rem;
-  left: -0.1rem;
-  right: -0.1rem;
-  bottom: -0.1rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   font-family: Impact, sans-serif;
 
   background-color: var(--bg-overlay);
-  box-shadow: 0 0 50rem 1rem var(--bg-overlay-shadow) inset;
 
   border-radius: 0.2rem;
   text-transform: capitalize;
