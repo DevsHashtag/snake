@@ -15,7 +15,7 @@ export const BLOCK_MARGIN = 2;
 export const GRID_COLUMNS = 40;
 export const GRID_ROWS = 30;
 
-export const BLOCK_CLASS = {
+export const CLASS_NAMES = {
   apple: 'snake-apple',
   snake: {
     body: 'snake-body',

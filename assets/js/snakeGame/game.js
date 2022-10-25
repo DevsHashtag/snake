@@ -1,4 +1,4 @@
-import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, BLOCK_CLASS } from './settings.js';
+import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
 
 import { board, snake, apple } from './app.js';
 
@@ -87,19 +87,19 @@ function Game() {
     if (!this.gameOver) return false;
 
     this.stop();
-    board.message('game over!', BLOCK_CLASS.gameover);
+    board.message('game over!', CLASS_NAMES.gameover);
 
     return true;
   };
 
-  this.checkWin = function (className = BLOCK_CLASS.snake.body) {
+  this.checkWin = function (className = CLASS_NAMES.snake.body) {
     const blocks = board.blocks[className] ?? [];
 
     // if there is a free space its not win
     if (blocks.length < board.columns * board.rows) return false;
 
     this.stop();
-    board.message('you win!', BLOCK_CLASS.win);
+    board.message('you win!', CLASS_NAMES.win);
 
     return true;
   };

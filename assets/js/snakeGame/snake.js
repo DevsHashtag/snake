@@ -1,4 +1,4 @@
-import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, BLOCK_CLASS } from './settings.js';
+import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, CLASS_NAMES } from './settings.js';
 
 import { unit } from './utils/unit.js';
 import { board, apple } from './app.js';
@@ -8,8 +8,8 @@ function Snake() {
   this.newSegments = SNAKE_LENGTH;
   this.direction = SNAKE_DIRECTION;
   this.lastDirection = SNAKE_DIRECTION;
-  this.classBody = BLOCK_CLASS.snake.body;
-  this.classHead = BLOCK_CLASS.snake.head;
+  this.classBody = CLASS_NAMES.snake.body;
+  this.classHead = CLASS_NAMES.snake.head;
   this.keys = SNAKE_KEYS;
   this.dead = false;
 

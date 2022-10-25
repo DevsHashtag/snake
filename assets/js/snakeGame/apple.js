@@ -1,10 +1,10 @@
-import { BLOCK_CLASS, FOOD_POSITION } from './settings.js';
+import { CLASS_NAMES, FOOD_POSITION } from './settings.js';
 
 import { unit } from './utils/unit.js';
 import { board } from './app.js';
 
 function Apple() {
-  this.class = BLOCK_CLASS.apple;
+  this.class = CLASS_NAMES.apple;
   this.initPosition = FOOD_POSITION;
 
   this.add = function (position) {

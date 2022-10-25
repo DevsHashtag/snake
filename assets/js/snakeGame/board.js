@@ -1,4 +1,4 @@
-import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, BLOCK_CLASS } from './settings.js';
+import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
 
 import { unit } from './utils/unit.js';
 import { dom } from './app.js';
@@ -67,7 +67,7 @@ function Board() {
     dom.removeElement(rmBlock);
   };
 
-  this.message = function (msg, className = BLOCK_CLASS.message) {
+  this.message = function (msg, className = CLASS_NAMES.message) {
     if (this.isModalOpen) return;
 
     this.isModalOpen = true;
@@ -104,7 +104,7 @@ function Board() {
     return freePositions[Math.floor(Math.random() * freePositions.length)];
   };
 
-  this.freePositions = function (className = BLOCK_CLASS.snake.body) {
+  this.freePositions = function (className = CLASS_NAMES.snake.body) {
     const blocks = this.blocks[className] ?? [];
 
     // return if no space is free
