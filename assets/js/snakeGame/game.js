@@ -23,6 +23,8 @@ function Game() {
   };
 
   this.loop = () => {
+    if (this.gameOver) return;
+
     this.requestLoopId = window.requestAnimationFrame(this.main);
   };
 
@@ -71,6 +73,8 @@ function Game() {
   };
 
   this.pauseToggle = function () {
+    if (this.gameOver) return;
+
     if (this.pause) this.loop();
     else this.stop();
 
