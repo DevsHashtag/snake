@@ -8,27 +8,25 @@ function Apple() {
   this.initPosition = FOOD_POSITION;
 
   this.add = function (position) {
-    this.block = board.block.add(this.class, position);
+    this.blockElement = board.addBlock(this.class, position);
   };
 
   this.random = function () {
     this.animation();
 
-    let isMoved = board.block.move(this.block, { random: true });
-
-    if (!isMoved) board.block.remove(this.block);
+    board.moveBlock(this.blockElement, { random: true });
   };
 
   this.onApple = function (position) {
-    let applePosition = unit.block(this.block);
+    let applePosition = unit.block(this.blockElement);
 
     return unit.isEqual(applePosition, position);
   };
 
   this.animation = function () {
-    this.block.style.backgroundColor = 'var(--bg-board)';
+    this.blockElement.style.backgroundColor = 'var(--bg-board)';
 
-    setTimeout(() => this.block.style.removeProperty('background-color'), 300);
+    setTimeout(() => this.blockElement.style.removeProperty('background-color'), 300);
   };
 
   this.init = function () {
