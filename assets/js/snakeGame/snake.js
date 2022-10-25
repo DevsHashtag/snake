@@ -4,7 +4,6 @@ import { unit } from './utils/unit.js';
 import { board, apple } from './app.js';
 
 function Snake() {
-  this.blocks = [];
   this.newSegments = SNAKE_LENGTH;
   this.direction = SNAKE_DIRECTION;
   this.lastDirection = SNAKE_DIRECTION;
@@ -22,25 +21,46 @@ function Snake() {
     this.checkApple();
   };
 
+  this.getBlocks = function (className = this.classBody) {
+    return board.blocks[className];
+  };
+
+  // use last tail as new head
+  this.useTailAsHead = function (position, className = this.classBody) {
+    let blocks = board.blocks[className];
+
+    blocks[0].classList.remove(this.classHead);
+
+    blocks.unshift(blocks.pop());
+    board.moveBlock(blocks[0], position);
+
+    blocks[0].classList.add(this.classHead);
+
+    board.blocks[className] = blocks;
+  };
+
+  this.getHead = function () {
+    return this.getBlocks()[0];
+  };
+
   this.getHeadPosition = function () {
-    return unit.block(this.blocks[0]);
+    return unit.block(this.getBlocks()[0]);
+  };
+
+  this.getTailPosition = function () {
+    return unit.block(this.getBlocks().slice(-1)[0]);
   };
 
   this.addSegment = function (position) {
-    let block;
-
     if (position) {
-      block = board.addBlock([this.classBody, this.classHead], position);
+      board.addBlock([this.classBody, this.classHead], position);
     } else {
-      const tailPosition = unit.block(this.blocks.slice(-1)[0]);
-      block = board.addBlock(this.classBody, tailPosition);
+      board.addBlock(this.classBody, this.getTailPosition());
     }
-
-    this.blocks.push(block);
   };
 
   this.move = function () {
-    if (!this.blocks.length) return false;
+    if (!this.getBlocks()?.length) return false;
 
     let position = this.getHeadPosition();
 
@@ -65,29 +85,27 @@ function Snake() {
         return false; // invalid key
     }
 
-    if (!board.onBoard(position) || this.onSnake(position)) return false;
+    // if (!board.onBoard(position) || this.onSnake(position)) return false;
 
     if (this.newSegments) {
       this.newSegments--;
       this.addSegment();
     }
 
-    // replace last tail as new head
-    this.blocks[0].classList.remove(this.classHead);
-    this.blocks.unshift(this.blocks.pop());
-    board.moveBlock(this.blocks[0], position);
-    this.blocks[0].classList.add(this.classHead);
+    // use last tail as new head
+    this.useTailAsHead(position);
 
+    // set last direction
     this.lastDirection = this.direction;
 
     return true;
   };
 
   this.onSnake = function (position, { ignoreHead = false } = {}) {
-    return this.blocks.some((block, index) => {
+    return this.getBlocks().some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
-      let blockPosition = unit.block(block);
+      const blockPosition = unit.block(block);
 
       return unit.isEqual(blockPosition, position);
     });
