@@ -7,8 +7,8 @@ export const unit = {
 
   block: (block) => {
     return {
-      x: parseInt(block.style.left) / board.block.size,
-      y: parseInt(block.style.top) / board.block.size,
+      x: parseInt(block.style.left) / board.blockSize,
+      y: parseInt(block.style.top) / board.blockSize,
     };
   },
   isEqual: (pos1, pos2) => pos1.x == pos2.x && pos1.y == pos2.y,
