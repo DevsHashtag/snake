@@ -87,7 +87,7 @@ function Game() {
     if (!this.gameOver) return false;
 
     this.stop();
-    board.message('game over!', CLASS_NAMES.gameover);
+    board.renderMessage('game over!', CLASS_NAMES.gameover);
 
     return true;
   };
@@ -99,7 +99,7 @@ function Game() {
     if (blocks.length < board.columns * board.rows) return false;
 
     this.stop();
-    board.message('you win!', CLASS_NAMES.win);
+    board.renderMessage('you win!', CLASS_NAMES.win);
 
     return true;
   };

@@ -1,9 +1,9 @@
-import { boardElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
+import { rootElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
 
 import { unit } from './utils/unit.js';
 
 function Board() {
-  this.element = boardElement;
+  this.rootElement = rootElement;
 
   this.columns = GRID_COLUMNS;
   this.rows = GRID_ROWS;
@@ -14,62 +14,71 @@ function Board() {
   this.blockSize = BLOCK_SIZE;
   this.blockMargin = BLOCK_MARGIN;
 
-  this.blocks = new Object();
-  this.isModalOpen = false;
+  this.blocks = [];
+  this.isMessageOpen = false;
 
   this.init = function () {
-    this.element.style.width = unit.pixel(this.width);
-    this.element.style.height = unit.pixel(this.height);
+    this.boardElement = this.addElement(CLASS_NAMES.board, 'section');
+    this.setSize(this.boardElement, { width: this.width, height: this.height });
+    this.rootElement.appendChild(this.boardElement);
+
+    this.statusElement = this.renderStatus();
   };
 
-  this.setClassName = function (element, className) {
+  this.setSize = function (element, { width, height } = {}) {
+    if (!width || !height) return false;
+
+    element.style.width = unit.pixel(width);
+    element.style.height = unit.pixel(height);
+
+    return true;
+  };
+
+  this.setPosition = function (element, position) {
+    if (!position) return false;
+
+    element.style.left = unit.pixel(position.x * this.blockSize);
+    element.style.top = unit.pixel(position.y * this.blockSize);
+
+    return true;
+  };
+
+  this.addElement = function (className, type = 'div') {
+    const element = document.createElement(type);
+
+    // set className
     if (typeof className == 'string') element.classList.add(className);
     else element.classList.add(...className);
-  };
-
-  this.addElement = function (className) {
-    const element = document.createElement('div');
-
-    this.setClassName(element, className);
-
-    this.element.appendChild(element);
 
     return element;
   };
 
   this.addBlock = function (className, position) {
-    const blockElement = document.createElement('div');
-    const blockSize = unit.pixel(this.blockSize - this.blockMargin);
+    const blockSize = this.blockSize - this.blockMargin;
 
+    let blockElement = this.addElement(className);
+
+    this.setSize(blockElement, { width: blockSize, height: blockSize });
     this.moveBlock(blockElement, position);
-    this.setClassName(blockElement, className);
-
-    blockElement.style.width = blockSize;
-    blockElement.style.height = blockSize;
-
     this.saveBlock(blockElement);
-    this.element.appendChild(blockElement);
+
+    this.boardElement.appendChild(blockElement);
 
     return blockElement;
   };
 
-  this.moveBlock = function (blockElement, position) {
-    if (position.center) position = this.centerPosition();
-    if (position.random) position = this.randomPosition();
+  this.moveBlock = function (element, position) {
+    if (position.center) position = this.positionCenter();
+    if (position.random) position = this.positionRandom();
 
-    if (!position) return false;
-
-    blockElement.style.left = unit.pixel(position.x * this.blockSize);
-    blockElement.style.top = unit.pixel(position.y * this.blockSize);
-
-    return true;
+    return this.setPosition(element, position);
   };
 
-  this.saveBlock = function (blockElement) {
-    const className = blockElement.classList[0];
+  this.saveBlock = function (element) {
+    const className = element.classList[0];
 
     this.blocks[className] = this.blocks[className] ?? [];
-    this.blocks[className].push(blockElement);
+    this.blocks[className].push(element);
   };
 
   this.removeBlock = function (rmBlock) {
@@ -83,17 +92,21 @@ function Board() {
       delete this.blocks[className];
     }
 
-    this.element.removeChild(rmBlock);
+    this.boardElement.removeChild(rmBlock);
   };
 
-  this.message = function (msg, className = CLASS_NAMES.message) {
-    if (this.isModalOpen) return;
+  this.renderMessage = function (msg, className = CLASS_NAMES.message) {
+    if (this.isMessageOpen) return;
 
-    this.isModalOpen = true;
+    this.isMessageOpen = true;
 
     const msgElement = this.addElement(className);
 
     msgElement.innerText = msg;
+
+    this.boardElement.appendChild(msgElement);
+
+    return msgElement;
   };
 
   this.onBoard = function (pos) {
@@ -109,14 +122,14 @@ function Board() {
     return !isOutBoard.includes(true);
   };
 
-  this.centerPosition = function () {
+  this.positionCenter = function () {
     return {
       x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
       y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
     };
   };
 
-  this.randomPosition = function () {
+  this.positionRandom = function () {
     const freePositions = this.freePositions();
 
     if (!freePositions) return false;
