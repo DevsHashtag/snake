@@ -1,4 +1,4 @@
-import { App } from './snakeGame/app.js';
+import { App } from './snake/app.js';
 
 const app = new App();
 
