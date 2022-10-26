@@ -9,11 +9,11 @@ export const GAME_PAUSE = false;
 // grid
 export const boardElement = document.querySelector('.snake-game .board');
 
-export const BLOCK_SIZE = 20;
-export const BLOCK_MARGIN = 2;
-
 export const GRID_COLUMNS = 40;
 export const GRID_ROWS = 30;
+
+export const BLOCK_SIZE = 20;
+export const BLOCK_MARGIN = 2;
 
 export const CLASS_NAMES = {
   apple: 'snake-apple',

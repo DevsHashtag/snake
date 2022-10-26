@@ -31,12 +31,18 @@ function Snake() {
     return this.getBlocks()[0];
   };
 
+  this.getTail = function () {
+    let blocks = this.getBlocks();
+
+    return blocks[blocks.length - 1];
+  };
+
   this.getHeadPosition = function () {
-    return unit.block(this.getBlocks()[0]);
+    return unit.position(this.getHead());
   };
 
   this.getTailPosition = function () {
-    return unit.block(this.getBlocks().slice(-1)[0]);
+    return unit.position(this.getTail());
   };
 
   // use last tail as new head
@@ -109,7 +115,7 @@ function Snake() {
     return this.getBlocks().some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
-      const blockPosition = unit.block(block);
+      const blockPosition = unit.position(block);
 
       return unit.isEqual(blockPosition, position);
     });

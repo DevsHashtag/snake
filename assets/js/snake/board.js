@@ -18,8 +18,8 @@ function Board() {
   this.isModalOpen = false;
 
   this.init = function () {
-    this.element.style.width = unit.px(this.width);
-    this.element.style.height = unit.px(this.height);
+    this.element.style.width = unit.pixel(this.width);
+    this.element.style.height = unit.pixel(this.height);
   };
 
   this.setClassName = function (element, className) {
@@ -39,7 +39,7 @@ function Board() {
 
   this.addBlock = function (className, position) {
     const blockElement = document.createElement('div');
-    const blockSize = unit.px(this.blockSize - this.blockMargin);
+    const blockSize = unit.pixel(this.blockSize - this.blockMargin);
 
     this.moveBlock(blockElement, position);
     this.setClassName(blockElement, className);
@@ -59,8 +59,8 @@ function Board() {
 
     if (!position) return false;
 
-    blockElement.style.left = unit.px(position.x * this.blockSize);
-    blockElement.style.top = unit.px(position.y * this.blockSize);
+    blockElement.style.left = unit.pixel(position.x * this.blockSize);
+    blockElement.style.top = unit.pixel(position.y * this.blockSize);
 
     return true;
   };
@@ -131,7 +131,7 @@ function Board() {
     if (blocks.length >= this.columns * this.rows) return false;
 
     // blocks position
-    const blocksPosition = blocks.map((block) => unit.block(block));
+    const blocksPosition = blocks.map((block) => unit.position(block));
 
     let freePositions = [];
 

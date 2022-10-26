@@ -18,7 +18,7 @@ function Apple() {
   };
 
   this.onApple = function (position) {
-    const applePosition = unit.block(this.element);
+    const applePosition = unit.position(this.element);
 
     return unit.isEqual(applePosition, position);
   };
