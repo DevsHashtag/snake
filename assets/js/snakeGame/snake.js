@@ -1,4 +1,4 @@
-import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, CLASS_NAMES } from './settings.js';
+import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, CLASS_NAMES, SCORE_INIT, SCORE_INCREMENT } from './settings.js';
 
 import { unit } from './utils/unit.js';
 import { board, apple } from './app.js';
@@ -11,6 +11,8 @@ function Snake() {
   this.classHead = CLASS_NAMES.snake.head;
   this.keys = SNAKE_KEYS;
   this.dead = false;
+  this.score = SCORE_INIT;
+  this.scoreIncrement = SCORE_INCREMENT;
 
   this.init = function () {
     this.addSegment(SNAKE_POSITION);
@@ -23,6 +25,18 @@ function Snake() {
 
   this.getBlocks = function (className = this.classBody) {
     return board.blocks[className];
+  };
+
+  this.getHead = function () {
+    return this.getBlocks()[0];
+  };
+
+  this.getHeadPosition = function () {
+    return unit.block(this.getBlocks()[0]);
+  };
+
+  this.getTailPosition = function () {
+    return unit.block(this.getBlocks().slice(-1)[0]);
   };
 
   // use last tail as new head
@@ -39,24 +53,14 @@ function Snake() {
     board.blocks[className] = blocks;
   };
 
-  this.getHead = function () {
-    return this.getBlocks()[0];
-  };
-
-  this.getHeadPosition = function () {
-    return unit.block(this.getBlocks()[0]);
-  };
-
-  this.getTailPosition = function () {
-    return unit.block(this.getBlocks().slice(-1)[0]);
-  };
-
   this.addSegment = function (position) {
     if (position) {
       board.addBlock([this.classBody, this.classHead], position);
     } else {
       board.addBlock(this.classBody, this.getTailPosition());
     }
+
+    this.score += this.scoreIncrement;
   };
 
   this.move = function () {

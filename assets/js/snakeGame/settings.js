@@ -27,7 +27,7 @@ export const CLASS_NAMES = {
 };
 
 // Score
-export const SCORE = 1;
+export const SCORE_INIT = 0;
 export const SCORE_INCREMENT = 1;
 
 // Food
