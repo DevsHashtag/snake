@@ -1,64 +1,33 @@
-import { rootElement, GRID_COLUMNS, GRID_ROWS, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
-
-import { unit } from './utils/unit.js';
+import { COLUMN_LINES, ROW_LINES, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
+import { dom } from './app.js';
 
 function Board() {
-  this.rootElement = rootElement;
-
-  this.columns = GRID_COLUMNS;
-  this.rows = GRID_ROWS;
-
-  this.width = GRID_COLUMNS * BLOCK_SIZE;
-  this.height = GRID_ROWS * BLOCK_SIZE;
-
-  this.blockSize = BLOCK_SIZE;
-  this.blockMargin = BLOCK_MARGIN;
+  this.columns = COLUMN_LINES;
+  this.rows = ROW_LINES;
 
   this.blocks = [];
+
+  this.block = {
+    size: BLOCK_SIZE,
+    margin: BLOCK_MARGIN,
+  };
+
+  this.width = this.columns * this.block.size;
+  this.height = this.rows * this.block.size;
+
   this.isMessageOpen = false;
 
   this.init = function () {
-    this.boardElement = this.addElement(CLASS_NAMES.board, 'section');
-    this.setSize(this.boardElement, { width: this.width, height: this.height });
-    this.rootElement.appendChild(this.boardElement);
-
-    this.statusElement = this.renderStatus();
-  };
-
-  this.setSize = function (element, { width, height } = {}) {
-    if (!width || !height) return false;
-
-    element.style.width = unit.pixel(width);
-    element.style.height = unit.pixel(height);
-
-    return true;
-  };
-
-  this.setPosition = function (element, position) {
-    if (!position) return false;
-
-    element.style.left = unit.pixel(position.x * this.blockSize);
-    element.style.top = unit.pixel(position.y * this.blockSize);
-
-    return true;
-  };
-
-  this.addElement = function (className, type = 'div') {
-    const element = document.createElement(type);
-
-    // set className
-    if (typeof className == 'string') element.classList.add(className);
-    else element.classList.add(...className);
-
-    return element;
+    this.boardElement = dom.renderElement(CLASS_NAMES.board, dom.containerElement);
+    dom.setSize(this.boardElement, { width: this.width, height: this.height });
   };
 
   this.addBlock = function (className, position) {
-    const blockSize = this.blockSize - this.blockMargin;
+    const size = this.block.size - this.block.margin;
 
-    let blockElement = this.addElement(className);
+    let blockElement = dom.addElement(className);
 
-    this.setSize(blockElement, { width: blockSize, height: blockSize });
+    dom.setSize(blockElement, { width: size, height: size });
     this.moveBlock(blockElement, position);
     this.saveBlock(blockElement);
 
@@ -68,10 +37,15 @@ function Board() {
   };
 
   this.moveBlock = function (element, position) {
-    if (position.center) position = this.positionCenter();
-    if (position.random) position = this.positionRandom();
+    if (position.center) position = this.centerPosition();
+    if (position.random) position = this.randomPosition();
 
-    return this.setPosition(element, position);
+    if (!position) return false;
+
+    position.x *= this.block.size;
+    position.y *= this.block.size;
+
+    return dom.setPosition(element, position);
   };
 
   this.saveBlock = function (element) {
@@ -95,12 +69,19 @@ function Board() {
     this.boardElement.removeChild(rmBlock);
   };
 
+  this.blockPosition = function (block) {
+    return {
+      x: parseInt(block.style.left) / this.block.size,
+      y: parseInt(block.style.top) / this.block.size,
+    };
+  };
+
   this.renderMessage = function (msg, className = CLASS_NAMES.message) {
     if (this.isMessageOpen) return;
 
     this.isMessageOpen = true;
 
-    const msgElement = this.addElement(className);
+    const msgElement = dom.addElement(className);
 
     msgElement.innerText = msg;
 
@@ -122,17 +103,17 @@ function Board() {
     return !isOutBoard.includes(true);
   };
 
-  this.positionCenter = function () {
+  this.centerPosition = function () {
     return {
       x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
       y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
     };
   };
 
-  this.positionRandom = function () {
+  this.randomPosition = function () {
     const freePositions = this.freePositions();
 
-    if (!freePositions) return false;
+    if (!freePositions) return;
 
     return freePositions[Math.floor(Math.random() * freePositions.length)];
   };
@@ -144,7 +125,7 @@ function Board() {
     if (blocks.length >= this.columns * this.rows) return false;
 
     // blocks position
-    const blocksPosition = blocks.map((block) => unit.position(block));
+    const blocksPosition = blocks.map((block) => this.blockPosition(block));
 
     let freePositions = [];
 
