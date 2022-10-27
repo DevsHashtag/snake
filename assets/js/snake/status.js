@@ -14,6 +14,8 @@ function Status() {
     for (const key in STATUS_LABEL) {
       this.renderStatusLabel(key, STATUS_LABEL[key]);
     }
+
+    this.updateFPS(game.fps);
   };
 
   this.renderStatusLabel = function (className, text) {

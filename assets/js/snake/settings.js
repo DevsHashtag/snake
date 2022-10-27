@@ -52,7 +52,7 @@ export const SNAKE_KEYS = {
 
 // status bar
 export const STATUS_LABEL = {
-  state: 'pause',
+  state: GAME_PAUSE ? 'pause' : 'playing',
   score: 0,
   fps: 0,
 };

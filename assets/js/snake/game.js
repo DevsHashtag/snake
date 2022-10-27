@@ -26,6 +26,7 @@ function Game() {
     },
     0: () => (this.fps = FPS),
     p: () => this.pauseToggle(),
+    Escape: () => this.pauseToggle(),
   };
 
   this.keydown = function (handelKeys) {
@@ -70,8 +71,6 @@ function Game() {
       }
 
       if (this.pause || this.gameOver) return;
-
-      status.playState();
 
       // snake keys
       snake.setDirection(key);
