@@ -6,19 +6,26 @@
   margin: 0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 :root {
-  /* background */
+  /* main */
   --bg: #19242e;
   --fg: #46d5fc;
 
-  /* board */
-  --bg-board: #0c1219;
-  --bg-board-border: var(--bg);
-  --bg-board-outline: #11171e;
+  /* container */
+  --bg-container: #0c1219;
+  --sz-container-border: 0.2rem;
+  --bg-container-border: var(--bg);
+  --bg-container-outline: #11171e;
+  --sz-container-outline: 2rem;
+  --sz-container-radius: 0.1rem;
 
-  /* border size */
-  --sz-board-border: 0.1rem;
-  --sz-board-outline: 2rem;
+  /* status bar */
+  --bg-status: #0c1219ee;
+  --bg-status-border: var(--bg);
+  --fg-status-label: #789995;
+  --fg-status-text: #57994a;
 
   /* snake */
   --bg-snake-body: #456264;
@@ -26,10 +33,10 @@
 
   /* apple */
   --bg-apple: #ac283b;
-  --bg-apple-moving: #0c1219;
+  --bg-apple-moving: var(--bg-container);
 
   /* messages */
-  --bg-overlay: #19242eaa;
+  --bg-overlay: #090e13aa;
   --bg-overlay-shadow: #0e151bee;
 
   /* message colors */
@@ -42,9 +49,6 @@ html {
 }
 
 body {
-  color: var(--fg);
-
-  font-size: 1.6rem;
   height: 100vh;
 }
 
@@ -54,30 +58,73 @@ main.snake-game {
   justify-content: center;
   align-items: center;
 
-  background-color: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
 
+  background-color: var(--bg);
+  color: var(--fg);
   height: 100%;
 }
 
-/* board */
-section.board {
-  box-sizing: content-box;
+/* container */
+main.snake-game .container {
+  background-color: var(--bg-container);
+
+  border: var(--sz-container-border) solid var(--bg-container-border);
+  outline: var(--sz-container-outline) solid var(--bg-container-outline);
+
+  border-radius: var(--sz-container-radius);
+}
+
+main.snake-game .container > *:first-child {
+  border-bottom: 0.1rem solid var(--bg-status-border);
+}
+
+/* status */
+.container .status-bar {
   position: relative;
 
-  background-color: var(--bg-board);
-  box-shadow: 0 0 1rem var(--bg-board);
+  display: flex;
+  align-items: center;
 
-  border: var(--sz-board-border) solid var(--bg-board-border);
-  outline: var(--sz-board-outline) solid var(--bg-board-outline);
+  background-color: var(--bg-status);
+  padding: 1rem;
 
-  border-radius: 0.1rem;
+  z-index: 5;
+}
+
+.status-bar [class^='status'] {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 1em;
+
+  color: var(--fg-status-label);
+}
+
+.status-bar [class^='status'] span {
+  display: inline-block;
+
+  font-size: 0.9em;
+  padding: 0 0.5rem;
+
+  color: var(--fg-status-text);
+}
+
+/* board */
+.container .board {
+  position: relative;
 }
 
 /* blocks */
 
 /* snake body, snake apple */
-section.board .snake-body,
-section.board .snake-apple {
+.board .snake-body,
+.board .snake-apple {
   position: absolute;
 
   background-color: var(--bg-snake-body);
@@ -87,7 +134,7 @@ section.board .snake-apple {
 }
 
 /* snake head */
-section.board .snake-head {
+.board .snake-head {
   background-color: var(--bg-snake-head);
   box-shadow: 0 0 0.3rem var(--bg-snake-head);
 
@@ -95,7 +142,7 @@ section.board .snake-head {
 }
 
 /* snake apple */
-section.board .snake-apple {
+.board .snake-apple {
   background-color: var(--bg-apple);
   box-shadow: 0 0 0.3rem var(--bg-apple);
 
@@ -105,14 +152,14 @@ section.board .snake-apple {
 }
 
 /* messages */
-section.board .board-message {
+.board .board-message {
   cursor: pointer;
 
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: -1px;
+  width: 100%;
+  height: 100%;
 
   display: flex;
   justify-content: center;
@@ -128,16 +175,16 @@ section.board .board-message {
   border-radius: 0.2rem;
   text-transform: capitalize;
 
-  z-index: 10;
+  z-index: 5;
 }
 
 /* type of messages */
-section.board .message-win {
+.board .message-win {
   color: var(--fg-message-win);
   text-shadow: 0 0 1rem var(--fg-message-win);
 }
 
-section.board .message-gameover {
+.board .message-gameover {
   color: var(--fg-message-gameover);
   text-shadow: 0 0 1rem var(--fg-message-gameover);
 }
