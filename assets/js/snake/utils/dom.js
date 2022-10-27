@@ -1,7 +1,7 @@
 import { mainElement, CLASS_NAMES } from '../settings.js';
 import { toPixel } from './position.js';
 
-export default function Dom() {
+function Dom() {
   this.mainElement = mainElement;
 
   this.init = function () {
@@ -49,3 +49,5 @@ export default function Dom() {
     return element;
   };
 }
+
+export default Dom;
