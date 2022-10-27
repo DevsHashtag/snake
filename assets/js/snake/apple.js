@@ -1,6 +1,6 @@
 import { CLASS_NAMES, FOOD_POSITION } from './settings.js';
 
-import { unit } from './utils/unit.js';
+import { isEqual } from './utils/position.js';
 import { board } from './app.js';
 
 function Apple() {
@@ -18,9 +18,9 @@ function Apple() {
   };
 
   this.onApple = function (position) {
-    const applePosition = unit.position(this.element);
+    const applePosition = board.blockPosition(this.element);
 
-    return unit.isEqual(applePosition, position);
+    return isEqual(applePosition, position);
   };
 
   this.animation = function () {
