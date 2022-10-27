@@ -1,6 +1,6 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
 
-import { board, snake, apple } from './app.js';
+import { dom, status, board, snake, apple } from './app.js';
 
 function Game() {
   this.fps = FPS;
@@ -12,8 +12,18 @@ function Game() {
   this.gameOver = false;
 
   this.keys = {
-    '+': () => (this.fps += this.fps < FPS_MAX ? FPS_STEP : 0),
-    '-': () => (this.fps -= this.fps > FPS_MIN ? FPS_STEP : 0),
+    '+': () => {
+      if (this.fps < FPS_MAX) this.fps += FPS_STEP;
+      if (this.fps > FPS_MAX) this.fps = FPS_MAX;
+
+      status.updateFPS(this.fps);
+    },
+    '-': () => {
+      if (this.fps > FPS_MIN) this.fps -= FPS_STEP;
+      if (this.fps < FPS_MIN) this.fps = FPS_MIN;
+
+      status.updateFPS(this.fps);
+    },
     0: () => (this.fps = FPS),
     p: () => this.pauseToggle(),
   };
@@ -46,6 +56,8 @@ function Game() {
   };
 
   this.init = function () {
+    dom.init();
+    status.init();
     board.init();
     apple.init();
     snake.init();
@@ -57,7 +69,9 @@ function Game() {
         return;
       }
 
-      if (this.pause) return;
+      if (this.pause || this.gameOver) return;
+
+      status.playState();
 
       // snake keys
       snake.setDirection(key);
@@ -75,10 +89,15 @@ function Game() {
   this.pauseToggle = function () {
     if (this.gameOver) return;
 
-    if (this.pause) this.loop();
-    else this.stop();
-
     this.pause = !this.pause;
+
+    if (this.pause) {
+      status.pauseState();
+      this.stop();
+    } else {
+      status.playState();
+      this.loop();
+    }
   };
 
   this.checkGameOver = function () {
@@ -87,7 +106,8 @@ function Game() {
     if (!this.gameOver) return false;
 
     this.stop();
-    board.renderMessage('game over!', CLASS_NAMES.gameover);
+    status.gameOverState();
+    board.renderMessage('game over', CLASS_NAMES.gameover);
 
     return true;
   };
@@ -99,6 +119,7 @@ function Game() {
     if (blocks.length < board.columns * board.rows) return false;
 
     this.stop();
+    status.winState();
     board.renderMessage('you win!', CLASS_NAMES.win);
 
     return true;
