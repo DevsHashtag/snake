@@ -1,21 +1,22 @@
-export const rootElement = document.querySelector('main.snake-game');
+export const mainElement = document.querySelector('main.snake-game');
 
 // game
 export const FPS = 14;
 export const FPS_MIN = 10;
 export const FPS_MAX = 60;
-export const FPS_STEP = FPS_MAX / 10;
+export const FPS_STEP = 2;
 
 export const GAME_PAUSE = false;
 
 // grid
-export const GRID_COLUMNS = 40;
-export const GRID_ROWS = 30;
+export const COLUMN_LINES = 40;
+export const ROW_LINES = 30;
 
 export const BLOCK_SIZE = 20;
 export const BLOCK_MARGIN = 2;
 
 export const CLASS_NAMES = {
+  container: 'container',
   board: 'board',
 
   apple: 'snake-apple',
@@ -23,6 +24,8 @@ export const CLASS_NAMES = {
     body: 'snake-body',
     head: 'snake-head',
   },
+
+  statusBar: 'status-bar',
 
   message: 'board-message',
   win: ['board-message', 'message-win'],
@@ -45,4 +48,11 @@ export const SNAKE_KEYS = {
   down: ['s', '2', 'ArrowDown'],
   left: ['a', '4', 'ArrowLeft'],
   right: ['d', '6', 'ArrowRight'],
+};
+
+// status bar
+export const STATUS_LABEL = {
+  state: 'pause',
+  score: 0,
+  fps: 0,
 };
