@@ -1,7 +1,7 @@
 import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, CLASS_NAMES, SCORE_INIT, SCORE_INCREMENT } from './settings.js';
 
-import { unit } from './utils/unit.js';
-import { board, apple } from './app.js';
+import { board, apple, status } from './app.js';
+import { isEqual } from './utils/position.js';
 
 function Snake() {
   this.newSegments = SNAKE_LENGTH;
@@ -27,23 +27,13 @@ function Snake() {
     return board.blocks[className];
   };
 
-  this.getHead = function () {
-    return this.getBlocks()[0];
-  };
+  this.getHead = () => this.getBlocks()[0];
 
-  this.getTail = function () {
-    let blocks = this.getBlocks();
+  this.getTail = () => this.getBlocks().slice(-1)[0];
 
-    return blocks[blocks.length - 1];
-  };
+  this.getHeadPosition = () => board.blockPosition(this.getHead());
 
-  this.getHeadPosition = function () {
-    return unit.position(this.getHead());
-  };
-
-  this.getTailPosition = function () {
-    return unit.position(this.getTail());
-  };
+  this.getTailPosition = () => board.blockPosition(this.getTail());
 
   // use last tail as new head
   this.useTailAsHead = function (position, className = this.classBody) {
@@ -66,7 +56,7 @@ function Snake() {
       board.addBlock(this.classBody, this.getTailPosition());
     }
 
-    this.score += this.scoreIncrement;
+    status.updateScore(this.score);
   };
 
   this.move = function () {
@@ -115,9 +105,9 @@ function Snake() {
     return this.getBlocks().some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
-      const blockPosition = unit.position(block);
+      const blockPosition = board.blockPosition(block);
 
-      return unit.isEqual(blockPosition, position);
+      return isEqual(blockPosition, position);
     });
   };
 
@@ -130,6 +120,7 @@ function Snake() {
   this.checkApple = function () {
     if (apple.onApple(this.getHeadPosition())) {
       this.newSegments++;
+      this.score += this.scoreIncrement;
       apple.random();
     }
   };
