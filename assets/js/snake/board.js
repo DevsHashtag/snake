@@ -1,4 +1,4 @@
-import { COLUMN_LINES, ROW_LINES, BLOCK_SIZE, BLOCK_MARGIN, CLASS_NAMES } from './settings.js';
+import { COLUMN_LINES, ROW_LINES, BLOCK_SIZE, BLOCK_GAP, CLASS_NAMES } from './settings.js';
 import { dom } from './app.js';
 
 function Board() {
@@ -9,7 +9,7 @@ function Board() {
 
   this.block = {
     size: BLOCK_SIZE,
-    margin: BLOCK_MARGIN,
+    gap: BLOCK_GAP,
   };
 
   this.width = this.columns * this.block.size;
@@ -23,7 +23,7 @@ function Board() {
   };
 
   this.addBlock = function (className, position) {
-    const size = this.block.size - this.block.margin;
+    const size = this.block.size - this.block.gap;
 
     let blockElement = dom.addElement(className);
 

@@ -13,7 +13,7 @@ export const COLUMN_LINES = 40;
 export const ROW_LINES = 30;
 
 export const BLOCK_SIZE = 20;
-export const BLOCK_MARGIN = 2;
+export const BLOCK_GAP = 2;
 
 export const CLASS_NAMES = {
   container: 'container',
