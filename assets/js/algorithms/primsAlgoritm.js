@@ -10,8 +10,8 @@ function PrimsAlgorithm() {
     this.edges = this.createEdges();
     this.finalEdges = this.createFinalEdges();
 
-    this.drawNodes();
-    this.drawEdges();
+    // this.drawNodes();
+    // this.drawEdges();
   };
 
   // nodes: split grid into 2x2 blocks
