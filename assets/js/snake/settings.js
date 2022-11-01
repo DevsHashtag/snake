@@ -9,8 +9,8 @@ export const FPS_STEP = 2;
 export const GAME_PAUSE = false;
 
 // grid
-export const COLUMN_LINES = 16;
-export const ROW_LINES = 14;
+export const COLUMN_LINES = 24;
+export const ROW_LINES = 18;
 
 export const BLOCK_SIZE = 30;
 export const BLOCK_GAP = 2;
