@@ -1,7 +1,7 @@
 export const mainElement = document.querySelector('main.snake-game');
 
 // game
-export const FPS = 14;
+export const FPS = 30;
 export const FPS_MIN = 10;
 export const FPS_MAX = 60;
 export const FPS_STEP = 2;
@@ -9,10 +9,10 @@ export const FPS_STEP = 2;
 export const GAME_PAUSE = false;
 
 // grid
-export const COLUMN_LINES = 40;
-export const ROW_LINES = 30;
+export const COLUMN_LINES = 16;
+export const ROW_LINES = 14;
 
-export const BLOCK_SIZE = 20;
+export const BLOCK_SIZE = 30;
 export const BLOCK_GAP = 2;
 
 export const CLASS_NAMES = {
