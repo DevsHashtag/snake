@@ -106,7 +106,7 @@ function PrimsAlgorithm() {
 
   this.drawNodes = function () {
     for (const [index, node] of this.nodes.entries()) {
-      const block = this.board.addBlock('grid-nodes', structuredClone(node));
+      const block = this.board.addBlock('grid-nodes', { ...node });
 
       block.innerText = index.toString();
     }
@@ -118,8 +118,8 @@ function PrimsAlgorithm() {
     const offset = 1 / (size * 2);
 
     for (const edge of this.finalEdges) {
-      let start = structuredClone(this.nodes[edge.startNode]);
-      let end = structuredClone(this.nodes[edge.endNode]);
+      let start = { ...this.nodes[edge.startNode] };
+      let end = { ...this.nodes[edge.endNode] };
 
       let width = Math.abs(start.x - end.x) * blockSize || blockSize / size;
       let height = Math.abs(start.y - end.y) * blockSize || blockSize / size;

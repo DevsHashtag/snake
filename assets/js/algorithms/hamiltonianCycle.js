@@ -27,8 +27,8 @@ function HamiltonianCycle() {
     let points = [];
 
     for (const edge of this.finalEdges) {
-      const start = structuredClone(this.nodes[edge.startNode]);
-      const end = structuredClone(this.nodes[edge.endNode]);
+      const start = { ...this.nodes[edge.startNode] };
+      const end = { ...this.nodes[edge.endNode] };
 
       const midX = Math.floor((start.x + end.x) / 2);
       const midY = Math.floor((start.y + end.y) / 2);
