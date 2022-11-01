@@ -1,6 +1,6 @@
 import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
 
-import { dom, status, board, snake, apple } from './app.js';
+import { dom, status, board, snake, apple, ai } from './app.js';
 
 function Game() {
   this.fps = FPS;
@@ -50,6 +50,7 @@ function Game() {
   };
 
   this.update = function () {
+    ai.snakeBrain();
     snake.render();
 
     this.checkGameOver();
@@ -62,6 +63,7 @@ function Game() {
     board.init();
     apple.init();
     snake.init();
+    ai.init();
 
     this.keydown((key) => {
       // game keys
