@@ -42,6 +42,12 @@
   /* message colors */
   --fg-message-win: #67be44;
   --fg-message-gameover: #be4444;
+
+  /* algorithms */
+  --bg-grid-nodes: #15202b99;
+  --bg-grid-line1: #75345a;
+  --bg-grid-line2: #2e5a6b;
+  --bg-grid-line3: #506822;
 }
 
 html {
@@ -187,4 +193,59 @@ main.snake-game .container > *:first-child {
 .board .message-gameover {
   color: var(--fg-message-gameover);
   text-shadow: 0 0 1rem var(--fg-message-gameover);
+}
+
+/* algorithms */
+/* nodes */
+.board .grid-nodes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform: translateX(-1.25rem) translateY(-1.25rem);
+
+  color: #b0bd81;
+
+  transition: all 0.5s;
+  border-radius: 5rem;
+  font-size: 1rem;
+
+  position: absolute;
+
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+
+  background-color: var(--bg-grid-nodes);
+
+  z-index: 1;
+}
+
+.board .grid-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #a19a8a;
+
+  line-height: 1.5;
+  word-spacing: 0.2rem;
+
+  text-align: center;
+  font-size: 1rem;
+
+  position: absolute;
+
+  background-color: var(--bg-grid-line1);
+}
+
+.grid-line.line-1 {
+  background-color: var(--bg-grid-line1);
+}
+
+.grid-line.line-2 {
+  background-color: var(--bg-grid-line2);
+}
+
+.grid-line.line-3 {
+  background-color: var(--bg-grid-line3);
 }
