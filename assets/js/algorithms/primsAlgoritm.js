@@ -114,7 +114,7 @@ function PrimsAlgorithm() {
 
   this.drawEdges = function () {
     const blockSize = this.board.block.size;
-    const size = 100;
+    const size = 10;
     const offset = 1 / (size * 2);
 
     for (const edge of this.finalEdges) {
@@ -128,9 +128,9 @@ function PrimsAlgorithm() {
       start.y -= offset;
 
       if (width == blockSize / size) {
-        height += blockSize / size;
+        height += offset;
       } else {
-        width += blockSize / size;
+        width += offset;
       }
 
       let block = this.board.addBlock(['grid-line', `line-${edge.weight}`], start);
