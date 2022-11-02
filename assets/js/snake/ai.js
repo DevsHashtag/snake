@@ -12,10 +12,8 @@ function Ai() {
     const hamiltonian = new HamiltonianCycle();
     hamiltonian.init(dom, board);
 
-    const headPosition = snake.getHeadPosition();
-
     this.cycle = hamiltonian.cycle;
-    this.index = this.cycle.findIndex((point) => isEqual(headPosition, point));
+    this.index = this.cycle.findIndex((point) => isEqual(snake.getHeadPosition(), point));
 
     this.snakeDirs = {
       up: snake.keys.up[0],
@@ -26,7 +24,9 @@ function Ai() {
   };
 
   this.snakeBrain = function () {
-    let headPosition = snake.getHeadPosition();
+    const headPosition = snake.getHeadPosition();
+    const snakeLength = snake.getBlocks().length;
+    const gridSize = this.gridSize;
 
     // go next or reset cycle, set direction
     if (isEqual(headPosition, this.cycle[this.index])) {
@@ -35,19 +35,25 @@ function Ai() {
       if (this.index == this.cycle.length) this.index = 0;
     }
 
-    const snakeLength = snake.getBlocks().length;
     const index = this.index;
-    const gridSize = this.gridSize;
-
     const { apple: appleIndex, tail: tailIndex, neighbors } = this.getCycleIndexes();
 
-    // console.log(appleIndex, tailIndex, moves, index, gridSize, snakeLength);
-
     // hamiltonian cycle rules [for snake game]
-    if (snakeLength < Math.floor(gridSize / 1.8)) {
-      let newIndex = -1;
+    let newIndex = -1;
 
-      if (appleIndex > index && snakeLength < Math.floor(gridSize / 3)) {
+    if (snakeLength < Math.floor(gridSize / 1.8)) {
+      const modeLimit = snakeLength < Math.floor(gridSize / 2);
+
+      // apple before snake head
+      if (appleIndex < tailIndex && tailIndex < index && modeLimit) {
+        for (const neighbor of neighbors) {
+          if (neighbor < appleIndex && neighbor > newIndex) {
+            newIndex = neighbor;
+          } else if (neighbor > index) {
+            newIndex = neighbor;
+          }
+        }
+      } else if (appleIndex > index && modeLimit) {
         for (const neighbor of neighbors) {
           if (neighbor > index && neighbor < appleIndex && neighbor > newIndex) {
             if (tailIndex > index) {
@@ -122,7 +128,8 @@ function Ai() {
     for (const [index, pos] of this.cycle.entries()) {
       if (isEqual(applePos, pos)) cycleIndexes.apple = index;
       else if (isEqual(tailPos, pos)) cycleIndexes.tail = index;
-      else if (isEqual(neighbors.up, pos)) cycleIndexes.neighbors.push(index);
+
+      if (isEqual(neighbors.up, pos)) cycleIndexes.neighbors.push(index);
       else if (isEqual(neighbors.down, pos)) cycleIndexes.neighbors.push(index);
       else if (isEqual(neighbors.left, pos)) cycleIndexes.neighbors.push(index);
       else if (isEqual(neighbors.right, pos)) cycleIndexes.neighbors.push(index);
