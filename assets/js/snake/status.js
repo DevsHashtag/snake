@@ -15,7 +15,7 @@ function Status() {
       this.renderStatusLabel(key, STATUS_LABEL[key]);
     }
 
-    this.updateFPS(game.fps);
+    this.updateSpeed(game.speed);
   };
 
   this.renderStatusLabel = function (className, text) {
@@ -40,7 +40,7 @@ function Status() {
     this.updateLabel(text, label);
   };
 
-  this.updateFPS = function (text, label = 'fps') {
+  this.updateSpeed = function (text, label = 'speed') {
     this.updateLabel(text, label);
   };
 
@@ -50,7 +50,7 @@ function Status() {
 
   this.playState = function () {
     this.updateState('playing');
-    this.updateFPS(game.fps);
+    this.updateSpeed(game.speed);
   };
 
   this.gameOverState = function () {

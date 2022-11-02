@@ -1,15 +1,15 @@
 export const mainElement = document.querySelector('main.snake-game');
 
 // game
-export const FPS = 30;
-export const FPS_MIN = 10;
-export const FPS_MAX = 60;
-export const FPS_STEP = 2;
+export const SPEED = 30;
+export const SPEED_MIN = 5;
+export const SPEED_MAX = 60;
+export const SPEED_STEP = 2;
 
 export const GAME_PAUSE = false;
 
 // grid
-export const COLUMN_LINES = 24;
+export const COLUMN_LINES = 26;
 export const ROW_LINES = 18;
 
 export const BLOCK_SIZE = 30;
@@ -40,7 +40,7 @@ export const SCORE_INCREMENT = 1;
 export const FOOD_POSITION = { random: true };
 
 // Snake
-export const SNAKE_LENGTH = 4;
+export const SNAKE_LENGTH = 40;
 export const SNAKE_POSITION = { center: true };
 export const SNAKE_DIRECTION = 'pause';
 export const SNAKE_KEYS = {
@@ -54,5 +54,5 @@ export const SNAKE_KEYS = {
 export const STATUS_LABEL = {
   state: GAME_PAUSE ? 'pause' : 'playing',
   score: 0,
-  fps: 0,
+  speed: 0,
 };

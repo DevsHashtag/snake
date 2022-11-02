@@ -1,30 +1,31 @@
-import { FPS, FPS_STEP, FPS_MIN, FPS_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
+import { SPEED, SPEED_STEP, SPEED_MIN, SPEED_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
 
 import { dom, status, board, snake, apple, ai } from './app.js';
 
 function Game() {
-  this.fps = FPS;
+  this.speed = SPEED;
   this.pause = GAME_PAUSE;
 
-  this.requestLoopId = null;
+  this.requestLoopId;
   this.lastRenderTime = 0;
 
   this.gameOver = false;
 
   this.keys = {
     '+': () => {
-      if (this.fps < FPS_MAX) this.fps += FPS_STEP;
-      if (this.fps > FPS_MAX) this.fps = FPS_MAX;
-
-      status.updateFPS(this.fps);
+      if (this.speed < SPEED_MAX) this.speed += SPEED_STEP;
+      if (this.speed > SPEED_MAX) this.speed = SPEED_MAX;
+      status.updateSpeed(this.speed);
     },
     '-': () => {
-      if (this.fps > FPS_MIN) this.fps -= FPS_STEP;
-      if (this.fps < FPS_MIN) this.fps = FPS_MIN;
-
-      status.updateFPS(this.fps);
+      if (this.speed > SPEED_MIN) this.speed -= SPEED_STEP;
+      if (this.speed < SPEED_MIN) this.speed = SPEED_MIN;
+      status.updateSpeed(this.speed);
     },
-    0: () => (this.fps = FPS),
+    0: () => {
+      this.speed = SPEED;
+      status.updateSpeed(this.speed);
+    },
     p: () => this.pauseToggle(),
     Escape: () => this.pauseToggle(),
   };
@@ -43,7 +44,7 @@ function Game() {
     this.loop();
 
     // TODO: move lastRenderTime after update and check performance
-    if (timestamp - this.lastRenderTime < 1000 / this.fps) return;
+    if (timestamp - this.lastRenderTime < 1000 / this.speed) return;
     this.lastRenderTime = timestamp;
 
     this.update();
