@@ -24,15 +24,15 @@
   /* status bar */
   --bg-status: #0c1219ee;
   --bg-status-border: var(--bg);
-  --fg-status-label: #789995;
-  --fg-status-text: #57994a;
+  --fg-status-label: #989978;
+  --fg-status-text: #22b481;
 
   /* snake */
   --bg-snake-body: #456264;
-  --bg-snake-head: #21a970;
+  --bg-snake-head: #5b9dd6;
 
   /* apple */
-  --bg-apple: #ac283b;
+  --bg-apple: #d1293d;
   --bg-apple-moving: var(--bg-container);
 
   /* messages */
