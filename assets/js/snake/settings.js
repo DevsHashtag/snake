@@ -1,10 +1,10 @@
 export const mainElement = document.querySelector('main.snake-game');
 
 // game
-export const SPEED = 30;
+export const SPEED = 15;
 export const SPEED_MIN = 5;
-export const SPEED_MAX = 60;
-export const SPEED_STEP = 2;
+export const SPEED_MAX = 100;
+export const SPEED_STEP = 5;
 
 export const GAME_PAUSE = false;
 
@@ -40,7 +40,7 @@ export const SCORE_INCREMENT = 1;
 export const FOOD_POSITION = { random: true };
 
 // Snake
-export const SNAKE_LENGTH = 40;
+export const SNAKE_LENGTH = 4;
 export const SNAKE_POSITION = { center: true };
 export const SNAKE_DIRECTION = 'pause';
 export const SNAKE_KEYS = {
