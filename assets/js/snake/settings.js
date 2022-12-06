@@ -1,4 +1,5 @@
 export const mainElement = document.querySelector('main.snake-game');
+const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 // game
 export const SPEED = 30;
@@ -12,7 +13,7 @@ export const GAME_PAUSE = false;
 export const COLUMN_LINES = 10;
 export const ROW_LINES = 8;
 
-export const BLOCK_SIZE = 50;
+export const BLOCK_SIZE = isMobile ? 25 : 50;
 export const BLOCK_GAP = 2;
 
 export const CLASS_NAMES = {

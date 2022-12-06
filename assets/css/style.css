@@ -51,7 +51,19 @@
 }
 
 html {
-  font-size: 0.625rem;
+  font-size: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 0.625rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 0.6875rem;
+  }
 }
 
 body {
