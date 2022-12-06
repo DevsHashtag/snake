@@ -1,7 +1,7 @@
 export const mainElement = document.querySelector('main.snake-game');
 
 // game
-export const SPEED = 15;
+export const SPEED = 30;
 export const SPEED_MIN = 5;
 export const SPEED_MAX = 100;
 export const SPEED_STEP = 5;
@@ -9,10 +9,10 @@ export const SPEED_STEP = 5;
 export const GAME_PAUSE = false;
 
 // grid
-export const COLUMN_LINES = 26;
-export const ROW_LINES = 18;
+export const COLUMN_LINES = 10;
+export const ROW_LINES = 8;
 
-export const BLOCK_SIZE = 30;
+export const BLOCK_SIZE = 50;
 export const BLOCK_GAP = 2;
 
 export const CLASS_NAMES = {
@@ -53,6 +53,6 @@ export const SNAKE_KEYS = {
 // status bar
 export const STATUS_LABEL = {
   state: GAME_PAUSE ? 'pause' : 'playing',
-  score: 0,
-  speed: 0,
+  score: SCORE_INIT,
+  speed: SPEED,
 };
