@@ -35,28 +35,35 @@ function Ai() {
       if (this.index == this.cycle.length) this.index = 0;
     }
 
-    const index = this.index;
-    const { apple: appleIndex, tail: tailIndex, neighbors } = this.getCycleIndexes();
-
     // hamiltonian cycle rules [for snake game]
-    let newIndex = -1;
-
     if (snakeLength < Math.floor(gridSize / 1.8)) {
+      const index = this.index;
       const modeLimit = snakeLength < Math.floor(gridSize / 2);
+      const { apple: appleIndex, tail: tailIndex, neighbors } = this.getCycleIndexes();
 
-      // apple before snake head
+      let newIndex = index;
+
+      // apple < tail < head && modelimit
       if (appleIndex < tailIndex && tailIndex < index && modeLimit) {
         for (const neighbor of neighbors) {
+          // neighbor < apple && neighbor > newhead
           if (neighbor < appleIndex && neighbor > newIndex) {
             newIndex = neighbor;
-          } else if (neighbor > index) {
+          }
+          // neighbor > head
+          else if (neighbor > index) {
             newIndex = neighbor;
           }
         }
-      } else if (appleIndex > index && modeLimit) {
+      }
+      // apple > head && modelimit
+      else if (appleIndex > index && modeLimit) {
         for (const neighbor of neighbors) {
+          // neighbor > head && neighbor < apple && neighbor > newhead
           if (neighbor > index && neighbor < appleIndex && neighbor > newIndex) {
+            // tail > head
             if (tailIndex > index) {
+              // neighbor < tail
               if (neighbor < tailIndex) {
                 newIndex = neighbor;
               }
@@ -65,15 +72,22 @@ function Ai() {
             }
           }
         }
-      } else if (appleIndex > index && ((tailIndex > appleIndex && tailIndex > index) || (tailIndex < appleIndex && tailIndex < index))) {
+      }
+      // apple > head && (tail > apple && tail > head) || ( tail < apple && tail < head0)
+      else if (appleIndex > index && ((tailIndex > appleIndex && tailIndex > index) || (tailIndex < appleIndex && tailIndex < index))) {
         for (const neighbor of neighbors) {
+          // neighbor > head && neighbor < apple && neighbor > newhead
           if (neighbor > index && neighbor < appleIndex && neighbor > newIndex) {
             newIndex = neighbor;
           }
         }
-      } else if (appleIndex < index) {
+      }
+      // apple < head
+      else if (appleIndex < index) {
         for (const neighbor of neighbors) {
+          // neighbor > head && neighbor > newhead
           if (neighbor > index && neighbor > newIndex) {
+            // tail > head && neighbor < tail
             if (tailIndex > index && neighbor < tailIndex) {
               newIndex = neighbor;
             }
@@ -83,7 +97,7 @@ function Ai() {
         }
       }
 
-      if (newIndex != -1) {
+      if (newIndex != index) {
         this.index = newIndex;
       }
     }
