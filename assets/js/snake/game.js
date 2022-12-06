@@ -75,8 +75,8 @@ function Game() {
 
       if (this.pause || this.gameOver) return;
 
-      // snake keys
-      snake.setDirection(key);
+      // snake keys (user controls)
+      // snake.setDirection(key);
     });
 
     if (!this.pause) this.loop();
