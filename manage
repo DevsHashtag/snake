@@ -13,7 +13,7 @@
 - [ ] responsive board
 - [ ] controls for mobile
 - [ ] is it good to style block classes ?
-- [ ] display snake score
+- [x] display snake score
 
 # game.js
 
@@ -27,7 +27,7 @@
 # snake.js
 
 - [x] eat apple
-- [ ] score
+- [x] score
 - [x] fix reverse movement
 - [ ] fix movement speed
 
@@ -37,6 +37,8 @@
 - [x] random position
 - [x] add
 - [x] move
+
+# global
 
 - [ ] make modules independ
 - [ ] check every module and refactor it for last time
