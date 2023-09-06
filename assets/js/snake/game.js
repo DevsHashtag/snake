@@ -1,5 +1,13 @@
 import CONFIG from './settings.js';
 
+import Board from './board.js';
+import Apple from './apple.js';
+import Snake from './snake.js';
+
+export const board = new Board();
+export const apple = new Apple();
+export const snake = new Snake();
+
 function Game() {
   this.isPause = CONFIG.pause;
   this.speed = CONFIG.speed.init;
@@ -11,6 +19,11 @@ function Game() {
   this.isGameOver = false;
 
   this.init = function () {
+    // inialize
+    board.init();
+    apple.init();
+    snake.init();
+
     // handel keys
     window.onkeydown = (e) => this.keydown(e.key);
 
@@ -45,7 +58,8 @@ function Game() {
         if (!this.isGameOver && !this.isPause) this.loop();
         break;
 
-      // other keys
+      default:
+        snake.setDirection(key);
     }
   };
 
@@ -68,10 +82,13 @@ function Game() {
     this.loop();
 
     if (time - this.lastRenderTime < 1000 / this.speed) return;
-    console.timeEnd('time');
 
     this.lastRenderTime = time;
-    console.time('time');
+    this.update();
+  };
+
+  this.update = function () {
+    snake.render();
   };
 
   this.checkGameOver = function () {
