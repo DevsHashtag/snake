@@ -1,5 +1,7 @@
 import CONFIG from './settings.js';
 
+import { snake } from './game.js';
+
 function Board() {
   this.columns = CONFIG.board.columns;
   this.rows = CONFIG.board.rows;
@@ -110,8 +112,7 @@ function Board() {
   };
 
   this.freePositions = function () {
-    // TODO: snake blocks
-    const blocks = [];
+    const blocks = snake.blocks;
 
     // check if no space is free
     if (blocks.length >= this.columns * this.rows) return false;
