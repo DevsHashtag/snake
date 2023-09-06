@@ -13,7 +13,7 @@ function Apple() {
     board.setBlockPosition(this.block, { random: true });
   };
 
-  this.animation = function (duration = 500) {
+  this.animation = function (duration = 200) {
     this.block.style.backgroundColor = 'var(--bg-apple-moving)';
 
     setTimeout(() => {
