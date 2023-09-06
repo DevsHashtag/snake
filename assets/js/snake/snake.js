@@ -117,12 +117,17 @@ function Snake() {
     for (const direction in this.keys) {
       if (this.keys[direction].includes(key)) {
         // fix reverse movement
-        // if both key is in x or y direction ignore it
-        if (horizontal.includes(direction) && horizontal.includes(this.lastDirection)) return;
-        if (vertical.includes(direction) && vertical.includes(this.lastDirection)) return;
+        // if both key is same or in same direction ignore it
+        const isSameHorizontal = horizontal.includes(direction) && horizontal.includes(this.lastDirection);
+        const isSameVertical = vertical.includes(direction) && vertical.includes(this.lastDirection);
+
+        if (isSameHorizontal || isSameVertical) {
+          this.direction = this.lastDirection;
+          return;
+        }
 
         this.direction = direction; // direction: up, down, left, right
-        break;
+        return;
       }
     }
   };

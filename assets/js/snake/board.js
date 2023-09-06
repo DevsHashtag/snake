@@ -125,7 +125,6 @@ function Board() {
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.columns; x++) {
         if (blocksPosition.some((pos) => pos.x == x && pos.y == y)) {
-          console.log({ x, y });
           continue;
         }
 
