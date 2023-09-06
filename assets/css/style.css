@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  /* main */
+  --bg: #111314;
+  --fg: #b3b8c4;
+
+  /* container */
+  --bg-container: #101010;
+  --bg-container-border: #323c46;
+}
+
+html {
+  font-size: 0.625rem;
+}
+
+body {
+  height: 100vh;
+}
+
+main.snake-game {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 1.6rem;
+
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+main.snake-game .container {
+  background-color: var(--bg-container);
+
+  width: 50%;
+  height: 70%;
+  display: grid;
+  place-items: center;
+
+  border: 0.5rem solid var(--bg-container-border);
+  border-radius: 0.2rem;
+}
