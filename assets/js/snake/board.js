@@ -16,8 +16,10 @@ function Board() {
     this.boardElement = document.getElementById('board');
 
     // board size
-    this.boardElement.style.width = this.toPixel(this.width);
-    this.boardElement.style.height = this.toPixel(this.height);
+    this.setSize(this.boardElement, {
+      width: this.width,
+      height: this.height,
+    });
   };
 
   this.addElement = function (className, parent = this.boardElement) {
@@ -56,6 +58,18 @@ function Board() {
     }
 
     this.boardElement.removeChild(block);
+    return true;
+  };
+
+  this.setSize = function (element, { width, height } = {}) {
+    if (!width || !height) {
+      console.error(element, 'invalid size', width, height, '!');
+      return false;
+    }
+
+    element.style.width = this.toPixel(width);
+    element.style.height = this.toPixel(height);
+
     return true;
   };
 
