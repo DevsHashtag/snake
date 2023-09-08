@@ -4,7 +4,7 @@ const CONFIG = {
   pause: false,
 
   speed: {
-    init: 15,
+    init: 20,
     step: 5,
     min: 5,
     max: 120,
@@ -25,11 +25,11 @@ const CONFIG = {
   },
 
   board: {
-    columns: isMobile ? 30 : 46,
-    rows: isMobile ? 20 : 30,
+    columns: isMobile ? 30 : 30,
+    rows: isMobile ? 20 : 20,
     gap: 1,
 
-    blockSize: isMobile ? 10 : 15,
+    blockSize: isMobile ? 15 : 20,
   },
 
   snake: {
