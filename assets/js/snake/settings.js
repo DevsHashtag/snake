@@ -1,13 +1,11 @@
-const isMobile = window.matchMedia('(max-width: 600px)').matches;
-
 const CONFIG = {
   pause: false,
 
   speed: {
-    init: 20,
-    step: 5,
-    min: 5,
-    max: 120,
+    init: 10,
+    step: 8,
+    min: 4,
+    max: 128,
   },
 
   keys: {
@@ -25,11 +23,11 @@ const CONFIG = {
   },
 
   board: {
-    columns: isMobile ? 30 : 30,
-    rows: isMobile ? 20 : 20,
-    gap: 1,
+    columns: 10,
+    rows: 8,
+    gap: 0.1,
 
-    blockSize: isMobile ? 15 : 20,
+    blockSize: 2.5,
   },
 
   snake: {
