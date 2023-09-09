@@ -1,9 +1,9 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
@@ -17,128 +17,107 @@
 
   /* snake */
   --bg-snake-body: #636769;
-  --bg-snake-head: #54c395;
+  --bg-snake-head: #b5cbd1;
 
   /* apple */
   --bg-apple: #da3b3b;
   --bg-apple-moving: var(--bg-container);
 
-  /* algorithms */
-  --bg-grid-nodes: #15202b99;
-  --bg-grid-line1: #75345a;
-  --bg-grid-line2: #2e5a6b;
-  --bg-grid-line3: #506822;
+  --apple-duration: 0.3s;
 }
 
 html {
+  height: 100%;
+
   font-size: 0.625rem;
 }
 
 body {
-  height: 100vh;
-}
-
-main.snake-game {
-  display: grid;
-  place-items: center;
   height: 100%;
-
-  font-size: 1.6rem;
-
   background-color: var(--bg);
   color: var(--fg);
 
-  overflow: hidden;
+  font-size: 1.6rem;
+}
+
+main.snake-game {
+  height: 100%;
 }
 
 main.snake-game .container {
-  background-color: var(--bg-container);
-  border: 0.3rem solid var(--bg-container-border);
-  border-radius: 0.5rem;
+  margin: 0 auto;
+  max-width: 192rem;
+  display: grid;
+  place-items: center;
+  height: 100%;
 }
 
-main.snake-game #board {
+main.snake-game .board {
   position: relative;
+  background-color: var(--bg-container);
+  border: 0.15rem solid var(--bg-container-border);
+
+  border-radius: 0.2rem;
 }
 
 /* blocks */
-
 /* snake body, snake apple */
 .board .snake-body,
-.board .snake-head,
 .board .apple {
   position: absolute;
   background-color: var(--bg-snake-body);
-  border-radius: 0.2rem;
+
+  border-radius: 0.1rem;
   aspect-ratio: 1;
 }
 
 /* snake head */
 .board .snake-head {
   background-color: var(--bg-snake-head);
-  box-shadow: 0 0 0.2em var(--bg-snake-head);
+  box-shadow: 0 0 0.3rem var(--bg-snake-head);
   z-index: 2;
 }
 
 /* snake apple */
 .board .apple {
   background-color: var(--bg-apple);
-  box-shadow: 0 0 0.2em var(--bg-apple);
-  transition: all 0.2s;
+  box-shadow: 0 0 0.3rem var(--bg-apple);
+  transition: backgroundColor var(--apple-duration), top var(--apple-duration), left var(--apple-duration);
   z-index: 1;
 }
 
-/* algorithms */
-/* nodes */
-.board .grid-nodes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transform: translateX(-1.25rem) translateY(-1.25rem);
-
-  color: #b0bd81;
-
-  transition: all 0.5s;
-  border-radius: 5rem;
-  font-size: 1rem;
-
-  position: absolute;
-
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-
-  background-color: var(--bg-grid-nodes);
-
-  z-index: 1;
+@media (min-width: 576px) {
+  html {
+    font-size: 0.6875rem;
+  }
 }
 
-.board .grid-line {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: #a19a8a;
-
-  line-height: 1.5;
-  word-spacing: 0.2rem;
-
-  text-align: center;
-  font-size: 1rem;
-
-  position: absolute;
-
-  background-color: var(--bg-grid-line1);
+@media (min-width: 768px) {
+  html {
+    font-size: 0.75rem;
+  }
 }
 
-.grid-line.line-1 {
-  background-color: var(--bg-grid-line1);
+@media (min-width: 992px) {
+  html {
+    font-size: 0.8125rem;
+  }
 }
 
-.grid-line.line-2 {
-  background-color: var(--bg-grid-line2);
+@media (min-width: 1200px) {
+  html {
+    font-size: 0.875rem;
+  }
 }
 
-.grid-line.line-3 {
-  background-color: var(--bg-grid-line3);
+@media (min-width: 1400px) {
+  html {
+    font-size: 0.9375rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 1rem;
+  }
 }
