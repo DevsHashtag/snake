@@ -7,9 +7,16 @@
 }
 
 :root {
+  /* header */
+  --bg-header: #111314;
+  --sz-header-height: 6rem;
+
+  --bg-navbar-toggle: #97c8ff;
+
   /* main */
   --bg: #101010;
   --fg: #b3b8c4;
+  --fg-number: #97c8ff;
 
   /* container */
   --bg-container: #111314;
@@ -37,11 +44,108 @@ body {
   background-color: var(--bg);
   color: var(--fg);
 
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
-main.snake-game {
+/* header */
+header.header {
+  height: var(--sz-header-height);
+}
+
+.header__container {
+  background-color: var(--bg-header);
+
   height: 100%;
+  margin: 0 auto;
+  max-width: 192rem;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.header__status {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: capitalize;
+  gap: 5rem;
+}
+
+.header__status span {
+  color: var(--fg-number);
+}
+
+.navbar-toggle {
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.navbar-toggle .toggle-icon {
+  position: relative;
+  display: inline-block;
+
+  width: 2rem;
+  height: 0.3rem;
+  border-radius: 0.1rem;
+  background-color: var(--bg-navbar-toggle);
+  transition: all 0.5s;
+}
+
+.navbar-toggle .toggle-icon::after,
+.navbar-toggle .toggle-icon::before {
+  content: '';
+  position: absolute;
+
+  width: 2rem;
+  height: 0.3rem;
+  border-radius: 0.1rem;
+  background-color: var(--bg-navbar-toggle);
+  transition: all 0.5s;
+}
+
+.navbar-toggle .toggle-icon::before {
+  top: -0.6rem;
+}
+
+.navbar-toggle .toggle-icon::after {
+  top: 0.6rem;
+}
+
+.navbar-toggle.active .toggle-icon {
+  background-color: transparent;
+}
+
+.navbar-toggle.active .toggle-icon::before {
+  -webkit-transform: translateY(6px) rotateZ(-45deg);
+  transform: translateY(6px) rotateZ(-45deg);
+}
+
+.navbar-toggle.active .toggle-icon::after {
+  -webkit-transform: translateY(-6px) rotateZ(45deg);
+  transform: translateY(-6px) rotateZ(45deg);
+}
+
+.screen-overlay {
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: all 0.5s;
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  top: 65px;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+/* main */
+main.snake-game {
+  height: calc(100% - var(--sz-header-height));
   overflow: hidden;
 }
 

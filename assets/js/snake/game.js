@@ -88,6 +88,8 @@ class Game {
 
   update() {
     snake.render();
+    board.updateScore(snake.score);
+    board.updateSpeed(this.speed);
   }
 
   checkGameOver() {

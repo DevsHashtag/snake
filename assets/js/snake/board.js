@@ -14,6 +14,8 @@ class Board {
     this.height = this.rows * this.blockSize;
 
     this.boardElement = document.getElementById('board');
+    this.scoreElement = document.getElementById('score');
+    this.speedElement = document.getElementById('speed');
 
     // board size
     this.setSize(this.boardElement, {
@@ -161,6 +163,15 @@ class Board {
     const horizontal = 0 <= x && x < this.columns;
 
     return vertical && horizontal;
+  }
+
+  // status
+  updateScore(score) {
+    this.scoreElement.innerText = score.toString();
+  }
+
+  updateSpeed(speed) {
+    this.speedElement.innerText = speed.toString();
   }
 }
 
