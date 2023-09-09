@@ -5,35 +5,32 @@ import Apple from './apple.js';
 import Snake from './snake.js';
 
 export const board = new Board();
-export const apple = new Apple();
 export const snake = new Snake();
+export const apple = new Apple();
 
-function Game() {
-  this.isPause = CONFIG.pause;
-  this.speed = CONFIG.speed.init;
-  this.keys = CONFIG.keys;
+class Game {
+  constructor() {
+    this.isPause = CONFIG.pause;
+    this.speed = CONFIG.speed.init;
+    this.keys = CONFIG.keys;
 
-  this.requestLoopId;
-  this.lastRenderTime = 0;
+    this.requestLoopId;
+    this.lastRenderTime = 1000; // 1sec delay in start
 
-  this.isGameOver = false;
+    this.isGameOver = false;
+  }
 
-  this.init = function () {
-    // inialize
-    board.init();
-    apple.init();
-    snake.init();
-
+  run() {
     // handel keys
     window.onkeydown = (e) => this.keydown(e.key);
 
     // start game
     if (!this.isGameOver && !this.isPause) {
-      setTimeout(this.loop, 1000);
+      this.loop();
     }
-  };
+  }
 
-  this.keydown = function (key) {
+  keydown(key) {
     const step = CONFIG.speed.step;
     const max = CONFIG.speed.max;
     const min = CONFIG.speed.min;
@@ -61,43 +58,45 @@ function Game() {
       default:
         snake.setDirection(key);
     }
-  };
+  }
 
-  this.loop = () => {
+  loop() {
     if (this.isGameOver || this.isPause) {
       this.stop();
       return;
     }
 
-    this.requestLoopId = window.requestAnimationFrame(this.main);
-  };
+    this.requestLoopId = window.requestAnimationFrame((time) => {
+      this.main(time);
+    });
+  }
 
-  this.stop = function () {
+  stop() {
     if (!this.requestLoopId) return;
 
     window.cancelAnimationFrame(this.requestLoopId);
-  };
+  }
 
-  this.main = (time) => {
+  main(time) {
     this.loop();
 
     if (time - this.lastRenderTime < 1000 / this.speed) return;
-
     this.lastRenderTime = time;
+
     this.update();
-  };
+  }
 
-  this.update = function () {
+  update() {
     snake.render();
-  };
+  }
 
-  this.checkGameOver = function () {
+  checkGameOver() {
     // TODO
-  };
+  }
 
-  this.checkWin = function () {
+  checkWin() {
     // TODO
-  };
+  }
 }
 
 export default Game;
