@@ -77,6 +77,7 @@ class Snake {
     else if (this.direction === 'right') position.x++;
     else return false; // invalid key
 
+    // dont die
     if (!board.isOnBoard(position) || this.isOnSnake(position)) return false;
 
     if (this.newSegments) {
@@ -87,7 +88,7 @@ class Snake {
     // use last tail as new head
     this.useTailAsHead(position);
 
-    // set last direction
+    // save last direction
     this.lastDirection = this.direction;
 
     return true;
