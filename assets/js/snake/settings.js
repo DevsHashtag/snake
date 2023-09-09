@@ -27,7 +27,7 @@ const CONFIG = {
     rows: 8,
     gap: 0.1,
 
-    blockSize: 2.5,
+    blockSize: 3,
   },
 
   snake: {
