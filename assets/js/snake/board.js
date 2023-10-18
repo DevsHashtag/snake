@@ -13,41 +13,38 @@ class Board {
     this.width = this.columns * this.blockSize;
     this.height = this.rows * this.blockSize;
 
+    // elements
     this.boardElement = document.getElementById('board');
     this.scoreElement = document.getElementById('score');
     this.speedElement = document.getElementById('speed');
 
-    // board size
-    this.setSize(this.boardElement, {
-      width: this.width,
-      height: this.height,
-    });
+    // set board size
+    this.setSize(this.boardElement, { width: this.width, height: this.height });
   }
 
   addElement(className, parent = this.boardElement) {
     const element = document.createElement('div');
 
-    this.setElementClass(element, className);
-    parent.appendChild(element);
-
-    return element;
-  }
-
-  setElementClass(element, className) {
     if (!className) {
       console.error(element, 'invalid class name', className, '!');
       return false;
     }
 
+    // add classname
     if (typeof className == 'string') element.classList.add(className);
     else element.classList.add(...className);
+
+    // add to dom
+    parent.appendChild(element);
+
+    return element;
   }
 
   addBlock(className, position) {
-    const size = this.blockSize - this.gap;
     const blockElement = this.addElement(className);
+    const size = this.blockSize - this.gap;
 
-    this.setBlockSize(blockElement, size);
+    this.setSize(blockElement, { width: size, height: size });
     this.setBlockPosition(blockElement, position);
 
     return blockElement;
@@ -75,17 +72,6 @@ class Board {
     return true;
   }
 
-  setBlockSize(element, size) {
-    if (!size) {
-      console.error(element, 'invalid size', size, '!');
-      return false;
-    }
-
-    element.style.width = this.toRem(size);
-
-    return true;
-  }
-
   setBlockPosition(element, position) {
     if (!position) {
       console.error(element, 'invalid position', position, '!');
@@ -103,8 +89,8 @@ class Board {
 
   getBlockPosition(block) {
     return {
-      x: parseFloat(block.style.left) / this.blockSize,
-      y: parseFloat(block.style.top) / this.blockSize,
+      x: parseInt(parseFloat(block.style.left) / this.blockSize),
+      y: parseInt(parseFloat(block.style.top) / this.blockSize),
     };
   }
 

@@ -3,10 +3,12 @@ import CONFIG from './settings.js';
 import Board from './board.js';
 import Apple from './apple.js';
 import Snake from './snake.js';
+import Ai from './ai.js';
 
 export const board = new Board();
 export const snake = new Snake();
 export const apple = new Apple();
+export const ai = new Ai();
 
 class Game {
   constructor() {
@@ -18,6 +20,9 @@ class Game {
     this.lastRenderTime = 1000; // 1sec delay in start
 
     this.isGameOver = false;
+
+    board.updateScore(snake.score);
+    board.updateSpeed(this.speed);
   }
 
   run() {
@@ -87,6 +92,7 @@ class Game {
   }
 
   update() {
+    ai.snakeBrain();
     snake.render();
     board.updateScore(snake.score);
     board.updateSpeed(this.speed);

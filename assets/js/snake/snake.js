@@ -8,9 +8,6 @@ class Snake {
     this.initPosition = CONFIG.snake.position;
     this.direction = CONFIG.snake.direction;
 
-    this.classHead = 'snake-head';
-    this.classBody = 'snake-body';
-
     this.score = CONFIG.snake.score.init;
     this.scoreIncrement = CONFIG.snake.score.increment;
 
@@ -19,6 +16,7 @@ class Snake {
     this.blocks = [];
     this.isDead = false;
     this.lastDirection = this.direction;
+    this.class = { head: 'snake-head', body: 'snake-body' };
 
     this.addSegment(this.initPosition);
   }
@@ -33,7 +31,7 @@ class Snake {
   }
 
   getTail() {
-    return this.blocks.slice(-1)[0];
+    return this.blocks.at(-1);
   }
   getHeadPosition() {
     return board.getBlockPosition(this.getHead());
@@ -44,21 +42,21 @@ class Snake {
 
   // use last tail as new head
   useTailAsHead(position) {
-    this.blocks[0].classList.remove(this.classHead);
+    this.blocks[0].classList.remove(this.class.head);
 
     this.blocks.unshift(this.blocks.pop());
     board.setBlockPosition(this.blocks[0], position);
 
-    this.blocks[0].classList.add(this.classHead);
+    this.blocks[0].classList.add(this.class.head);
   }
 
   addSegment(position) {
     let block;
 
     if (position) {
-      block = board.addBlock([this.classBody, this.classHead], position);
+      block = board.addBlock([this.class.body, this.class.head], position);
     } else {
-      block = board.addBlock(this.classBody, this.getTailPosition());
+      block = board.addBlock(this.class.body, this.getTailPosition());
     }
 
     this.blocks.push(block);
@@ -98,9 +96,9 @@ class Snake {
     return this.blocks.some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
-      const blockPosition = board.getBlockPosition(block);
+      const { x: blockx, y: blocky } = board.getBlockPosition(block);
 
-      return blockPosition.x === position.x && blockPosition.y === position.y;
+      return blockx === position.x && blocky === position.y;
     });
   }
 
@@ -120,24 +118,23 @@ class Snake {
     }
   }
 
-  setDirection(key) {
+  getDirections() {
+    const direction = this.lastDirection;
+
     const horizontal = ['left', 'right'];
     const vertical = ['up', 'down'];
 
-    for (const direction in this.keys) {
+    if (vertical.includes(direction)) return horizontal.concat(direction);
+    else return vertical.concat(direction);
+  }
+
+  setDirection(key) {
+    // for fixing reverse movement
+    const directions = this.getDirections();
+
+    for (const direction of directions) {
       if (this.keys[direction].includes(key)) {
-        // fix reverse movement
-        // if both key is same or in same direction ignore it
-        const isSameHorizontal = horizontal.includes(direction) && horizontal.includes(this.lastDirection);
-        const isSameVertical = vertical.includes(direction) && vertical.includes(this.lastDirection);
-
-        if (isSameHorizontal || isSameVertical) {
-          this.direction = this.lastDirection;
-          return;
-        }
-
-        this.direction = direction; // direction: up, down, left, right
-        break;
+        this.direction = direction;
       }
     }
   }

@@ -8,29 +8,31 @@
 
 :root {
   /* header */
-  --bg-header: #111314;
+  --bg-header: #131313;
+  --bg-header-shadow: #202020;
   --sz-header-height: 6rem;
 
   --bg-navbar-toggle: #97c8ff;
 
   /* main */
-  --bg: #101010;
+  --bg: #191919;
   --fg: #b3b8c4;
   --fg-number: #97c8ff;
 
   /* container */
-  --bg-container: #111314;
-  --bg-container-border: #303638;
+  --bg-board: #101010;
+  --bg-board-outline: var(--bg-board);
+  --bg-board-shadow: #222222;
 
   /* snake */
   --bg-snake-body: #636769;
-  --bg-snake-head: #b5cbd1;
+  --bg-snake-head: #62ffb0;
 
   /* apple */
-  --bg-apple: #da3b3b;
-  --bg-apple-moving: var(--bg-container);
+  --bg-apple: #fe5454;
+  --bg-apple-moving: var(--bg-board);
 
-  --apple-duration: 0.3s;
+  --apple-duration: 0.2s;
 }
 
 html {
@@ -54,6 +56,7 @@ header.header {
 
 .header__container {
   background-color: var(--bg-header);
+  box-shadow: 0 0.2rem 1rem var(--bg-header-shadow);
 
   height: 100%;
   margin: 0 auto;
@@ -77,6 +80,10 @@ header.header {
   color: var(--fg-number);
 }
 
+.status__spacer {
+  min-width: 3rem;
+}
+
 .navbar-toggle {
   cursor: pointer;
   padding: 1rem 0.5rem;
@@ -97,7 +104,7 @@ header.header {
 
 .navbar-toggle .toggle-icon::after,
 .navbar-toggle .toggle-icon::before {
-  content: '';
+  content: "";
   position: absolute;
 
   width: 2rem;
@@ -160,14 +167,16 @@ main.snake-game .container {
 
 main.snake-game .board {
   position: relative;
-  background-color: var(--bg-container);
-  border: 0.15rem solid var(--bg-container-border);
+  background-color: var(--bg-board);
+  outline: 1rem solid var(--bg-board-outline);
+  box-shadow: 0 0 0.5rem var(--bg-board-shadow) inset;
 
-  border-radius: 0.2rem;
+  border-radius: 0.1rem;
 }
 
 /* blocks */
 /* snake body, snake apple */
+.board .snake-head,
 .board .snake-body,
 .board .apple {
   position: absolute;
@@ -188,7 +197,7 @@ main.snake-game .board {
 .board .apple {
   background-color: var(--bg-apple);
   box-shadow: 0 0 0.3em var(--bg-apple);
-  transition: backgroundColor var(--apple-duration), top var(--apple-duration), left var(--apple-duration);
+  transition: all var(--apple-duration);
   z-index: 1;
 }
 
