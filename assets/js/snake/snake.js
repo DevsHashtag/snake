@@ -14,7 +14,6 @@ class Snake {
     this.keys = CONFIG.keys.snake;
 
     this.blocks = [];
-    this.isDead = false;
     this.lastDirection = this.direction;
     this.class = { head: 'snake-head', body: 'snake-body' };
 
@@ -76,7 +75,7 @@ class Snake {
     else return false; // invalid key
 
     // dont die
-    if (!board.isOnBoard(position) || this.isOnSnake(position)) return false;
+    // if (!this.isDead()) return false;
 
     if (this.newSegments) {
       this.addSegment();
@@ -105,9 +104,7 @@ class Snake {
   isDead() {
     const headPosition = this.getHeadPosition();
 
-    this.dead = board.isOnBoard(headPosition) || this.isOnSnake(headPosition, true);
-
-    return this.dead;
+    return !board.isOnBoard(headPosition) || this.isOnSnake(headPosition, true);
   }
 
   checkApple() {

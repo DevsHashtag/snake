@@ -92,18 +92,29 @@ class Game {
   }
 
   update() {
-    ai.snakeBrain();
+    // ai.snakeBrain();
     snake.render();
     board.updateScore(snake.score);
     board.updateSpeed(this.speed);
+
+    this.checkWin();
+    this.checkGameOver();
   }
 
   checkGameOver() {
-    // TODO
+    if (snake.isDead()) {
+      alert('DEAD');
+      this.stop();
+    }
   }
 
   checkWin() {
-    // TODO
+    const boardSize = board.rows * board.columns;
+    const snakeLength = snake.blocks.length;
+    if (snakeLength >= boardSize) {
+      alert('WIN');
+      this.stop();
+    }
   }
 }
 
