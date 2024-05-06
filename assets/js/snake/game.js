@@ -17,7 +17,7 @@ class Game {
     this.keys = CONFIG.keys;
 
     this.requestLoopId;
-    this.lastRenderTime = 1000; // 1sec delay in start
+    this.lastRenderTime = 0; // 1sec delay in start
 
     this.isGameOver = false;
 
@@ -92,18 +92,18 @@ class Game {
   }
 
   update() {
-    // ai.snakeBrain();
+    ai.snakeBrain();
     snake.render();
     board.updateScore(snake.score);
     board.updateSpeed(this.speed);
 
-    this.checkWin();
+    if (this.checkWin()) return;
     this.checkGameOver();
   }
 
   checkGameOver() {
     if (snake.isDead()) {
-      alert('DEAD');
+      alert('SNAKE DIED');
       this.stop();
     }
   }
@@ -111,9 +111,11 @@ class Game {
   checkWin() {
     const boardSize = board.rows * board.columns;
     const snakeLength = snake.blocks.length;
+
     if (snakeLength >= boardSize) {
-      alert('WIN');
+      alert('SNAKE WON');
       this.stop();
+      return true;
     }
   }
 }
