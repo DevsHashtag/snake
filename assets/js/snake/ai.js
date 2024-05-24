@@ -1,6 +1,6 @@
-import PrimesAlgorithm from "../modules/prims-algoritm.js";
-import HamiltonianCycle from "../modules/hamiltonian-cycle.js";
-import { board, snake, apple } from "./game.js";
+import PrimesAlgorithm from '../modules/prims-algoritm.js';
+import HamiltonianCycle from '../modules/hamiltonian-cycle.js';
+import { board, snake, apple } from './game.js';
 
 class Ai {
   constructor() {
@@ -80,10 +80,7 @@ class Ai {
         }
       }
       // apple > head && (tail > apple && tail > head) || ( tail < apple && tail < head0)
-      else if (
-        appleIndex > index &&
-        ((tailIndex > appleIndex && tailIndex > index) || (tailIndex < appleIndex && tailIndex < index))
-      ) {
+      else if (appleIndex > index && ((tailIndex > appleIndex && tailIndex > index) || (tailIndex < appleIndex && tailIndex < index))) {
         for (const neighbor of neighborIndexes) {
           // neighbor > head && neighbor < apple && neighbor > newhead
           if (neighbor > index && neighbor < appleIndex && neighbor > newIndex) {
@@ -111,7 +108,8 @@ class Ai {
       }
     }
 
-    snake.setDirection(this.getDirection(headPosition, this.cycle[this.index]));
+    const nextDirection = this.getDirection(headPosition, this.cycle[this.index]);
+    snake.setDirection(nextDirection);
   }
 
   isEqual(pos1, pos2) {

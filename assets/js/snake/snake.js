@@ -111,6 +111,7 @@ class Snake {
     if (apple.isOnApple(this.getHeadPosition())) {
       this.newSegments++;
       this.score += this.scoreIncrement;
+      board.updateScore(this.score);
       apple.random();
     }
   }

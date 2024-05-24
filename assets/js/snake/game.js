@@ -17,8 +17,7 @@ class Game {
     this.keys = CONFIG.keys;
 
     this.requestLoopId;
-    this.lastRenderTime = 0; // 1sec delay in start
-
+    this.lastRenderTime = 400;
     this.isGameOver = false;
 
     board.updateScore(snake.score);
@@ -44,15 +43,18 @@ class Game {
       case this.keys.speedUp:
         if (this.speed < max) this.speed += step;
         else this.speed = max;
+        board.updateSpeed(this.speed);
         break;
 
       case this.keys.speedDown:
         if (this.speed > min) this.speed -= step;
         else this.speed = min;
+        board.updateSpeed(this.speed);
         break;
 
       case this.keys.speedReset:
         this.speed = CONFIG.speed.init;
+        board.updateSpeed(this.speed);
         break;
 
       case this.keys.pause:
@@ -72,8 +74,23 @@ class Game {
     }
 
     this.requestLoopId = window.requestAnimationFrame((time) => {
-      this.main(time);
+      this.loop();
+
+      if (time - this.lastRenderTime < 1000 / this.speed) return;
+      this.lastRenderTime = time;
+
+      this.update();
     });
+  }
+
+  update() {
+    ai.snakeBrain();
+    snake.render();
+
+    if (this.checkWin() || this.checkGameOver()) {
+      this.isGameOver = true;
+      this.stop();
+    }
   }
 
   stop() {
@@ -82,29 +99,10 @@ class Game {
     window.cancelAnimationFrame(this.requestLoopId);
   }
 
-  main(time) {
-    this.loop();
-
-    if (time - this.lastRenderTime < 1000 / this.speed) return;
-    this.lastRenderTime = time;
-
-    this.update();
-  }
-
-  update() {
-    ai.snakeBrain();
-    snake.render();
-    board.updateScore(snake.score);
-    board.updateSpeed(this.speed);
-
-    if (this.checkWin()) return;
-    this.checkGameOver();
-  }
-
   checkGameOver() {
     if (snake.isDead()) {
       alert('SNAKE DIED');
-      this.stop();
+      return true;
     }
   }
 
@@ -114,7 +112,7 @@ class Game {
 
     if (snakeLength >= boardSize) {
       alert('SNAKE WON');
-      this.stop();
+      apple.hide();
       return true;
     }
   }

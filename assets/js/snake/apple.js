@@ -12,6 +12,10 @@ class Apple {
     });
   }
 
+  hide() {
+    this.block.classList.toggle('hide');
+  }
+
   random() {
     this.animation();
 
