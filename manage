@@ -1,42 +1,42 @@
 # snakeGame
 
-- [x] board.js
-- [x] game.js
-- [x] snake.js
-- [x] apple.js
+- [ ] board.js
+- [ ] game.js
+- [ ] snake.js
+- [ ] apple.js
 
 # board.js
 
-- [x] block
-- [x] position functions
-- [x] init board
+- [ ] block
+- [ ] position functions
+- [ ] init board
 - [ ] responsive board
 - [ ] controls for mobile
 - [ ] is it good to style block classes ?
-- [x] display snake score
+- [ ] display snake score
 
 # game.js
 
 - [ ] reset game
-- [x] render game
-- [x] handel keys
-- [x] win
-- [x] gameover
+- [ ] render game
+- [ ] handel keys
+- [ ] win
+- [ ] gameover
 - [ ] display demo while keys are disabled
 
 # snake.js
 
-- [x] eat apple
-- [x] score
-- [x] fix reverse movement
+- [ ] eat apple
+- [ ] score
+- [ ] fix reverse movement
 - [ ] fix movement speed
 
 # apple.js
 
-- [x] init random position
-- [x] random position
-- [x] add
-- [x] move
+- [ ] init random position
+- [ ] random position
+- [ ] add
+- [ ] move
 
 # global
 

@@ -1,5 +1,5 @@
-import { App } from './snake/app.js';
+import Game from './snake/game.js';
 
-const app = new App();
+const game = new Game();
 
-app.run();
+game.run();

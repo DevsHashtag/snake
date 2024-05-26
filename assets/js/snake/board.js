@@ -1,145 +1,164 @@
-import { COLUMN_LINES, ROW_LINES, BLOCK_SIZE, BLOCK_GAP, CLASS_NAMES } from './settings.js';
-import { dom } from './app.js';
+import CONFIG from './settings.js';
 
-function Board() {
-  this.columns = COLUMN_LINES;
-  this.rows = ROW_LINES;
+import { snake } from './game.js';
 
-  this.blocks = [];
+class Board {
+  constructor() {
+    this.columns = CONFIG.board.columns;
+    this.rows = CONFIG.board.rows;
+    this.gap = CONFIG.board.gap;
 
-  this.block = {
-    size: BLOCK_SIZE,
-    gap: BLOCK_GAP,
-  };
+    this.blockSize = CONFIG.board.blockSize;
 
-  this.width = this.columns * this.block.size;
-  this.height = this.rows * this.block.size;
+    this.width = this.columns * this.blockSize;
+    this.height = this.rows * this.blockSize;
 
-  this.isMessageOpen = false;
+    // elements
+    this.boardElement = document.getElementById('board');
+    this.scoreElement = document.getElementById('score');
+    this.speedElement = document.getElementById('speed');
 
-  this.init = function () {
-    this.boardElement = dom.renderElement(CLASS_NAMES.board, dom.containerElement);
-    dom.setSize(this.boardElement, { width: this.width, height: this.height });
-  };
+    // set board size
+    this.setSize(this.boardElement, { width: this.width, height: this.height });
+  }
 
-  this.addBlock = function (className, position) {
-    const size = this.block.size - this.block.gap;
+  addElement(className, parent = this.boardElement) {
+    const element = document.createElement('div');
 
-    let blockElement = dom.addElement(className);
+    if (!className) {
+      console.error(element, 'invalid class name', className, '!');
+      return false;
+    }
 
-    dom.setSize(blockElement, { width: size, height: size });
-    this.moveBlock(blockElement, position);
-    this.saveBlock(blockElement);
+    // add classname
+    if (typeof className == 'string') element.classList.add(className);
+    else element.classList.add(...className);
 
-    this.boardElement.appendChild(blockElement);
+    // add to dom
+    parent.appendChild(element);
+
+    return element;
+  }
+
+  addBlock(className, position) {
+    const blockElement = this.addElement(className);
+    const size = this.blockSize - this.gap;
+
+    this.setSize(blockElement, { width: size, height: size });
+    this.setBlockPosition(blockElement, position);
 
     return blockElement;
-  };
+  }
 
-  this.moveBlock = function (element, position) {
+  removeBlock(block) {
+    if (!block) {
+      console.error(block, 'not exist !');
+      return false;
+    }
+
+    this.boardElement.removeChild(block);
+    return true;
+  }
+
+  setSize(element, { width, height } = {}) {
+    if (!width || !height) {
+      console.error(element, 'invalid size', width, height, '!');
+      return false;
+    }
+
+    element.style.width = this.toRem(width);
+    element.style.height = this.toRem(height);
+
+    return true;
+  }
+
+  setBlockPosition(element, position) {
+    if (!position) {
+      console.error(element, 'invalid position', position, '!');
+      return false;
+    }
+
     if (position.center) position = this.centerPosition();
     if (position.random) position = this.randomPosition();
 
-    if (!position) return false;
+    element.style.left = this.toRem(position.x * this.blockSize);
+    element.style.top = this.toRem(position.y * this.blockSize);
 
-    position.x *= this.block.size;
-    position.y *= this.block.size;
+    return true;
+  }
 
-    return dom.setPosition(element, position);
-  };
-
-  this.saveBlock = function (element) {
-    const className = element.classList[0];
-
-    this.blocks[className] = this.blocks[className] ?? [];
-    this.blocks[className].push(element);
-  };
-
-  this.removeBlock = function (rmBlock) {
-    const className = rmBlock.classList[0];
-    const blocks = this.blocks[className];
-
-    // remove block from its class
-    this.blocks[className] = blocks.filter((block) => !block.isSameNode(rmBlock));
-
-    if (!this.blocks[className].length) {
-      delete this.blocks[className];
-    }
-
-    this.boardElement.removeChild(rmBlock);
-  };
-
-  this.blockPosition = function (block) {
+  getBlockPosition(block) {
     return {
-      x: parseInt(block.style.left) / this.block.size,
-      y: parseInt(block.style.top) / this.block.size,
+      x: parseInt(parseFloat(block.style.left) / this.blockSize),
+      y: parseInt(parseFloat(block.style.top) / this.blockSize),
     };
-  };
+  }
 
-  this.renderMessage = function (msg, className = CLASS_NAMES.message) {
-    if (this.isMessageOpen) return;
+  toRem(num) {
+    return num + 'rem';
+  }
 
-    this.isMessageOpen = true;
-
-    const msgElement = dom.addElement(className);
-
-    msgElement.innerText = msg;
-
-    this.boardElement.appendChild(msgElement);
-
-    return msgElement;
-  };
-
-  this.onBoard = function (pos) {
-    if (!pos) return false;
-
-    const isOutBoard = [
-      pos.y < 0, // out from up
-      pos.y >= this.rows, // out from down
-      pos.x < 0, // out from left
-      pos.x >= this.columns, // out from right
-    ];
-
-    return !isOutBoard.includes(true);
-  };
-
-  this.centerPosition = function () {
+  centerPosition() {
     return {
       x: this.columns / 2 - (this.columns % 2 == 0 ? 0 : 0.5),
       y: this.rows / 2 - (this.rows % 2 == 0 ? 0 : 0.5),
     };
-  };
+  }
 
-  this.randomPosition = function () {
+  randomPosition() {
     const freePositions = this.freePositions();
 
     if (!freePositions) return;
 
     return freePositions[Math.floor(Math.random() * freePositions.length)];
-  };
+  }
 
-  this.freePositions = function (className = CLASS_NAMES.snake.body) {
-    const blocks = this.blocks[className] ?? [];
+  freePositions() {
+    const blocks = snake.blocks;
 
-    // return if no space is free
+    // check if no space is free
     if (blocks.length >= this.columns * this.rows) return false;
 
     // blocks position
-    const blocksPosition = blocks.map((block) => this.blockPosition(block));
+    const blocksPosition = blocks.map((block) => this.getBlockPosition(block));
 
     let freePositions = [];
 
-    // find board free positions
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.columns; x++) {
-        if (!blocksPosition.some((pos) => pos.x == x && pos.y == y)) {
-          freePositions.push({ x, y });
+        if (blocksPosition.some((pos) => pos.x == x && pos.y == y)) {
+          continue;
         }
+
+        freePositions.push({ x, y });
       }
     }
 
     return freePositions;
-  };
+  }
+
+  isOnBoard(position) {
+    if (!position) {
+      console.error(position, 'invalid position !');
+      return false;
+    }
+
+    const { x, y } = position;
+
+    const vertical = 0 <= y && y < this.rows;
+    const horizontal = 0 <= x && x < this.columns;
+
+    return vertical && horizontal;
+  }
+
+  // status
+  updateScore(score) {
+    this.scoreElement.innerText = score.toString();
+  }
+
+  updateSpeed(speed) {
+    this.speedElement.innerText = speed.toString();
+  }
 }
 
 export default Board;

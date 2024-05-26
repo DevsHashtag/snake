@@ -1,151 +1,141 @@
-import { SNAKE_LENGTH, SNAKE_POSITION, SNAKE_DIRECTION, SNAKE_KEYS, CLASS_NAMES, SCORE_INIT, SCORE_INCREMENT } from './settings.js';
+import CONFIG from './settings.js';
 
-import { board, apple, status } from './app.js';
-import { isEqual } from './utils/position.js';
+import { board, apple } from './game.js';
 
-function Snake() {
-  this.newSegments = SNAKE_LENGTH;
-  this.direction = SNAKE_DIRECTION;
-  this.lastDirection = SNAKE_DIRECTION;
-  this.classBody = CLASS_NAMES.snake.body;
-  this.classHead = CLASS_NAMES.snake.head;
-  this.keys = SNAKE_KEYS;
-  this.dead = false;
-  this.score = SCORE_INIT;
-  this.scoreIncrement = SCORE_INCREMENT;
+class Snake {
+  constructor() {
+    this.newSegments = CONFIG.snake.length;
+    this.initPosition = CONFIG.snake.position;
+    this.direction = CONFIG.snake.direction;
 
-  this.init = function () {
-    this.addSegment(SNAKE_POSITION);
-  };
+    this.score = CONFIG.snake.score.init;
+    this.scoreIncrement = CONFIG.snake.score.increment;
 
-  this.render = function () {
+    this.keys = CONFIG.keys.snake;
+
+    this.blocks = [];
+    this.lastDirection = this.direction;
+    this.class = { head: 'snake-head', body: 'snake-body' };
+
+    this.addSegment(this.initPosition);
+  }
+
+  render() {
     this.move();
     this.checkApple();
-  };
+  }
 
-  this.getBlocks = function (className = this.classBody) {
-    return board.blocks[className];
-  };
+  getHead() {
+    return this.blocks[0];
+  }
 
-  this.getHead = () => this.getBlocks()[0];
-
-  this.getTail = () => this.getBlocks().slice(-1)[0];
-
-  this.getHeadPosition = () => board.blockPosition(this.getHead());
-
-  this.getTailPosition = () => board.blockPosition(this.getTail());
+  getTail() {
+    return this.blocks.at(-1);
+  }
+  getHeadPosition() {
+    return board.getBlockPosition(this.getHead());
+  }
+  getTailPosition() {
+    return board.getBlockPosition(this.getTail());
+  }
 
   // use last tail as new head
-  this.useTailAsHead = function (position, className = this.classBody) {
-    let blocks = board.blocks[className];
+  useTailAsHead(position) {
+    this.blocks[0].classList.remove(this.class.head);
 
-    blocks[0].classList.remove(this.classHead);
+    this.blocks.unshift(this.blocks.pop());
+    board.setBlockPosition(this.blocks[0], position);
 
-    blocks.unshift(blocks.pop());
-    board.moveBlock(blocks[0], position);
+    this.blocks[0].classList.add(this.class.head);
+  }
 
-    blocks[0].classList.add(this.classHead);
+  addSegment(position) {
+    let block;
 
-    board.blocks[className] = blocks;
-  };
-
-  this.addSegment = function (position) {
     if (position) {
-      board.addBlock([this.classBody, this.classHead], position);
+      block = board.addBlock([this.class.body, this.class.head], position);
     } else {
-      board.addBlock(this.classBody, this.getTailPosition());
+      block = board.addBlock(this.class.body, this.getTailPosition());
     }
 
-    status.updateScore(this.score);
-  };
+    this.blocks.push(block);
 
-  this.move = function () {
-    if (!this.getBlocks()?.length) return false;
+    // status.updateScore(this.score);
+  }
 
-    let position = this.getHeadPosition();
+  move() {
+    if (!this.blocks.length) return false;
 
-    switch (this.direction) {
-      case 'up':
-        position.y--;
-        break;
+    const position = this.getHeadPosition();
 
-      case 'down':
-        position.y++;
-        break;
+    if (this.direction === 'up') position.y--;
+    else if (this.direction === 'down') position.y++;
+    else if (this.direction === 'left') position.x--;
+    else if (this.direction === 'right') position.x++;
+    else return false; // invalid key
 
-      case 'left':
-        position.x--;
-        break;
-
-      case 'right':
-        position.x++;
-        break;
-
-      default:
-        return false; // invalid key
-    }
-
-    // if (!board.onBoard(position) || this.onSnake(position)) return false;
+    // dont die
+    // if (!this.isDead()) return false;
 
     if (this.newSegments) {
-      this.newSegments--;
       this.addSegment();
+      this.newSegments--;
     }
 
     // use last tail as new head
     this.useTailAsHead(position);
 
-    // set last direction
+    // save last direction
     this.lastDirection = this.direction;
 
     return true;
-  };
+  }
 
-  this.onSnake = function (position, { ignoreHead = false } = {}) {
-    return this.getBlocks().some((block, index) => {
+  isOnSnake(position, ignoreHead = false) {
+    return this.blocks.some((block, index) => {
       if (ignoreHead && index === 0) return false;
 
-      const blockPosition = board.blockPosition(block);
+      const { x: blockx, y: blocky } = board.getBlockPosition(block);
 
-      return isEqual(blockPosition, position);
+      return blockx === position.x && blocky === position.y;
     });
-  };
+  }
 
-  this.isDead = function (position = this.getHeadPosition()) {
-    this.dead = !board.onBoard(position) || this.onSnake(position, { ignoreHead: true });
+  isDead() {
+    const headPosition = this.getHeadPosition();
 
-    return this.dead;
-  };
+    return !board.isOnBoard(headPosition) || this.isOnSnake(headPosition, true);
+  }
 
-  this.checkApple = function () {
-    if (apple.onApple(this.getHeadPosition())) {
+  checkApple() {
+    if (apple.isOnApple(this.getHeadPosition())) {
       this.newSegments++;
       this.score += this.scoreIncrement;
+      board.updateScore(this.score);
       apple.random();
     }
-  };
+  }
 
-  this.setDirection = function (key) {
-    for (const direction in this.keys) {
+  getDirections() {
+    const direction = this.lastDirection;
+
+    const horizontal = ['left', 'right'];
+    const vertical = ['up', 'down'];
+
+    if (vertical.includes(direction)) return horizontal.concat(direction);
+    else return vertical.concat(direction);
+  }
+
+  setDirection(key) {
+    // for fixing reverse movement
+    const directions = this.getDirections();
+
+    for (const direction of directions) {
       if (this.keys[direction].includes(key)) {
-        this.direction = direction; // direction: up, down, left, right
+        this.direction = direction;
       }
     }
-
-    // fix reverse movement
-    // if both key is in x or y direction ignore it
-    const lor = ['left', 'right'];
-    const uod = ['up', 'down'];
-
-    const isReverseMovement = [
-      lor.includes(this.direction) && lor.includes(this.lastDirection), // both dir left, right
-      uod.includes(this.direction) && uod.includes(this.lastDirection), // both dir up, down
-    ];
-
-    if (!isReverseMovement.includes(true)) return;
-
-    this.direction = this.lastDirection;
-  };
+  }
 }
 
 export default Snake;

@@ -1,37 +1,40 @@
-import { CLASS_NAMES, FOOD_POSITION } from './settings.js';
+import { board } from './game.js';
 
-import { isEqual } from './utils/position.js';
-import { board } from './app.js';
+class Apple {
+  constructor() {
+    this.class = 'apple';
+    this.block = board.addBlock(this.class, { random: true });
 
-function Apple() {
-  this.className = CLASS_NAMES.apple;
-  this.initPosition = FOOD_POSITION;
+    this.block.addEventListener('transitionend', () => {
+      if (this.block.style.backgroundColor) {
+        this.block.style.removeProperty('background-color');
+      }
+    });
+  }
 
-  this.random = function () {
+  hide() {
+    this.block.classList.toggle('hide');
+  }
+
+  random() {
     this.animation();
 
-    board.moveBlock(this.block, { random: true });
-  };
+    board.setBlockPosition(this.block, { random: true });
+  }
 
-  this.onApple = function (position) {
+  animation() {
+    this.block.style.backgroundColor = 'var(--bg-apple-moving)';
+  }
+
+  getPosition() {
+    return board.getBlockPosition(this.block);
+  }
+
+  isOnApple(position) {
     const applePosition = this.getPosition();
 
-    return isEqual(applePosition, position);
-  };
-
-  this.getPosition = function () {
-    return board.blockPosition(this.block);
-  };
-
-  this.animation = function () {
-    this.block.style.backgroundColor = 'var(--bg-apple-moving)';
-
-    setTimeout(() => this.block.style.removeProperty('background-color'), 300);
-  };
-
-  this.init = function () {
-    this.block = board.addBlock(this.className, this.initPosition);
-  };
+    return applePosition.x == position.x && applePosition.y == position.y;
+  }
 }
 
 export default Apple;

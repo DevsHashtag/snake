@@ -1,131 +1,121 @@
-import { SPEED, SPEED_STEP, SPEED_MIN, SPEED_MAX, GAME_PAUSE, CLASS_NAMES } from './settings.js';
+import CONFIG from './settings.js';
 
-import { dom, status, board, snake, apple, ai } from './app.js';
+import Board from './board.js';
+import Apple from './apple.js';
+import Snake from './snake.js';
+import Ai from './ai.js';
 
-function Game() {
-  this.speed = SPEED;
-  this.pause = GAME_PAUSE;
+export const board = new Board();
+export const snake = new Snake();
+export const apple = new Apple();
+export const ai = new Ai();
 
-  this.requestLoopId;
-  this.lastRenderTime = 0;
+class Game {
+  constructor() {
+    this.isPause = CONFIG.pause;
+    this.speed = CONFIG.speed.init;
+    this.keys = CONFIG.keys;
 
-  this.gameOver = false;
+    this.requestLoopId;
+    this.lastRenderTime = 400;
+    this.isGameOver = false;
 
-  this.keys = {
-    '+': () => {
-      if (this.speed < SPEED_MAX) this.speed += SPEED_STEP;
-      if (this.speed > SPEED_MAX) this.speed = SPEED_MAX;
-      status.updateSpeed(this.speed);
-    },
-    '-': () => {
-      if (this.speed > SPEED_MIN) this.speed -= SPEED_STEP;
-      if (this.speed < SPEED_MIN) this.speed = SPEED_MIN;
-      status.updateSpeed(this.speed);
-    },
-    0: () => {
-      this.speed = SPEED;
-      status.updateSpeed(this.speed);
-    },
-    p: () => this.pauseToggle(),
-    Escape: () => this.pauseToggle(),
-  };
+    board.updateScore(snake.score);
+    board.updateSpeed(this.speed);
+  }
 
-  this.keydown = function (handelKeys) {
-    window.onkeydown = (e) => handelKeys(e.key);
-  };
+  run() {
+    // handel keys
+    window.onkeydown = (e) => this.keydown(e.key);
 
-  this.loop = () => {
-    if (this.gameOver) return;
+    // start game
+    if (!this.isGameOver && !this.isPause) {
+      this.loop();
+    }
+  }
 
-    this.requestLoopId = window.requestAnimationFrame(this.main);
-  };
+  keydown(key) {
+    const step = CONFIG.speed.step;
+    const max = CONFIG.speed.max;
+    const min = CONFIG.speed.min;
 
-  this.main = (timestamp) => {
-    this.loop();
+    switch (key) {
+      case this.keys.speedUp:
+        if (this.speed < max) this.speed += step;
+        else this.speed = max;
+        board.updateSpeed(this.speed);
+        break;
 
-    // TODO: move lastRenderTime after update and check performance
-    if (timestamp - this.lastRenderTime < 1000 / this.speed) return;
-    this.lastRenderTime = timestamp;
+      case this.keys.speedDown:
+        if (this.speed > min) this.speed -= step;
+        else this.speed = min;
+        board.updateSpeed(this.speed);
+        break;
 
-    this.update();
-  };
+      case this.keys.speedReset:
+        this.speed = CONFIG.speed.init;
+        board.updateSpeed(this.speed);
+        break;
 
-  this.update = function () {
+      case this.keys.pause:
+        this.isPause = !this.isPause;
+        if (!this.isGameOver && !this.isPause) this.loop();
+        break;
+
+      default:
+        snake.setDirection(key);
+    }
+  }
+
+  loop() {
+    if (this.isGameOver || this.isPause) {
+      this.stop();
+      return;
+    }
+
+    this.requestLoopId = window.requestAnimationFrame((time) => {
+      this.loop();
+
+      if (time - this.lastRenderTime < 1000 / this.speed) return;
+      this.lastRenderTime = time;
+
+      this.update();
+    });
+  }
+
+  update() {
     ai.snakeBrain();
     snake.render();
 
-    this.checkGameOver();
-    this.checkWin();
-  };
+    if (this.checkWin() || this.checkGameOver()) {
+      this.isGameOver = true;
+      this.stop();
+    }
+  }
 
-  this.init = function () {
-    dom.init();
-    status.init();
-    board.init();
-    apple.init();
-    snake.init();
-    ai.init();
-
-    this.keydown((key) => {
-      // game keys
-      if (key in this.keys) {
-        this.keys[key]();
-        return;
-      }
-
-      if (this.pause || this.gameOver) return;
-
-      // snake keys (user controls)
-      // snake.setDirection(key);
-    });
-
-    if (!this.pause) this.loop();
-  };
-
-  this.stop = function () {
+  stop() {
     if (!this.requestLoopId) return;
 
     window.cancelAnimationFrame(this.requestLoopId);
-  };
+  }
 
-  this.pauseToggle = function () {
-    if (this.gameOver) return;
-
-    this.pause = !this.pause;
-
-    if (this.pause) {
-      status.pauseState();
-      this.stop();
-    } else {
-      status.playState();
-      this.loop();
+  checkGameOver() {
+    if (snake.isDead()) {
+      alert('SNAKE DIED');
+      return true;
     }
-  };
+  }
 
-  this.checkGameOver = function () {
-    this.gameOver = snake.isDead();
+  checkWin() {
+    const boardSize = board.rows * board.columns;
+    const snakeLength = snake.blocks.length;
 
-    if (!this.gameOver) return false;
-
-    this.stop();
-    status.gameOverState();
-    board.renderMessage('game over', CLASS_NAMES.gameover);
-
-    return true;
-  };
-
-  this.checkWin = function (className = CLASS_NAMES.snake.body) {
-    const blocks = board.blocks[className] ?? [];
-
-    // if there is a free space its not win
-    if (blocks.length < board.columns * board.rows) return false;
-
-    this.stop();
-    status.winState();
-    board.renderMessage('you win!', CLASS_NAMES.win);
-
-    return true;
-  };
+    if (snakeLength >= boardSize) {
+      alert('SNAKE WON');
+      apple.hide();
+      return true;
+    }
+  }
 }
 
 export default Game;

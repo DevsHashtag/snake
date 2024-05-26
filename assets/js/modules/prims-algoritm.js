@@ -1,21 +1,11 @@
-function PrimsAlgorithm() {
-  this.init = function (dom, board) {
-    this.dom = dom;
-    this.board = board;
-
-    this.columns = Math.floor(board.columns / 2);
-    this.rows = Math.floor(board.rows / 2);
-
-    this.nodes = this.createNodes();
-    this.edges = this.createEdges();
-    this.finalEdges = this.createFinalEdges();
-
-    // this.drawNodes();
-    // this.drawEdges();
-  };
+class PrimsAlgorithm {
+  constructor(columns, rows) {
+    this.columns = Math.floor(columns / 2);
+    this.rows = Math.floor(rows / 2);
+  }
 
   // nodes: split grid into 2x2 blocks
-  this.createNodes = function () {
+  createNodes() {
     let nodes = [];
 
     for (let y = 0; y < this.rows; y++) {
@@ -29,10 +19,10 @@ function PrimsAlgorithm() {
     }
 
     return nodes;
-  };
+  }
 
   // edges: connect all nodes once
-  this.createEdges = function () {
+  createEdges() {
     const random = () => Math.floor(Math.random() * 3 + 1);
 
     let edges = [];
@@ -58,9 +48,9 @@ function PrimsAlgorithm() {
     }
 
     return edges;
-  };
+  }
 
-  this.createFinalEdges = function () {
+  createFinalEdges(edges) {
     let unvisited = [...Array(this.columns * this.rows).keys()];
     let visited = [];
     let current = 0;
@@ -73,7 +63,7 @@ function PrimsAlgorithm() {
 
       let myEdges = [];
 
-      for (const edge of this.edges) {
+      for (const edge of edges) {
         let visitedS = visited.includes(edge.startNode);
         let visitedE = visited.includes(edge.endNode);
 
@@ -102,43 +92,7 @@ function PrimsAlgorithm() {
     }
 
     return finalEdges;
-  };
-
-  this.drawNodes = function () {
-    for (const [index, node] of this.nodes.entries()) {
-      const block = this.board.addBlock('grid-nodes', { ...node });
-
-      block.innerText = index.toString();
-    }
-  };
-
-  this.drawEdges = function () {
-    const blockSize = this.board.block.size;
-    const size = 10;
-    const offset = 1 / (size * 2);
-
-    for (const edge of this.finalEdges) {
-      let start = { ...this.nodes[edge.startNode] };
-      let end = { ...this.nodes[edge.endNode] };
-
-      let width = Math.abs(start.x - end.x) * blockSize || blockSize / size;
-      let height = Math.abs(start.y - end.y) * blockSize || blockSize / size;
-
-      start.x -= offset;
-      start.y -= offset;
-
-      if (width == blockSize / size) {
-        height += offset;
-      } else {
-        width += offset;
-      }
-
-      let block = this.board.addBlock(['grid-line', `line-${edge.weight}`], start);
-
-      // block.innerText = `${edge.startNode} ${edge.endNode}`;
-      this.dom.setSize(block, { width, height });
-    }
-  };
+  }
 }
 
 export default PrimsAlgorithm;

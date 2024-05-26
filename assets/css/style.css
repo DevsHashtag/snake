@@ -1,263 +1,247 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 :root {
+  /* header */
+  --bg-header: #1d1d1d;
+  --bg-header-shadow: #202020;
+  --sz-header-height: 6rem;
+
+  --bg-navbar-toggle: #97c8ff;
+
   /* main */
-  --bg: #19242e;
-  --fg: #46d5fc;
+  --bg: #303030;
+  --fg: #7eb85a;
+  --fg-number: #f76060;
 
   /* container */
-  --bg-container: #0c1219;
-  --sz-container-border: 0.2rem;
-  --bg-container-border: var(--bg);
-  --bg-container-outline: #11171e;
-  --sz-container-outline: 1.2rem;
-  --sz-container-radius: 0.1rem;
-
-  /* status bar */
-  --bg-status: #0c1219ee;
-  --bg-status-border: var(--bg);
-  --fg-status-label: #989978;
-  --fg-status-text: #22b481;
+  --bg-board: #1a1a1a;
+  --bg-board-outline: #252525;
 
   /* snake */
-  --bg-snake-body: #456264;
-  --bg-snake-head: #5b9dd6;
+  --bg-snake-body: #606060;
+  --bg-snake-head: #62ffb0;
 
   /* apple */
-  --bg-apple: #d1293d;
-  --bg-apple-moving: var(--bg-container);
+  --bg-apple: #fa5252;
+  --bg-apple-moving: var(--bg-board);
 
-  /* messages */
-  --bg-overlay: #090e13aa;
-  --bg-overlay-shadow: #0e151bee;
-
-  /* message colors */
-  --fg-message-win: #67be44;
-  --fg-message-gameover: #be4444;
-
-  /* algorithms */
-  --bg-grid-nodes: #15202b99;
-  --bg-grid-line1: #75345a;
-  --bg-grid-line2: #2e5a6b;
-  --bg-grid-line3: #506822;
+  --apple-duration: 0.2s;
 }
 
 html {
-  font-size: 0.4rem;
+  height: 100%;
+
+  font-size: 0.5rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 425px) {
   html {
-    font-size: 0.5rem;
+    font-size: 0.5625rem;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 576px) {
+  html {
+    font-size: 0.625rem;
+  }
+}
+
+@media (min-width: 768px) {
   html {
     font-size: 0.6875rem;
   }
 }
 
-body {
-  height: 100vh;
+@media (min-width: 992px) {
+  html {
+    font-size: 0.75rem;
+  }
 }
 
-/* snake game */
-main.snake-game {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (min-width: 1200px) {
+  html {
+    font-size: 0.8125rem;
+  }
+}
 
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.6rem;
+@media (min-width: 1400px) {
+  html {
+    font-size: 0.875rem;
+  }
+}
 
+@media (min-width: 1920px) {
+  html {
+    font-size: 0.9375rem;
+  }
+}
+
+body {
+  height: 100%;
   background-color: var(--bg);
   color: var(--fg);
+
+  font-size: 1.4rem;
+}
+
+/* header */
+header.header {
+  height: var(--sz-header-height);
+}
+
+.header__container {
+  background-color: var(--bg-header);
+  box-shadow: 0 0 1rem 0.2rem var(--bg-header-shadow);
+
   height: 100%;
-}
-
-/* container */
-main.snake-game .container {
-  background-color: var(--bg-container);
-
-  border: var(--sz-container-border) solid var(--bg-container-border);
-  outline: var(--sz-container-outline) solid var(--bg-container-outline);
-
-  border-radius: var(--sz-container-radius);
-}
-
-main.snake-game .container > *:first-child {
-  border-bottom: 0.1rem solid var(--bg-status-border);
-}
-
-/* status */
-.container .status-bar {
-  position: relative;
-
+  margin: 0 auto;
+  max-width: 192rem;
+  padding: 1rem 2rem;
   display: flex;
-  align-items: center;
-
-  background-color: var(--bg-status);
-  padding: 1rem;
-
-  z-index: 5;
+  gap: 1rem;
 }
 
-.status-bar [class^='status'] {
+.header__status {
   flex: 1;
 
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  font-family: 'Poppins', sans-serif;
-  font-size: 1em;
-
-  color: var(--fg-status-label);
+  justify-content: space-between;
+  text-transform: capitalize;
+  gap: 5rem;
 }
 
-.status-bar [class^='status'] span {
+.header__status span {
+  color: var(--fg-number);
+}
+
+.status__spacer {
+  min-width: 3rem;
+}
+
+.navbar-toggle {
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.navbar-toggle .toggle-icon {
+  position: relative;
   display: inline-block;
 
-  font-size: 0.9em;
-  padding: 0 0.5rem;
-
-  color: var(--fg-status-text);
+  width: 2rem;
+  height: 0.3rem;
+  border-radius: 0.1rem;
+  background-color: var(--bg-navbar-toggle);
+  transition: all 0.5s;
 }
 
-/* board */
-.container .board {
+.navbar-toggle .toggle-icon::after,
+.navbar-toggle .toggle-icon::before {
+  content: '';
+  position: absolute;
+
+  width: 2rem;
+  height: 0.3rem;
+  border-radius: 0.1rem;
+  background-color: var(--bg-navbar-toggle);
+  transition: all 0.5s;
+}
+
+.navbar-toggle .toggle-icon::before {
+  top: -0.6rem;
+}
+
+.navbar-toggle .toggle-icon::after {
+  top: 0.6rem;
+}
+
+.navbar-toggle.active .toggle-icon {
+  background-color: transparent;
+}
+
+.navbar-toggle.active .toggle-icon::before {
+  -webkit-transform: translateY(6px) rotateZ(-45deg);
+  transform: translateY(6px) rotateZ(-45deg);
+}
+
+.navbar-toggle.active .toggle-icon::after {
+  -webkit-transform: translateY(-6px) rotateZ(45deg);
+  transform: translateY(-6px) rotateZ(45deg);
+}
+
+.screen-overlay {
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: all 0.5s;
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  top: 65px;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+/* main */
+main.snake-game {
+  height: calc(100% - var(--sz-header-height));
+  overflow: hidden;
+}
+
+main.snake-game .container {
+  height: 100%;
+  margin: 0 auto;
+  max-width: 192rem;
+
+  display: grid;
+  place-items: center;
+}
+
+main.snake-game .board {
   position: relative;
+  background-color: var(--bg-board);
+  outline: 0.5rem solid var(--bg-board-outline);
+
+  border-radius: 0.1rem;
 }
 
 /* blocks */
-
 /* snake body, snake apple */
+.board .snake-head,
 .board .snake-body,
-.board .snake-apple {
+.board .apple {
   position: absolute;
-
   background-color: var(--bg-snake-body);
-  box-shadow: 0 0 0.3rem var(--bg-snake-body);
 
-  border-radius: 0.2rem;
+  border-radius: 0.1rem;
+  aspect-ratio: 1;
 }
 
 /* snake head */
 .board .snake-head {
   background-color: var(--bg-snake-head);
-  box-shadow: 0 0 0.3rem var(--bg-snake-head);
-
+  box-shadow: 0 0 0.3em var(--bg-snake-head);
   z-index: 2;
 }
 
 /* snake apple */
-.board .snake-apple {
+.board .apple {
   background-color: var(--bg-apple);
-  box-shadow: 0 0 0.3rem var(--bg-apple);
-
-  transition: all 0.3s;
-
+  box-shadow: 0 0 0.3em var(--bg-apple);
+  transition: all var(--apple-duration);
   z-index: 1;
 }
 
-/* messages */
-.board .board-message {
-  cursor: pointer;
-
-  position: absolute;
-  top: 0;
-  left: -1px;
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 3rem;
-  font-weight: bold;
-  font-family: Impact, sans-serif;
-
-  background-color: var(--bg-overlay);
-  box-shadow: 0 0 50rem 10rem var(--bg-overlay-shadow) inset;
-
-  border-radius: 0.2rem;
-  text-transform: capitalize;
-
-  z-index: 5;
-}
-
-/* type of messages */
-.board .message-win {
-  color: var(--fg-message-win);
-  text-shadow: 0 0 1rem var(--fg-message-win);
-}
-
-.board .message-gameover {
-  color: var(--fg-message-gameover);
-  text-shadow: 0 0 1rem var(--fg-message-gameover);
-}
-
-/* algorithms */
-/* nodes */
-.board .grid-nodes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transform: translateX(-1.25rem) translateY(-1.25rem);
-
-  color: #b0bd81;
-
-  transition: all 0.5s;
-  border-radius: 5rem;
-  font-size: 1rem;
-
-  position: absolute;
-
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-
-  background-color: var(--bg-grid-nodes);
-
-  z-index: 1;
-}
-
-.board .grid-line {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: #a19a8a;
-
-  line-height: 1.5;
-  word-spacing: 0.2rem;
-
-  text-align: center;
-  font-size: 1rem;
-
-  position: absolute;
-
-  background-color: var(--bg-grid-line1);
-}
-
-.grid-line.line-1 {
-  background-color: var(--bg-grid-line1);
-}
-
-.grid-line.line-2 {
-  background-color: var(--bg-grid-line2);
-}
-
-.grid-line.line-3 {
-  background-color: var(--bg-grid-line3);
+.board .apple.hide {
+  opacity: 0;
+  visibility: 0;
 }

@@ -1,34 +1,15 @@
-import PrimsAlgorithm from './primsAlgoritm.js';
+class HamiltonianCycle {
+  constructor(columns, rows) {
+    this.columns = columns;
+    this.rows = rows;
+  }
 
-function HamiltonianCycle() {
-  this.DIRS = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 },
-  };
-
-  this.init = function (dom, board) {
-    this.board = board;
-
-    this.columns = board.columns;
-    this.rows = board.rows;
-
-    const prims = new PrimsAlgorithm();
-    prims.init(dom, board);
-
-    this.finalEdges = prims.finalEdges;
-    this.nodes = prims.nodes;
-
-    this.cycle = this.createCycle();
-  };
-
-  this.createCycle = function () {
+  createCycle(nodes, finalEdges) {
     let points = [];
 
-    for (const edge of this.finalEdges) {
-      const start = { ...this.nodes[edge.startNode] };
-      const end = { ...this.nodes[edge.endNode] };
+    for (const edge of finalEdges) {
+      const start = { ...nodes[edge.startNode] };
+      const end = { ...nodes[edge.endNode] };
 
       const midX = Math.floor((start.x + end.x) / 2);
       const midY = Math.floor((start.y + end.y) / 2);
@@ -43,7 +24,15 @@ function HamiltonianCycle() {
 
     let cycle = [{ x: 0, y: 0 }];
     let current = cycle[0];
-    let direction = this.DIRS.right;
+
+    const directions = {
+      up: { x: 0, y: -1 },
+      down: { x: 0, y: 1 },
+      left: { x: -1, y: 0 },
+      right: { x: 1, y: 0 },
+    };
+
+    let direction = directions.right;
 
     while (cycle.length < this.columns * this.rows) {
       const { x, y } = current;
@@ -52,43 +41,43 @@ function HamiltonianCycle() {
       const dirY = direction.y + y;
 
       switch (direction) {
-        case this.DIRS.right:
+        case directions.right:
           if (isInPoints(x + 1, y + 1) && !isInPoints(x + 1, y)) {
             current = { x: dirX, y: dirY };
           } else if (isInPoints(x, y + 1) && !isInPoints(x + 1, y + 1)) {
-            direction = this.DIRS.down;
+            direction = directions.down;
           } else {
-            direction = this.DIRS.up;
+            direction = directions.up;
           }
           break;
 
-        case this.DIRS.down:
+        case directions.down:
           if (isInPoints(x, y + 1) && !isInPoints(x + 1, y + 1)) {
             current = { x: dirX, y: dirY };
           } else if (isInPoints(x, y + 1) && isInPoints(x + 1, y + 1)) {
-            direction = this.DIRS.right;
+            direction = directions.right;
           } else {
-            direction = this.DIRS.left;
+            direction = directions.left;
           }
           break;
 
-        case this.DIRS.left:
+        case directions.left:
           if (isInPoints(x, y) && !isInPoints(x, y + 1)) {
             current = { x: dirX, y: dirY };
           } else if (!isInPoints(x, y + 1)) {
-            direction = this.DIRS.up;
+            direction = directions.up;
           } else {
-            direction = this.DIRS.down;
+            direction = directions.down;
           }
           break;
 
-        case this.DIRS.up:
+        case directions.up:
           if (isInPoints(x + 1, y) && !isInPoints(x, y)) {
             current = { x: dirX, y: dirY };
           } else if (isInPoints(x + 1, y)) {
-            direction = this.DIRS.left;
+            direction = directions.left;
           } else {
-            direction = this.DIRS.right;
+            direction = directions.right;
           }
           break;
       }
@@ -98,20 +87,8 @@ function HamiltonianCycle() {
       }
     }
 
-    // let lastHead;
-    // let interval = setInterval(() => {
-    //   if (lastHead) {
-    //     lastHead.classList.remove(CLASS_NAMES.snake.head);
-    //   }
-
-    //   lastHead = this.board.addBlock('snake-body', cycle.shift());
-    //   lastHead.classList.add(CLASS_NAMES.snake.head);
-
-    //   if (!cycle.length) window.clearInterval(interval);
-    // }, 30);
-
     return cycle;
-  };
+  }
 }
 
 export default HamiltonianCycle;
